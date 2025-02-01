@@ -15,3 +15,12 @@ John Gabriel Blas
 Joshua Pilongco
 
 Herlyn Eusebio
+
+Technologies used:
+
+HTML
+CSS
+JavaScript
+BulmaCSS(CSS Framework)
+OneDrive API
+MySQL
