@@ -6,29 +6,39 @@
     <title>ClassConnect:Dashboard</title>
     <link rel="stylesheet" href="css/dashDesign.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <style>
+    </style>
 </head>
 <body>
-    <div class="columns">
-        <!-- Sidebar -->
-        <aside class="column is-one-quarter has-background-primary sidebar">
-            <div class="has-text-centered p-4">
-                <figure class="image is-128x128 is-inline-block">
-                    <img class="is-rounded" src="https://via.placeholder.com/128" alt="User Profile">
-                </figure>
-                <p class="title is-5 has-text-white mt-2">John Doe</p>
-            </div>
-            <nav class="menu">
-                <ul class="menu-list">
-                    <li><a href="#">Subjects</a></li>
-                    <li><a href="#" class="is-active">Dashboard</a></li>
-                    <li><a href="#">My Files</a></li>
-                    <li><a href="#">Settings</a></li>
-                </ul>
+
+
+    <div class="classconnect">
+        <div class="cc-nav">
+            <nav class="navbar has-text-centered p-6" id="side-bar">
+                <aside>
+                    <div class="profile">
+                        <img src="images/blank-profile-picture-973460_1280.png" alt="User Profile" class="image is-1by1" id="profile-image">
+                        <h2 class="has-text-black">John Doe</h2>
+                    </div>
+    
+                    <ul class="py-auto" id="nav-links">
+                        <li><a href="#">Navigation 1</a></li><br>
+                        <li><a href="dashboard.html" class="is-active">Navigation 2</a></li><br>
+                        <li><a href="#">Navigation 3</a></li><br>
+                        <li><a href="#">Navigation 4</a></li><br>
+                    </ul>
+    
+                    <div class="sign-out py-6">
+                        <a href="#" id="sign-ot">Sign-out</a>
+                    </div>
+                </aside>
             </nav>
-            <div class="sign-out has-text-centered mt-6">
-                <a href="#" class="has-text-danger">Sign-out</a>
-            </div>
-        </aside>
+        </div>
+
+        <div class="cc-body has-text-black" id="header">
+            <h1 class="is-size-1-fullhd">Navigation 2</h1>
+        </div>
     </div>
+
 </body>
 </html>
