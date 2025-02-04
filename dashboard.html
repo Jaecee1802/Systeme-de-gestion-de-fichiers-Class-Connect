@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="has-background-white-bis">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,27 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
 </head>
 <body>
-    
+    <div class="columns">
+        <!-- Sidebar -->
+        <aside class="column is-one-quarter has-background-primary sidebar">
+            <div class="has-text-centered p-4">
+                <figure class="image is-128x128 is-inline-block">
+                    <img class="is-rounded" src="https://via.placeholder.com/128" alt="User Profile">
+                </figure>
+                <p class="title is-5 has-text-white mt-2">John Doe</p>
+            </div>
+            <nav class="menu">
+                <ul class="menu-list">
+                    <li><a href="#">Subjects</a></li>
+                    <li><a href="#" class="is-active">Dashboard</a></li>
+                    <li><a href="#">My Files</a></li>
+                    <li><a href="#">Settings</a></li>
+                </ul>
+            </nav>
+            <div class="sign-out has-text-centered mt-6">
+                <a href="#" class="has-text-danger">Sign-out</a>
+            </div>
+        </aside>
+    </div>
 </body>
 </html>
