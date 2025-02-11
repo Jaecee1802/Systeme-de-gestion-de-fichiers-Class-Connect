@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" class="has-background-white">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ClassConnect Sign-up</title>
     <link rel="stylesheet" href="css/singDesign.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <title>CC: Sign In as Teacher</title>
     <style>
         html{
             background-image: url(images/Blue-light-rays-starry-space_2560x1600.jpg);
@@ -17,7 +17,6 @@
             max-width: 450px;
             margin: 30px;
         }
-
     </style>
 </head>
 <body>
@@ -25,7 +24,7 @@
 
         <div class="sign-up my-6">
             <div class="sign-up-form section">
-                <h1 class="create-account has-text-centered has-text-white">Create Account</h1>
+                <h1 class="create-account has-text-centered has-text-white">Sign-in Teacher</h1>
     
                 <div class="sign-form my-6">
                     <label for="email" class="has-text-white">Email</label><br>
@@ -36,21 +35,18 @@
                     <input type="password" placeholder="Enter Password" class="input is-normal has-background-white-ter" name="password" required>
                     <br><br>
     
-                    <label for="password"  class="has-text-white">Re-enter Password</label><br>
-                    <input type="password" placeholder="Enter Password" name="re-password" class="input is-normal has-background-white-ter" required>
+                    <div class="sign-up-buttons mt-3 has-text-centered">
+                        <button id="sign-up" class="button is-info has-text-white">Sign-in</button><br>
+                        <button id="sign-microsoft" class="button is-white has-text-black mt-4">Sign-in with Microsoft</button>
+                        <button id="sign-microsoft" class="button is-white has-text-black my-4">Sign-in as an admin</button>
+                        <a href="sign-in.html"><button id="sign-teacher" class="button is-white has-text-black mb-5">Sign-in as a Student</button></a>
 
-                    <div class="sign-up-buttons mt-6 has-text-centered">
-                        <button id="sign-up" class="button is-info has-text-white">Sign-up</button><br>
-                        <button id="sign-admin" class="button is-white has-text-black my-4">Sign-up with Microsoft</button>
-                        <a href="sign-up(teacher).html"><button id="sign-teacher" class="button is-white has-text-black mb-5">Sign-up as a Teacher</button></a>
-                        <br>
-                        <a href="sign-in.html" id="redirect-to-sgn-in">Go to Sign in if you have already an account</a>
+                        <a href="sign-up(teacher).html" id="redirect-to-sgn-in">Go to Sign up if you don't have an account</a>
                     </div>
                 </div>
             </div>
         </div>
         
     </div>
-    
 </body>
 </html>

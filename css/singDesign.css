@@ -10,13 +10,9 @@
     border-radius: 10px;
 }
 
-.sign-up{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 50%;
-    height: 50%;
+.container{
+    display: grid;
+    place-content: center;
 }
 
 label, .create-account, .sign-up, .sign-up-form, #redirect-to-sgn-in{
@@ -34,13 +30,18 @@ label, .create-account, .sign-up, .sign-up-form, #redirect-to-sgn-in{
     font-size: 40px;
 }
 
-#sign-up, #sign-microsoft, #sign-admin{
+#sign-up{
     background-color: #1C4E80;
     width: 350px;
 }
 
-#sign-microsoft{
-    background-color: white;
+#sign-microsoft, #sign-admin, #sign-teacher{
+    width: 350px;
+}
+
+::placeholder{
+    color: black;
+    opacity: 1;
 }
 
 @media (height <= 1024px){
