@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClassConnect Sign-in</title>
+    <link rel="stylesheet" href="css/singDesign.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <style>
+        html{
+            background-image: url(images/Blue-light-rays-starry-space_1920x1080.jpg);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        .container{
+            position: relative;
+            height: 100vh;
+        }
+        .sign-up{
+            max-width: 450px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="sign-up my-6">
+            <div class="sign-up-form section">
+                <h1 class="create-account has-text-centered has-text-white">Create Account</h1>
+    
+                <div class="sign-form my-6">
+                    <label for="email" class="has-text-white">Email</label><br>
+                    <input type="text" placeholder="Enter Email" name="email" class="input is-normal has-background-white" required>
+                    <br><br>
+    
+                    <label for="password"  class="has-text-white">Password</label><br>
+                    <input type="password" placeholder="Enter Password" class="input is-normal has-background-white" name="password" required>
+                    <br><br>
+    
+                    <div class="sign-up-buttons mt-3 has-text-centered">
+                        <button id="sign-up" class="button is-info has-text-white">Sign-in</button><br>
+                        <button id="sign-microsoft" class="button is-white has-text-black mt-4">Sign-in with Microsoft</button>
+                        <button id="sign-microsoft" class="button is-white has-text-black my-4">Sign-in as an admin</button>
+
+                        <a href="sign-up.html" id="redirect-to-sgn-in">Go to Sign up if you have already an account</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>
