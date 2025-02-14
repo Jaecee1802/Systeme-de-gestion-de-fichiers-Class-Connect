@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" class="has-background-white-bis">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClassConnect: Dashboard</title>
+    <link rel="stylesheet" href="css/dashboardDesign.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <style>
+        .header{
+            padding-top: 100px;
+            padding-bottom: 20px;
+            background-color: #1C4E80;
+        }
+        #recent-title{
+            border-bottom: 2px solid black;
+        }
+    </style>
+</head>
+<body>
+    <input type="checkbox" id="check">
+    <label for="check">
+      <i class="fas fa-bars" id="btn"></i>
+      <i class="fas fa-times" id="cancel"></i>
+    </label>
+    <div class="sidebar">
+    <header>
+        <img src="images/blank-profile-picture-973460_1280.png" alt="Profile Picture" style="height: 140px; max-width: 140px;" class="mt-5">
+        <h2 class="is-size-6 has-text-black-bis">Account Name</h2>
+    </header>
+  <ul>
+<li><a href="#" class="has-text-centered">Enrolled Subjects</a></li>
+<li><a href="Dashboard.html" class="has-text-centered has-text-weight-bold">Dashboard</a></li>
+<li><a href="#" class="has-text-centered">My Files</a></li>
+<li><a href="#" class="has-text-centered">Grades</a></li>
+<li><a href="#" class="has-text-centered">Settings</a></li>
+<li><a href="#" class="has-text-centered has-text-danger">Sign-out</a></li>
+</ul>
+</div>
+
+<section>
+    <div class="header">
+        <h2 class="mx-6 is-size-2 has-text-white has-text-weight-bold">Dashboard</h2>
+    </div>
+
+    <div class="recent-subjects">
+        <h3 class="m-5 mx-6 has-text-black-bis is-size-4" id="recent-title">Recent Subjects</h3>
+
+        <div class="subjects-fold is-flex-wrap-wrap" id="subjects">
+            <a href="#">
+                <div class="subject-1" id="subject-folder">
+                    <img src="images/folder.png" alt="Folder" class="image is-48x48 mx-2">
+                    <p class="has-text-black-bis is-size-5 my-2">Subject 1</p>
+                </div>
+            </a>
+
+            <a href="#">
+                <div class="subject-1" id="subject-folder">
+                    <img src="images/folder.png" alt="Folder" class="image is-48x48 mx-2">
+                    <p class="has-text-black-bis is-size-5 my-2">Subject 2</p>
+                </div>
+            </a>
+
+            <a href="#">
+                <div class="subject-1" id="subject-folder">
+                    <img src="images/folder.png" alt="Folder" class="image is-48x48 mx-2">
+                    <p class="has-text-black-bis is-size-5 my-2">Subject 3</p>
+                </div>
+            </a>
+
+            <a href="#">
+                <div class="subject-1" id="subject-folder">
+                    <img src="images/folder.png" alt="Folder" class="image is-48x48 mx-2">
+                    <p class="has-text-black-bis is-size-5 my-2">Subject 4</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="recently-added">
+        <h3 class="m-5 mx-6 has-text-black-bis is-size-4" id="recent-title">Recent Added to My Files</h3>
+
+        <div class="added-folders">
+
+            <div class="my-file-folders">
+                <img src="images/folder.png" alt="Folder" class="image is-128x128">
+                <p class="has-text-black">My File #1</p>
+            </div>
+
+            <div class="my-file-folders">
+                <img src="images/folder.png" alt="Folder" class="image is-128x128">
+                <p class="has-text-black">My File #1</p>
+            </div>
+
+            <div class="my-file-folders">
+                <img src="images/folder.png" alt="Folder" class="image is-128x128">
+                <p class="has-text-black">My File #1</p>
+            </div>
+
+            <div class="my-file-folders">
+                <img src="images/folder.png" alt="Folder" class="image is-128x128">
+                <p class="has-text-black">My File #1</p>
+            </div>
+
+            <div class="my-file-folders">
+                <img src="images/folder.png" alt="Folder" class="image is-128x128">
+                <p class="has-text-black">My File #1</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+</body>
+</html>
