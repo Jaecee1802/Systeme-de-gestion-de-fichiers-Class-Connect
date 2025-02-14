@@ -113,3 +113,20 @@
     justify-content: center;
     gap: 0%;
   }
+  
+  .added-folders{
+    justify-content: center;
+    gap: 4%;
+  }
+
+  .my-file-folders{
+    display: flex;
+    justify-content: center;
+  }
+
+  @media (width <= 412px){
+    #subject-folder{
+      width: 200px;
+      margin-left: 1rem;
+    }
+  }
