@@ -101,17 +101,17 @@
   #subject-folder{
     display: flex;
     gap: 1%;
-    margin-left: 2rem;
+    padding-left: 2rem;
     background-color: #DBDBDB;
     width: 400px;
     padding: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
 
   #subjects{
     display: flex;
     justify-content: center;
-    gap: 0%;
+    gap: 1.5%;
   }
   
   .added-folders{
@@ -124,9 +124,9 @@
     justify-content: center;
   }
 
-  @media (width <= 412px){
+  @media (width <= 430px){
     #subject-folder{
       width: 200px;
-      margin-left: 1rem;
+      padding-left: 1rem;
     }
   }
