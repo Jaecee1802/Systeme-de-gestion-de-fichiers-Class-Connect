@@ -25,10 +25,28 @@
             background-color: #1C4E80;
         }
 
+        #modal-box{
+            border-radius: 20px;
+        }
+
+        #file-name{
+            border: 0;
+        }
+
+        #upload-butt{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #butt-upload{
+            background-color: #1C4E80;
+        }
+
         @media screen and (width <= 412px){
             .upload-button-sec{
-                position: sticky;
                 position: -webkit-sticky;
+                position: sticky;
                 top: 0; /* required */
             }
         }
@@ -111,12 +129,27 @@
             </a>
         </div>
     </div>
-
     <div class="upload-button-sec">
         <button class="button is-pulled-right mx-4 mb-2" id="upload-button">
             Upload
         </button>
     </div>
 </section>
+
+<div class="modal" id="upload-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
+        <button class="close is-pulled-right has-text-black is-size-4" id="close-modal">&times;</button>
+        <h1 class="has-text-black has-text-centered is-size-2-desktop">Upload</h1>
+        <label for="file-name" class="has-text-black">File Name:</label>
+        <input class="input has-background-white my-4 has-text-black" type="text" placeholder="" id="file-name"/>
+        <button class="button has-background-grey-lighter has-text-black is-small">Upload File</button>
+        <div class="upload-files mt-4 mb-4" id="upload-butt">
+            <button class="has-text-white button is-primary is-medium" id="butt-upload">Upload</button>
+        </div>
+    </div>
+</div>
+
 </body>
+<script src="js/modal.js"></script>
 </html>
