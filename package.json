@@ -1,0 +1,21 @@
+{
+  "name": "systeme-de-gestion-de-fichiers-class-connect",
+  "version": "1.0.0",
+  "description": "classconnect fms",
+  "homepage": "https://github.com/Jaecee1802/Systeme-de-gestion-de-fichiers-Class-Connect#readme",
+  "bugs": {
+    "url": "https://github.com/Jaecee1802/Systeme-de-gestion-de-fichiers-Class-Connect/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jaecee1802/Systeme-de-gestion-de-fichiers-Class-Connect.git"
+  },
+  "license": "ISC",
+  "author": "jaecee, gabriel, herlyn, joshua",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  }
+}
