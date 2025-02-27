@@ -1,4 +1,5 @@
 const http = require('http');
+const mysql = require('mysql2');
 
 
 const app = http.createServer((req, res) => {
@@ -9,6 +10,22 @@ const app = http.createServer((req, res) => {
     if(url === '/') {
         res.write('<h1>Hello ClassConnect Test</h1>');
         res.end();
+    }
+})
+
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password:'jaecee1802',
+    database: 'classConnectstudentInfoDB'
+})
+
+db.connect((err) => {
+    if(err) {
+        console.log(err);
+    }
+    else {
+        console.log('MySQL is Connected...');
     }
 })
 
