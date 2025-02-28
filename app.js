@@ -1,24 +1,27 @@
 const http = require('http');
 const mysql = require('mysql2');
+const dotenv = require('dotenv');
+const express = require('express');
+const path = require('path');
 
+dotenv.config({
+    path: './.env'
+});
 
-const app = http.createServer((req, res) => {
-    res.writeHead(200, {'Content-Type': 'text/html'});
-
-    const url = req.url;
-
-    if(url === '/') {
-        res.write('<h1>Hello ClassConnect Test</h1>');
-        res.end();
-    }
-})
+const app = express();
 
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password:'jaecee1802',
-    database: 'classconnectdb'
+    host: process.env.HOST,
+    user: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE
 })
+
+const pubDirectory = path.join(__dirname, '../signindesign');
+const imgDirectory = path.join(__dirname, '../images');
+app.use(express.static(pubDirectory));
+app.use(express.static(imgDirectory));
+app.set('view engine', 'hbs');
 
 db.connect((err) => {
     if(err) {
@@ -27,6 +30,10 @@ db.connect((err) => {
     else {
         console.log('MySQL is Connected...');
     }
+})
+
+app.get("/", (req, res) => {
+    res.render("../views/sign-up");
 })
 
 app.listen(3000, () => {
