@@ -1,7 +1,7 @@
 //Teacher
 let tchrName = document.getElementById("teacherName");
 let tchrEmail = document.getElementById("teacherEmail");
-let tchrPassword = document.getElementById("teacherPassword");
+let tchrPassword = document.getElementById("teacherPass");
 let retryPass = document.getElementById("teacherReEnter");
 let signUpButt = document.getElementById("sign-up");
 
