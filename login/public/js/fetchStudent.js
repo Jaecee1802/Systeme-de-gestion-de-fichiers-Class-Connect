@@ -1,4 +1,3 @@
-
 //Student
 let studName = document.getElementById("studentName");
 let studEmail = document.getElementById("studentEmail");
