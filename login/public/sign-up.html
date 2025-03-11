@@ -6,6 +6,7 @@
     <title>ClassConnect Sign-up</title>
     <link rel="stylesheet" href="singDesign.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
     <style>
         html{
             background-image: url(Blue-light-rays-starry-space_2560x1600.jpg);
@@ -29,26 +30,54 @@
     
                 <div class="sign-form my-6">
                     <label for="Name" class="has-text-white">Name</label><br>
-                    <input type="text" placeholder="Enter Name" name="student-name" class="input is-normal has-background-white-ter has-text-black" required>
+                    <input type="text" placeholder="Enter Name" name="student-name" class="input is-normal has-background-white-ter has-text-black" id="studentName" required>
                     <br><br>
 
                     <label for="email" class="has-text-white">Email</label><br>
-                    <input type="text" placeholder="Enter Email" name="email" class="input is-normal has-background-white-ter has-text-black" required>
+                    <input type="text" placeholder="Enter Email" name="email" class="input is-normal has-background-white-ter has-text-black" id="studentEmail" required>
                     <br><br>
 
                     <label for="studentID" class="has-text-white">Student ID</label><br>
-                    <input type="text" placeholder="Enter Email" name="email" class="input is-normal has-background-white-ter has-text-black" required>
+                    <input type="text" placeholder="Enter Email" name="email" class="input is-normal has-background-white-ter has-text-black" id="studentID" required>
+                    <br><br>
+
+                    <label for="dropdown" class="has-text-white">Course</label><br>
+                    <!-- Dropdown for Course -->
+                    <div class="dropdown" id="dropDown">
+                        <div class="dropdown-trigger" id="ddown-trigger">
+                          <button class="button is-white" aria-haspopup="true" aria-controls="dropdown-menu3">
+                            <span>Choose Course</span>
+                            <span class="icon is-small">
+                              <i class="fas fa-angle-down" aria-hidden="true"></i>
+                            </span>
+                          </button>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu3" role="menu">
+                          <div class="dropdown-content">
+                            <a href="#" class="dropdown-item">Computer Science</a>
+                            <a href="#" class="dropdown-item">Computer Engineering</a>
+                            <a href="#" class="dropdown-item">Information Technology</a>
+                            <a href="#" class="dropdown-item">Associate in Computer Technology</a>
+                            <a href="#" class="dropdown-item">Hotel and Room Management</a>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Dropdown for Course -->
+                    <br><br>
+
+                    <label for="section" class="has-text-white">Section</label><br>
+                    <input type="text" placeholder="Enter Section" class="input is-normal has-background-white-ter has-text-black" name="section" id="studentSection" required>
                     <br><br>
     
                     <label for="password"  class="has-text-white">Password</label><br>
-                    <input type="password" placeholder="Enter Password" class="input is-normal has-background-white-ter has-text-black" name="password" required>
+                    <input type="password" placeholder="Enter Password" class="input is-normal has-background-white-ter has-text-black" name="password" id="studentPassword" required>
                     <br><br>
     
                     <label for="password"  class="has-text-white">Re-enter Password</label><br>
-                    <input type="password" placeholder="Enter Password" name="re-password" class="input is-normal has-background-white-ter has-text-black" required>
+                    <input type="password" placeholder="Enter Password" name="re-password" class="input is-normal has-background-white-ter has-text-black" id="studentRetryPass" required>
 
                     <div class="sign-up-buttons mt-6 has-text-centered">
-                        <button id="sign-up" class="button is-info has-text-white">Sign-up</button><br>
+                        <button id="student-sign-up" class="button is-info has-text-white">Sign-up</button><br>
                         <button id="sign-admin" class="button is-white has-text-black my-4">Sign-up with Microsoft</button>
                         <a href="sign-up(teacher).html"><button id="sign-teacher" class="button is-white has-text-black mb-5">Sign-up as a Teacher</button></a>
                         <br>
@@ -59,6 +88,7 @@
         </div>
         
     </div>
-    <script src="../js/fetchData.js"></script>
+    <script src="js/fetchData.js"></script>
+    <script src="js/fetchStudent.js"></script>
 </body>
 </html>

@@ -1,10 +1,3 @@
-//Teacher
-let tchrName = document.getElementById("teacherName");
-let tchrEmail = document.getElementById("teacherEmail");
-let tchrPassword = document.getElementById("teacherPass");
-let retryPass = document.getElementById("teacherReEnter");
-let signUpButt = document.getElementById("sign-up");
-
 // DROPDOWN
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -34,6 +27,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //DROPDOWN
 
+//Teacher
+let tchrName = document.getElementById("teacherName");
+let tchrEmail = document.getElementById("teacherEmail");
+let tchrPassword = document.getElementById("teacherPass");
+let retryPass = document.getElementById("teacherReEnter");
+let signUpButt = document.getElementById("sign-up");
+
+//Sign-up FETCH for teachers//
 signUpButt.addEventListener('click', async() => {
     const inputName = document.getElementById("teacherName").value;
     const inputEmail = document.getElementById("teacherEmail").value;
@@ -42,7 +43,7 @@ signUpButt.addEventListener('click', async() => {
     const department = document.getElementById("ddown-trigger").querySelector("span").textContent;
 
     if (!inputName || !inputEmail || !inputPassword || !inputReEnter || department === "Choose Department") {
-        alert("Please fill in all fields.");
+        alert("Please fill all the fields.");
         return;
     }
 
@@ -82,4 +83,4 @@ signUpButt.addEventListener('click', async() => {
         alert("Something went wrong!");
     }
 });
-
+//Sign-up FETCH for teachers//
