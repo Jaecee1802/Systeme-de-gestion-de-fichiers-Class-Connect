@@ -29,7 +29,7 @@ db.connect(err => {
     }
 });
 
-//Teachers
+//Teachers Sign-up
 app.get("/teachers", (req, res) => {
     res.sendFile(path.join(__dirname, "../public/sign-up(teacher).html"));
 })
@@ -70,9 +70,9 @@ app.post("/signup", (req, res) => {
         return res.status(500).json({ message: "Database error" });
     }
 })
-//Teachers
+//Teachers Sign-up
 
-//Students
+//Students Sign-up
 app.get("/students", (req, res) => {
     res.sendFile(path.join(__dirname, "../public/sign-up.html"));
 })
@@ -109,7 +109,7 @@ app.post("/studentsignup", (req, res) =>{
     });
 })
 
-//Students
+//Students Sign-up
 
 app.listen(3000, () => {
     console.log("Server is running on port 3000");
