@@ -3,6 +3,7 @@ let studName = document.getElementById("studentName");
 let studEmail = document.getElementById("studentEmail");
 let studID = document.getElementById("studentID");
 let studPass = document.getElementById("studentPassword");
+let studentSection = document.getElementById("studentSection");
 let studButton = document.getElementById("student-sign-up");
 
 //Sign-up FETCH for students//
@@ -13,8 +14,9 @@ studButton.addEventListener('click', async() => {
     const inputPassword = document.getElementById("studentPassword").value;
     const retryPass = document.getElementById("studentRetryPass").value;
     const course = document.getElementById("ddown-trigger").querySelector("span").textContent;
+    const section = document.getElementById("studentSection").value;
 
-    if(!inputName || !inputEmail || !inputID || !inputPassword || !retryPass || course === "Choose Course"){
+    if(!inputName || !inputEmail || !inputID || !inputPassword || !retryPass || course === "Choose Course" || !section){
         alert("Please fill all the fields.");
         return;
     }
@@ -24,12 +26,18 @@ studButton.addEventListener('click', async() => {
         return;
     }
 
+    if(!section){
+        alert("Please enter your section.");
+        return;
+    }
+
     const studentObj = {
         name: inputName,
         email: inputEmail,
         studentID: inputID,
         password: inputPassword,
-        course: course
+        course: course,
+        section: section
     };
 
     try{
@@ -41,7 +49,7 @@ studButton.addEventListener('click', async() => {
             body: JSON.stringify(studentObj)
         });
 
-        const data = response.json();
+        const data = await response.json();
 
         if(response.ok){
             alert("Successfully signed up!");
