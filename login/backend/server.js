@@ -111,6 +111,44 @@ app.post("/studentsignup", (req, res) =>{
 
 //Students Sign-up
 
+//Sign In Teachers
+app.get("/teachersign", (req, res) => {
+    res.sendFile(path.join(__dirname, "../public/sign-in(teacher).html"));
+})
+
+app.post("/teacherSignedin", (req, res) => {
+    const { email, password} = req.body;
+
+    if(!email || !password){
+        return res.status(400).json({ message: "Please fill in all fields." });
+    }
+
+    //Check if the user(teacher) exists
+    const sql = "SELECT * FROM teachers WHERE teacherEmail = ?";
+    db.query(sql, [email], (err, results) => {
+        if(err){
+            console.error(err);
+            return res.status(500).json({ message: "Error in the Database"});
+        }
+
+        if(results.length === 0){
+            return res.status(404).json({message:"User not found."});
+        }
+
+        const user = results[0];
+
+        const passwordMatch = bcrypt.compareSync(password, user.teacherPassword);
+
+        if(!passwordMatch){
+            return res.status(401).json({ message: "Password is invalid or wrong!"});
+        }
+
+        res.status(200).json({ message: "You're signed in!"});
+    })
+})
+//Sign in teachers
+
+
 app.listen(3000, () => {
     console.log("Server is running on port 3000");
 });
