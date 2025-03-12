@@ -1,9 +1,5 @@
 //Teacher
-let tchrName = document.getElementById("teacherName");
-let tchrEmail = document.getElementById("teacherEmail");
-let tchrPassword = document.getElementById("teacherPass");
-let retryPass = document.getElementById("teacherReEnter");
-let signUpButt = document.getElementById("student-sign-up");
+let signUpButt = document.getElementById("teacher-sign-up");
 
 //Sign-up FETCH for teachers//
 signUpButt.addEventListener('click', async() => {

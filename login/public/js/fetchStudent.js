@@ -1,9 +1,4 @@
 //Student
-let studName = document.getElementById("studentName");
-let studEmail = document.getElementById("studentEmail");
-let studID = document.getElementById("studentID");
-let studPass = document.getElementById("studentPassword");
-let studentSection = document.getElementById("studentSection");
 let studButton = document.getElementById("student-sign-up");
 
 //Sign-up FETCH for students//
