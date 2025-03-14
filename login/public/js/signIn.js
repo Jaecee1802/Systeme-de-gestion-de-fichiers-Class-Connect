@@ -65,7 +65,6 @@ signinStudent.addEventListener('click', async() => {
 
         if(response.ok){
             alert(data.message);
-            window.location.href = "";
         }
         else{
             alert(data.message);

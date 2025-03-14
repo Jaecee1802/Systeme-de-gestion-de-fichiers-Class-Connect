@@ -35,11 +35,11 @@ signUpButt.addEventListener('click', async() => {
             body: JSON.stringify(teacherObj)
         });
 
-        const data = response.json();
+        const data = await response.json();
 
         if(response.ok){
             alert("Successfully signed up!");
-            window.location.href = "";
+            window.location.href = "Dashboard.html";
         }
         else{
             alert("Error: " + data.message);

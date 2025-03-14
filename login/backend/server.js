@@ -69,7 +69,7 @@ app.post("/signup", (req, res) => {
         console.log(`Error: ${err}`);
         return res.status(500).json({ message: "Database error" });
     }
-})
+});
 //Teachers Sign-up
 
 //Students Sign-up
