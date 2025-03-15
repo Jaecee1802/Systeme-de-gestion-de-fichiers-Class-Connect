@@ -39,7 +39,7 @@ signUpButt.addEventListener('click', async() => {
 
         if(response.ok){
             alert("Successfully signed up!");
-            window.location.href = "Dashboard.html";
+            window.location.href = "/dashboard";
         }
         else{
             alert("Error: " + data.message);

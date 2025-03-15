@@ -12,6 +12,9 @@ app.use(express.json());
 app.use(cors());
 
 app.use(express.static(path.join(__dirname, "../public")));
+app.set("views", path.join(__dirname, "views"));
+
+app.set('view engine', 'ejs');
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -142,14 +145,14 @@ app.post("/teacherSignedin", (req, res) => {
         if(!passwordMatch){
             return res.status(401).json({ message: "Password is invalid or wrong!"});
         }
-
         res.status(200).json({ message: "You're signed in!"});
     })
 })
+
 //Sign in teachers
 
 //Sign in Students
-app.get("/studentsignin", (req, res) => {
+app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "../public/sign-in.html"))
 })
 
