@@ -119,6 +119,10 @@ app.get("/teachersign", (req, res) => {
     res.sendFile(path.join(__dirname, "../public/sign-in(teacher).html"));
 })
 
+app.get("/dashboard", (req, res) => {
+    return res.render("Dashboard");
+})
+
 app.post("/teacherSignedin", (req, res) => {
     const { email, password} = req.body;
 
@@ -154,6 +158,10 @@ app.post("/teacherSignedin", (req, res) => {
 //Sign in Students
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "../public/sign-in.html"))
+})
+
+app.get("/subject", (req, res) => {
+    return res.render("Subjects");
 })
 
 app.post("/studentSignin", (req, res) => {

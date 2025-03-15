@@ -27,7 +27,7 @@ signinButtonteacher.addEventListener('click', async() => {
 
         if(response.ok){
             alert(data.message);
-            window.location.href = "";
+            window.location.href = "/dashboard";
         }
         else{
             alert(data.message);

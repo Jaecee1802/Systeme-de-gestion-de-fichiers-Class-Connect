@@ -48,6 +48,7 @@ studButton.addEventListener('click', async() => {
 
         if(response.ok){
             alert("Successfully signed up!");
+            window.location.href = "/dashboard";
         }
         else{
             alert("Error: " + data.message);
