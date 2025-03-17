@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CC:Sign-in as an Admin</title>
+    <link rel="stylesheet" href="singDesign.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <style>
+        html{
+            background-image: url(Blue-light-rays-starry-space_2560x1600.jpg);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        .sign-up{
+            max-width: 450px;
+            margin: 30px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container my-6">
+
+        <div class="sign-up my-6">
+            <div class="sign-up-form section">
+                <h1 class="create-account has-text-centered has-text-white">Admin</h1>
+    
+                <div class="sign-form my-6">
+                    <label for="email" class="has-text-white">Username</label><br>
+                    <input type="text" placeholder="Enter Email" name="email" class="input is-normal has-background-white-ter has-text-black" required>
+                    <br><br>
+    
+                    <label for="password"  class="has-text-white">Password</label><br>
+                    <input type="password" placeholder="Enter Password" class="input is-normal has-background-white-ter has-text-black" name="password" required>
+                    <br><br>
+    
+                    <div class="sign-up-buttons mt-3 has-text-centered">
+                        <button id="sign-in-admin" class="button is-info has-text-white">Insert Data</button><br>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <script src="../js/fetchData.js"></script>
+</body>
+</html>

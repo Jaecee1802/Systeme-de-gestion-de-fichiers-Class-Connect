@@ -196,6 +196,12 @@ app.post("/studentSignin", (req, res) => {
 //Sign in Students
 
 
+//Admin and Data Extractor(for admins)
+app.get("/admin", (req, res) => {
+    res.sendFile(path.join(__dirname, "../public/sign-in(admin).html"));
+})
+
+
 app.listen(3000, () => {
     console.log("Server is running on port 3000");
 });
