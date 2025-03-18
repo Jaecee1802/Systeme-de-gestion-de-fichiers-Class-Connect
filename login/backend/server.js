@@ -113,6 +113,11 @@ app.post("/studentsignup", (req, res) =>{
 
 //Students Sign-up
 
+//Dashboard Route
+app.get("/dashboard", (req, res) => {
+    res.sendFile(path.join(__dirname, "../public/Dashboard.html"));
+})
+
 //Sign In Teachers
 app.get("/teachersign", (req, res) => {
     res.sendFile(path.join(__dirname, "../public/sign-in(teacher).html"));
