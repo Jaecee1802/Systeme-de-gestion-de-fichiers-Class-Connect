@@ -13,7 +13,7 @@ app.use(cors());
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.set("views", path.join(__dirname, "views"));
-app.use(express.static(path.join(__dirname, "views")));
+app.use(express.static(path.join(__dirname, "../backend/views")));
 
 app.set('view engine', 'ejs');
 
@@ -255,6 +255,7 @@ app.post("/insertadmin", (req, res) => {
 //Admin and Data Extractor(for admins)
 
 //Sign out for admins
+
 //Sign out for admins
 
 app.listen(3000, () => {
