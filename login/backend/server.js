@@ -201,6 +201,57 @@ app.get("/admin", (req, res) => {
     res.sendFile(path.join(__dirname, "../public/sign-in(admin).html"));
 })
 
+app.post("/adminsignedin", (req, res) => {
+    const { username, password} = req.body;
+
+    if(!username || !password){
+        return res.status(400).json({ message: "Please fill all of the fields." });
+    }
+
+    const sql = "SELECT * FROM admin WHERE adminUsername = ?";
+    db.query(sql, [username], (err, results) => {
+        if(err){
+            console.error(err);
+            return res.status(500).json({ message: "Error in the database"});
+        }
+
+        if(results.length === 0){
+            return res.status(404).json({message:"User not found."});
+        }
+
+        const user = results[0];
+
+        const passwordMatch = bcrypt.compareSync(password, user.adminPass);
+
+        if(!passwordMatch){
+            return res.status(401).json({ message: "Password is invalid or wrong!"});
+        }
+        res.status(200).json({ message: "You're signed in!"});
+    })
+})
+
+app.get("/newadmin", (req , res) => {
+    res.sendFile(path.join(__dirname, "../public/adminextractor.html"));
+})
+
+app.post("/insertadmin", (req, res) => {
+    const { username, password} = req.body;
+
+    if(!username || !password){
+        return res.status(400).json({ message: "Please fill all of the fields." });
+    }
+
+    const hashPass = bcrypt.hashSync(password, 10);
+    const sql = "INSERT INTO admin (adminUsername, adminPass) VALUES (?, ?)";
+    db.query(sql, [username, hashPass], (err, results) => {
+        if(err){
+            console.error(err);
+            return res.status(500).json({ message: "Data Insert Failed."});
+        }
+        res.status(200).json({ message: "Data Inserted Successfully!"});
+    })
+})
+//Admin and Data Extractor(for admins)
 
 app.listen(3000, () => {
     console.log("Server is running on port 3000");

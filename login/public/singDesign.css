@@ -30,7 +30,7 @@ label, .create-account, .sign-up, .sign-up-form, #redirect-to-sgn-in{
     font-size: 40px;
 }
 
-#student-sign-up, #teacher-sign-up, #sign-in-teacher, #sign-in-student, #sign-in-admin{
+#student-sign-up, #teacher-sign-up, #sign-in-teacher, #sign-in-student, #admin-seeder, #sign-in-admin{
     background-color: #1C4E80;
     width: 350px;
 }
