@@ -12,8 +12,6 @@ app.use(express.json());
 app.use(cors());
 
 app.use(express.static(path.join(__dirname, "../public")));
-app.set("views", path.join(__dirname, "views"));
-app.use(express.static(path.join(__dirname, "../backend/views")));
 
 app.set('view engine', 'ejs');
 
@@ -118,10 +116,6 @@ app.post("/studentsignup", (req, res) =>{
 //Sign In Teachers
 app.get("/teachersign", (req, res) => {
     res.sendFile(path.join(__dirname, "../public/sign-in(teacher).html"));
-})
-
-app.get("/dashboard", (req, res) => {
-    return res.render("Dashboard");
 })
 
 app.post("/teacherSignedin", (req, res) => {
