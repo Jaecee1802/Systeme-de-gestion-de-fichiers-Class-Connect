@@ -253,11 +253,11 @@ app.post("/insertadmin", (req, res) => {
 })
 //Admin and Data Extractor(for admins)
 
-//Sign out for admins
-app.post("/adminsignout", (req, res) => {
+//Sign out
+app.post("/signout", (req, res) => {
     res.status(200).json({ message: "You're signed out!"});
 });
-//Sign out for admins
+//Sign out
 
 app.listen(3000, () => {
     console.log("Server is running on port 3000");

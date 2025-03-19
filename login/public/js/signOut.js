@@ -4,7 +4,7 @@ signOut.addEventListener('click', async (e) => {
     e.preventDefault();
 
     try{
-        const response = await fetch("/adminsignout", {
+        const response = await fetch("/signout", {
             method: "POST",
             headers: {
                 "Content-Type": 'text/html',
@@ -13,7 +13,7 @@ signOut.addEventListener('click', async (e) => {
 
         if(response.ok){
             alert("You're signed out!");
-            window.location.href = "/admin";
+            window.location.href = "/";
         }
         else{
             alert("Something went wrong!");
