@@ -1,5 +1,27 @@
 let signOut = document.getElementById('sign-out');
 
-signOut.addEventListener('click', () => {
-    alert("Hello World.");
-})
+signOut.addEventListener('click', async (e) => {
+    e.preventDefault();
+
+    try{
+        const response = await fetch("/adminsignout", {
+            method: "POST",
+            headers: {
+                "Content-Type": 'text/html',
+            }
+        });
+
+        if(response.ok){
+            alert("You're signed out!");
+            window.location.href = "/admin";
+        }
+        else{
+            alert("Something went wrong!");
+        }
+    }
+
+    catch(err){
+        console.error(err);
+        alert("An error occurred while signing out.");
+    }
+});

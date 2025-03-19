@@ -254,7 +254,9 @@ app.post("/insertadmin", (req, res) => {
 //Admin and Data Extractor(for admins)
 
 //Sign out for admins
-
+app.post("/adminsignout", (req, res) => {
+    res.status(200).json({ message: "You're signed out!"});
+});
 //Sign out for admins
 
 app.listen(3000, () => {
