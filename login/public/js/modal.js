@@ -22,7 +22,6 @@ closeFolderModal.addEventListener('click', () => {
     folderModal.classList.remove('is-active');
 });
 
-document.getElementById("folder-container").innerHTML = "";
 
 //Create Folder
 
