@@ -5,21 +5,25 @@ const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
 const path = require("path");
 const hash  = require("crypto");
+const fs = require("fs");
+const multer = require("multer");
 
 const app = express();
-
+dotenv.config();
 app.use(express.json());
 app.use(cors());
+
+const PORT = process.env.PORT || 3000;
 
 app.use(express.static(path.join(__dirname, "../public")));
 
 app.set('view engine', 'ejs');
 
 const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "jaecee1802",
-    database: "classconnectaccounts"
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
 })
 
 db.connect(err => {
@@ -259,6 +263,28 @@ app.post("/signout", (req, res) => {
 });
 //Sign out
 
-app.listen(3000, () => {
+
+//Create Folder//
+app.post('/api/createfolder', (req, res) => {
+    const { folderName } = req.body;
+    const folderPath = path.join(__dirname, `../public/uploads/${folderName}`);
+
+    fs.mkdir(folderPath, { recursive: true }, (err) => {
+        if(err){
+            return res.json({ success: false, message: 'Folder creation failed' });
+        }
+
+        db.query("INSERT INTO folders (name) VALUES (?)", [folderName], (err, result) => {
+            if(err){
+                console.error(err);
+                return res.json({ success: false, message: 'Database error.' });
+            }
+            return res.json({ success: true, message: 'Folder created.' });
+        })
+    })
+})
+//Create Folder//
+
+app.listen(PORT, () => {
     console.log("Server is running on port 3000");
 });

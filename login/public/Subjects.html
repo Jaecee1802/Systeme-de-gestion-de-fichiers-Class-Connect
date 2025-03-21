@@ -18,7 +18,7 @@
             border-bottom: 2px solid black;
         }
 
-        #upload-button{
+        #upload-button, #folder-button{
             margin-top: 450px;
             height: 80px;
             width: 200px;
@@ -56,8 +56,7 @@
 
     <div class="sidebar">
     <header>
-        <img src="images/blank-profile-picture-973460_1280.png" alt="Profile Picture" style="height: 140px; max-width: 140px;" class="mt-5">
-        <h2 class="is-size-6 has-text-black-bis">Account Name</h2>
+        <h2 class="is-size-6 has-text-black-bis my-6">Account Name</h2>
     </header>
         <ul>
             <li><a href="Subjects.html" class="has-text-centered has-text-weight-bold">Enrolled Subjects</a></li>
@@ -130,6 +129,10 @@
         <button class="button is-pulled-right mx-4 mb-2" id="upload-button">
             Upload
         </button>
+
+        <button class="button is-pulled-right mx-4 mb-2" id="folder-button">
+            Create Folder
+        </button>
     </div>
 </section>
 
@@ -138,9 +141,11 @@
     <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
         <button class="close is-pulled-right has-text-black is-size-4" id="close-modal">&times;</button>
         <h1 class="has-text-black has-text-centered is-size-2-desktop">Upload</h1>
-        <label for="file-name" class="has-text-black">Folder Name:</label>
-        <input class="input has-background-white my-4 has-text-black" type="text" placeholder="" id="file-name"/>
-        <button class="button has-background-grey-lighter has-text-black is-small">Upload File</button>
+        <form enctype="multipart/form-data">
+            <label for="file-name" class="has-text-black">File Name:</label>
+            <input class="input has-background-white my-4 has-text-black" type="text" placeholder="" id="file-name"/>
+            <input type="file" name="file" class="">
+        </form>
         <div class="upload-files mt-4 mb-4" id="upload-butt">
             <button class="has-text-white button is-primary is-medium" id="butt-upload">Upload</button>
         </div>
