@@ -264,6 +264,17 @@ app.post("/signout", (req, res) => {
 //Sign out
 
 
+//Load Folders//
+app.get('/api/folders', async(req, res) => {
+    db.query("SELECT * FROM folders", (err, result) => {
+        if(err){
+            return res.status(500).json({  error: err.message });
+        }
+        res.json(result);
+    });
+})
+//Load Folders//
+
 //Create Folder//
 app.post('/api/createfolder', (req, res) => {
     const { folderName } = req.body;
