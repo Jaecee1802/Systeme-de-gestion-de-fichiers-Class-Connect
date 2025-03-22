@@ -19,7 +19,6 @@
         }
 
         #upload-button, #folder-button{
-            margin-top: 450px;
             height: 80px;
             width: 200px;
             background-color: #1C4E80;
@@ -41,6 +40,21 @@
 
         #butt-upload{
             background-color: #1C4E80;
+        }
+
+        #fold-name{
+            margin-left: 20px;
+        }
+
+        #fold-name:hover{
+            text-decoration: underline;
+        }
+
+        #folder{
+            border: 1px solid black;
+            padding: 2px;
+            border-radius: 10px;
+            margin-top: 10px;
         }
 
         @media screen and (width <= 412px){
@@ -91,46 +105,50 @@
         </button>
     </div>
 
-    <div class="subject-folders is-flex-desktop has-text-centered is-flex-wrap-wrap is-flex-touch" id="folder-container">
-
-        <div class="subj-folders">
-
-            <a href="#">
-                <img src="images/folder.png" alt="Folder" class="image is-128x128">
-                <p class="has-text-black">My File #1</p>
-            </a>
-
-        </div>
-
-        <div class="subj-folders">
-            <a href="#">
-                <img src="images/folder.png" alt="Folder" class="image is-128x128">
-                <p class="has-text-black">My File #2</p>
-            </a>
-        </div>
-
-        <div class="subj-folders">
-            <a href="#">
-                <img src="images/folder.png" alt="Folder" class="image is-128x128">
-                <p class="has-text-black">My File #3</p>
-            </a>
-        </div>
-
-        <div class="subj-folders">
-            <a href="#">
-                <img src="images/folder.png" alt="Folder" class="image is-128x128">
-                <p class="has-text-black">My File #4</p>
-            </a>
-        </div>
-
-        <div class="subj-folders">
-            <a href="#">
-                <img src="images/folder.png" alt="Folder" class="image is-128x128">
-                <p class="has-text-black">My File #5</p>
-            </a>
+    <div class="my-2 mx-6">
+        <div class="subject-folders is-flex-wrap-wrap is-flex-touch" id="folder-container">
+            <!--The folders will be appended here -->
+            <div class="subj-folders">
+    
+                <a href="#" id="folder">
+                    <img src="images/folder.png" alt="Folder" class="image is-128x128">
+                    <p class="has-text-black">My File #1</p>
+                </a>
+    
+            </div>
+    
+            <div class="subj-folders">
+                <a href="#">
+                    <img src="images/folder.png" alt="Folder" class="image is-128x128">
+                    <p class="has-text-black">My File #2</p>
+                </a>
+            </div>
+    
+            <div class="subj-folders">
+                <a href="#">
+                    <img src="images/folder.png" alt="Folder" class="image is-128x128">
+                    <p class="has-text-black">My File #3</p>
+                </a>
+            </div>
+    
+            <div class="subj-folders">
+                <a href="#">
+                    <img src="images/folder.png" alt="Folder" class="image is-128x128">
+                    <p class="has-text-black">My File #4</p>
+                </a>
+                
+            </div>
+    
+            <div class="subj-folders">
+                <a href="#">
+                    <img src="images/folder.png" alt="Folder" class="image is-128x128">
+                    <p class="has-text-black">My File #5</p>
+                </a>
+            </div>
         </div>
     </div>
-    <div class="upload-button-sec">
+
+    <div class="upload-button-sec mt-4">
         <button class="button is-pulled-right mx-4 mb-2" id="upload-button">
             Upload
         </button>
@@ -139,6 +157,7 @@
             Create Folder
         </button>
     </div>
+    
 </section>
 
 <div class="modal" id="upload-modal">
@@ -173,4 +192,5 @@
 <script src="js/modal.js"></script>
 <script src="js/signOut.js"></script>
 <script src="js/loadFolder.js"></script>
+<script src="js/createFolder.js"></script>
 </html>

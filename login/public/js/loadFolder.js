@@ -8,7 +8,7 @@ async function loadFolders(){
     folders.forEach(folder => {
         const folderDiv = document.createElement('div');
         folderDiv.classList.add('subj-folders');
-        folderDiv.innerHTML = `<a href="#"><img src="images/folder.png" alt="Folder" class="image is-128x128"><p class="has-text-black">${folder.name}</p></a>`;
+        folderDiv.innerHTML = "";
 
         folderContainer.appendChild(folderDiv);
     });
