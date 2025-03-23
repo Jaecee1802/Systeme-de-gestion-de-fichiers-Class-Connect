@@ -296,6 +296,21 @@ app.post('/api/createfolder', (req, res) => {
 })
 //Create Folder//
 
+
+//Delete Folder
+app.post('/api/deletefolder', (req, res) => {
+    const { folderId } = req.body;  
+    const sql = "DELETE FROM folders WHERE folderID = ?";
+
+    db.query(sql, [folderId], (err, result) => {
+        if(err){
+            console.error(err);
+            return res.json({ success: false, message: 'Database error.' });
+        }
+        res.json({ success: true, message: 'Folder deleted.' });
+    })
+})
+//Delete Folder
 app.listen(PORT, () => {
     console.log("Server is running on port 3000");
 });
