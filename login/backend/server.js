@@ -308,6 +308,7 @@ app.post('/api/deletefolder', (req, res) => {
             return res.json({ success: false, message: 'Database error.' });
         }
         res.json({ success: true, message: 'Folder deleted.' });
+        
     })
 })
 //Delete Folder
