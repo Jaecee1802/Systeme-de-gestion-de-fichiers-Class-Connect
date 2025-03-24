@@ -16,7 +16,7 @@ async function loadFolders(){
                 </div>
 
                 <div class="buttons">
-                    <button class="button is-warning">Rename</button>
+                    <button class="button is-warning" id="rename-folder">Rename</button>
                 </div>
             </div>
         </a>`;
