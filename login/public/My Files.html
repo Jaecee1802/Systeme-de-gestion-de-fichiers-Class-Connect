@@ -18,7 +18,7 @@
             border-bottom: 2px solid black;
         }
 
-        #upload-button, #folder-button{
+        #upload-button, #folder-button, #delete-button{
             height: 40px;
             width: 200px;
             background-color: #1C4E80;
@@ -110,6 +110,10 @@
         <button class="button ml-2 mb-2" id="folder-button">
             Create Folder
         </button>
+
+        <button class="button ml-2 mb-2" id="delete-button">
+            Delete Folder
+        </button>
     </div>
 
     <div class="container is-widescreen" id="files">
@@ -123,7 +127,6 @@
                 </div>
 
                 <div class="buttons">
-                    <button class="button is-danger">Delete</button>
                     <button class="button is-warning">Rename</button>
                 </div>
             </div>
@@ -158,6 +161,19 @@
             <label for="folder-name" class="has-text-black">Folder Name:</label>
             <input class="input has-background-white my-4 has-text-black" type="text" id="folder-name"/>
             <button class="has-text-white button is-black mt-4" type="submit">Create</button>
+        </form>
+    </div>
+</div>
+
+<div class="modal" id="delete-folder-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
+        <button class="close is-pulled-right has-text-black is-size-4" id="close-delete-modal">&times;</button>
+        <h1 class="has-text-black has-text-centered is-size-2-desktop">Delete Folder</h1>
+        <form id="delete-folder">
+            <label for="folder-name" class="has-text-black">Type folder name to delete:</label>
+            <input class="input has-background-white my-4 has-text-black" type="text" id="delete-folder-name"/>
+            <button class="has-text-white button is-black mt-4" type="submit">Delete Folder</button>
         </form>
     </div>
 </div>

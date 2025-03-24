@@ -23,3 +23,14 @@ closeFolderModal.addEventListener('click', () => {
 });
 
 
+const openDeleteModal = document.querySelector('#delete-button');
+const closeDeleteModal = document.querySelector('#close-delete-modal');
+const deleteModal = document.querySelector('#delete-folder-modal');
+
+openDeleteModal.addEventListener('click', () => {
+    deleteModal.classList.add('is-active');
+});
+
+closeDeleteModal.addEventListener('click', () => {  
+    deleteModal.classList.remove('is-active');
+});

@@ -3,7 +3,7 @@ const createFolderForm = document.querySelector('#create-folder-form');
 createFolderForm.addEventListener('submit', async(event) => {
     event.preventDefault();
 
-    const folderName = document.querySelector('#folder-name').value;
+    const folderName = document.querySelector('#folder-name').value.trim();
 
     if(folderName){
         const response = await fetch('/api/createfolder', {
@@ -27,5 +27,6 @@ createFolderForm.addEventListener('submit', async(event) => {
     }
     else{
         alert('Please enter a folder name');
+        folderModal.classList.remove('is-active');
     }
 });

@@ -1,31 +1,32 @@
-document.addEventListener('click', async(event) => {
-    if(event.target.classList.contains('delete-folder-button')) {
-        const folderId = event.target.getAttribute('data-id');
+const deleteFolderForm = document.querySelector('#delete-folder');
 
-        if(confirm('Are you sure you want to delete this folder?')) {
+deleteFolderForm.addEventListener('submit', async(event) => {
+    event.preventDefault();
 
-            try{
-                const response = await fetch(`/api/deletefolder`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ folderId })
-                });
-    
-                const result = await response.json();
-    
-                if(result.success){
-                    alert('Folder deleted successfully');
-                    window.location.reload();
-                }else{
-                    alert(`Error ${result.message}`);
-                }
-            }
+    const folderName = document.querySelector('#delete-folder-name').value.trim();
 
-            catch(error){
-                console.log(error);
-            }
+    if(folderName){
+        const response = await fetch('/api/deletefolder', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ folderName })
+        });
+
+        const result = await response.json();
+
+        if(result.success){
+            alert(`Folder ${folderName} deleted successfully`);
+            deleteModal.classList.remove('is-active');
+            window.location.reload();
         }
+        else{
+            alert(`Error deleting folder named ${folderName} cannot be found`);
+        }
+    }
+    else{
+        alert('Please enter a folder name that you want to be deleted');
+        deleteModal.classList.remove('is-active');
     }
 })

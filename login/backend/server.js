@@ -296,19 +296,24 @@ app.post('/api/createfolder', (req, res) => {
 })
 //Create Folder//
 
-
 //Delete Folder
 app.post('/api/deletefolder', (req, res) => {
-    const { folderId } = req.body;  
-    const sql = "DELETE FROM folders WHERE folderID = ?";
+    const { folderName } = req.body;
+    const folderPath = path.join(__dirname, `../public/uploads/${folderName}`);
 
-    db.query(sql, [folderId], (err, result) => {
+    fs.rm(folderPath, { recursive: true}, (err) => {
         if(err){
             console.error(err);
-            return res.json({ success: false, message: 'Database error.' });
+            return res.json({ success: false, message: `Deleting ${folderName} failed.` });
         }
-        res.json({ success: true, message: 'Folder deleted.' });
-        
+
+        db.query("DELETE FROM folders WHERE name = ?", [folderName], (err, result) => {
+            if(err){
+                console.error(err);
+                return res.json({ success: false, message: 'Database error.' });
+            }
+            return res.json({ success: true, message: 'Folder deleted.' });
+        })
     })
 })
 //Delete Folder
