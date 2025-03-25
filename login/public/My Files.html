@@ -18,7 +18,7 @@
             border-bottom: 2px solid black;
         }
 
-        #upload-button, #folder-button, #delete-button{
+        #upload-button, #folder-button, #delete-button, #rename-button{
             height: 40px;
             width: 200px;
             background-color: #1C4E80;
@@ -102,8 +102,8 @@
         </button>
     </div>
 
-    <div class="upload-button-sec">
-        <button class="button ml-6 mb-2" id="upload-button">
+    <div class="upload-button-sec" style="text-align: center;">
+        <button class="button ml-2 mb-2" id="upload-button">
             Upload
         </button>
 
@@ -113,6 +113,10 @@
 
         <button class="button ml-2 mb-2" id="delete-button">
             Delete Folder
+        </button>
+
+        <button class="button ml-2 mb-2" id="rename-button">
+            Rename Folder
         </button>
     </div>
 
@@ -124,10 +128,6 @@
                 <div class="is-flex" id="folder-info">
                     <img src="images/folder.png" alt="Folder" class="image is-64x64">
                     <p class="has-text-black px-4 py-2">My File #1</p>
-                </div>
-
-                <div class="buttons">
-                    <button class="button is-warning" id="rename-folder">Rename</button>
                 </div>
             </div>
         </a>
@@ -182,21 +182,30 @@
     <div class="modal-background"></div>
     <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
         <button class="close is-pulled-right has-text-black is-size-4" id="close-rename-modal">&times;</button>
-        <h1 class="has-text-black has-text-centered is-size-2-desktop">Rename Folder</h1>
+        <h1 class="has-text-black has-text-centered is-size-2-desktop">Select folder to rename</h1>
+
         <form id="rename-folder">
-            <label for="folder-name" class="has-text-black">Rename the folder</label>
+            <div>
+                <label for="folder-name" class="has-text-black">Rename the folder:</label>
+            </div>
+            <div class="select is-small">
+                <select id="rename-folder-select">
+                    <option>Select Folder</option> <!--The folder that i've created is not displayed.-->
+                </select>
+            </div>
             <input class="input has-background-white my-4 has-text-black" type="text" id="rename-folder-name"/>
             <button class="has-text-white button is-black mt-4" type="submit">Rename</button>
         </form>
+
     </div>
 </div>
 
 </body>
 <script src="js/modal.js"></script>
+<script src="js/renameFolder.js"></script>
 <script src="js/signOut.js"></script>
 <script src="js/loadFolder.js"></script>
 <script src="js/createFolder.js"></script>
 <script src="js/deleteFolder.js"></script>
 <script src="js/signInstudent.js"></script>
-<script src="js/renameFolder.js"></script>
 </html>

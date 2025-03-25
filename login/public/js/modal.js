@@ -38,21 +38,15 @@ closeDeleteModal.addEventListener('click', () => {
 });
 
 //Rename Folder Modal
-const renameModal = document.querySelector('#rename-folder-modal');
+const openRenameModal = document.querySelector('#rename-button');
 const closeRenameModal = document.querySelector('#close-rename-modal');
-const renameFolderInput = document.querySelector('#rename-folder-name');
+const renameModal = document.querySelector('#rename-folder-modal');
 
-let folderToRename = null; // store folder name globally for submission
+openRenameModal.addEventListener('click', () => {
+    loadFoldersInDropdown();
+    renameModal.classList.add('is-active');
+})
 
-document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('rename-folder-btn')) {
-        folderToRename = e.target.getAttribute('data-folder');
-        // Optionally show it in placeholder or input
-        renameFolderInput.placeholder = `Rename "${folderToRename}" to:`;
-        renameModal.classList.add('is-active');
-    }
-});
-
-closeRenameModal.addEventListener('click', () => {  
-    renameModal.classList.remove('is-active');  
-});
+closeRenameModal.addEventListener('click', () => {
+    renameModal.classList.remove('is-active');
+})

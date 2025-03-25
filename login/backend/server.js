@@ -319,26 +319,38 @@ app.post('/api/deletefolder', (req, res) => {
 //Delete Folder
 
 // Rename Folder
-app.post('/api/renamefolder', (req ,res) => {
-    const { oldName,folderName } = req.body;
-    const oldFolderPath = path.join(__dirname, `../public/uploads/${oldName}`);
-    const folderPath = path.join(__dirname, `../public/uploads/${folderName}`);
-
-    fs.rename(oldFolderPath, folderPath, (err) => {
+app.get('/api/folderslist', (req, res) =>{
+    db.query('SELECT * FROM folders', (err, results) => {
         if(err){
             console.error(err);
-            return res.json({ success: false, message: `Renaming ${oldName} to ${folderName} failed.` });
+            return res.status(500).json({ success: false, message: 'Database error.' });
+        }
+        res.json({ success: true, folders: results });
+    })
+})
+
+app.post('/api/renamefolder', (req, res) => {
+    const { selectedFolder, newFolderName } = req.body;
+
+    const oldFolderPath = path.join(__dirname, `../public/uploads/${selectedFolder}`);
+    const newFolderPath = path.join(__dirname, `../public/uploads/${newFolderName}`);
+
+    fs.rename(oldFolderPath, newFolderPath, (err) => {
+        if(err){
+            console.error(`File system error: ${err}`);
+            return res.json({ success: false, message: 'File system error.' });
         }
 
-        db.query("UPDATE folders SET name = ? WHERE name = ?", [folderName, oldName], (err, result) => {
+        db.query("UPDATE folders SET name = ? WHERE name = ?", [newFolderName, selectedFolder], (err, result) => {
             if(err){
                 console.error(err);
                 return res.json({ success: false, message: 'Database error.' });
             }
+
             return res.json({ success: true, message: 'Folder renamed.' });
         })
     })
-})
+ })
 // Rename Folder
 app.listen(PORT, () => {
     console.log("Server is running on port 3000");
