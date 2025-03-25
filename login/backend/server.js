@@ -317,6 +317,29 @@ app.post('/api/deletefolder', (req, res) => {
     })
 })
 //Delete Folder
+
+// Rename Folder
+app.post('/api/renamefolder', (req ,res) => {
+    const { oldName,folderName } = req.body;
+    const oldFolderPath = path.join(__dirname, `../public/uploads/${oldName}`);
+    const folderPath = path.join(__dirname, `../public/uploads/${folderName}`);
+
+    fs.rename(oldFolderPath, folderPath, (err) => {
+        if(err){
+            console.error(err);
+            return res.json({ success: false, message: `Renaming ${oldName} to ${folderName} failed.` });
+        }
+
+        db.query("UPDATE folders SET name = ? WHERE name = ?", [folderName, oldName], (err, result) => {
+            if(err){
+                console.error(err);
+                return res.json({ success: false, message: 'Database error.' });
+            }
+            return res.json({ success: true, message: 'Folder renamed.' });
+        })
+    })
+})
+// Rename Folder
 app.listen(PORT, () => {
     console.log("Server is running on port 3000");
 });
