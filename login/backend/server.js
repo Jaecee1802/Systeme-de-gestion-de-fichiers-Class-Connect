@@ -352,6 +352,45 @@ app.post('/api/renamefolder', (req, res) => {
     })
  })
 // Rename Folder
+
+//Access Folder
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const folder = req.body.folder;
+        const folderPath = path.join(__dirname, `../public/uploads/${folder}`);
+        if(!fs.existsSync(folderPath)){
+            fs.mkdirSync(folderPath, { recursive: true });
+        }
+        cb(null, folderPath);
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname);
+    }
+});
+
+const upload = multer({ storage: storage });
+
+app.post('/upload', upload.single('file'), (req, res) => {
+    res.send('File uploaded successfully!');
+});
+
+app.get('/api/folder/:folderName/files', (req, res) => {
+    const folderName = req.params.folderName;
+    const folderPath = path.join(__dirname, `../public/uploads/${folderName}`);
+
+    res.sendFile(path.join(__dirname, "../public/AccessFolder.html"));
+
+    fs.readdir(folderPath, (err, files) => {
+        if(err){
+            return res.status(500).json({ error: err});
+        }
+        res.json(files);
+    })
+})
+//Access Folder
+
+//Upload Files
+//Upload Files
 app.listen(PORT, () => {
     console.log("Server is running on port 3000");
 });

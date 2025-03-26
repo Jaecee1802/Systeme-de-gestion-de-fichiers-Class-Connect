@@ -1,0 +1,34 @@
+const uploadBtn = document.getElementById("upload-file-button");
+
+uploadBtn.addEventListener('click', async() => {
+    const folderName = folderName = new URLSearchParams(window.location.search).get('folder');
+    const fileInput = document.querySelector('input[type="file"]');
+    const customName = document.getElementById('file-name').value;
+
+    if(!fileInput.files[0]){
+        alert('Please attach a file');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', fileInput.files[0]);
+    formData.append('folder', customName);
+
+    try{
+        const response = await fetch(`/upload?folder=${encodeURIComponent(folderName)}`, {
+                method: 'POST',
+                body: formData
+        });
+        if(response.ok){
+            alert('File upload successful');
+            location.reload();
+        }
+        else{
+            alert('File upload failed');
+        }
+    }
+    catch(err){
+        console.error(err);
+        alert('An error occurred while uploading the file.');
+    }
+})

@@ -32,13 +32,13 @@
             border: 0;
         }
 
-        #upload-butt{
+        #upload-file-button{
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        #butt-upload{
+        #upload-file-button{
             background-color: #1C4E80;
         }
 
@@ -90,7 +90,7 @@
 
 <section>
     <div class="header">
-        <h2 class="mx-6 is-size-2 has-text-white has-text-weight-bold">Folder Name</h2>
+        <h2 class="mx-6 is-size-2 has-text-white has-text-weight-bold" id="head-folder-name">Folder Name</h2>
     </div>
 
     <div class="field is-grouped m-4 mx-6">
@@ -101,6 +101,8 @@
             Search
         </button>
     </div>
+
+    <!--This is the buttons for uploading, deleting, and renaming files-->
 
     <div class="upload-button-sec" style="text-align: center;">
         <button class="button ml-2 mb-2" id="upload-button">
@@ -130,12 +132,12 @@
     <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
         <button class="close is-pulled-right has-text-black is-size-4" id="close-upload-file-modal">&times;</button>
         <h1 class="has-text-black has-text-centered is-size-2-desktop">Upload</h1>
-            <form enctype="multipart/form-data">
+            <form id = "upload-form" enctype="multipart/form-data" method="POST">
                 <label for="file-name" class="has-text-black">File Name:</label>
                 <input class="input has-background-white my-4 has-text-black" type="text" placeholder="" id="file-name"/>
                 <input type="file" name="file">
             </form>
-            <button class="has-text-white button is-primary is-small mt-4" id="butt-upload">Upload</button>
+            <button class="has-text-white button is-primary is-small mt-4" id="upload-file-button">Upload</button>
         </div>
     </div>
 </div>
@@ -166,7 +168,7 @@
     <div class="modal-background"></div>
     <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
         <button class="close is-pulled-right has-text-black is-size-4" id="close-file-delete-modal">&times;</button>
-        <h1 class="has-text-black has-text-centered is-size-2-desktop">Select a file to delete</h1>
+        <h1 class="has-text-black has-text-centered is-size-2-desktop">Delete a File</h1>
 
         <form id="delete-file">
             <label for="file-name" class="has-text-black">Type file name to delete:</label>
@@ -180,4 +182,11 @@
 </body>
 <script src="js/modalFiles.js"></script>
 <script src="js/signOut.js"></script>
+<script src="js/uploadFiles.js"></script>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const folderName = urlParams.get('folder');
+    document.getElementById('head-folder-name').textContent = folderName;
+    document.title = `ClassConnect: ${folderName}`;
+</script>
 </html>
