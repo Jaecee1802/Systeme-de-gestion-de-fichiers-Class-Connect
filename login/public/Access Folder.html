@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="css/enrolledsubDesign.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
-    <title>ClassConnect: My Files</title>
+    <title>ClassConnect: Folder Name</title>
     <style>
         .header{
             padding-top: 100px;
@@ -18,7 +18,7 @@
             border-bottom: 2px solid black;
         }
 
-        #upload-button, #folder-button, #delete-button, #rename-button{
+        #upload-button, #delete-file-button, #rename-file-button{
             height: 40px;
             width: 200px;
             background-color: #1C4E80;
@@ -38,11 +38,22 @@
             align-items: center;
         }
 
-        #folder-container{
-            justify-content: left;
+        #butt-upload{
+            background-color: #1C4E80;
         }
-        
 
+        #folder-info{
+            gap: 2%;
+        }
+
+        #files-info{
+            justify-content: center;
+            gap: 50%;
+            border: 2px solid #1C4E80;
+            max-width: 80vw;
+            margin: 10px;
+            padding: 20px;
+        }
         @media screen and (width <= 412px){
             .upload-button-sec{
                 position: -webkit-sticky;
@@ -79,7 +90,7 @@
 
 <section>
     <div class="header">
-        <h2 class="mx-6 is-size-2 has-text-white has-text-weight-bold">My Files</h2>
+        <h2 class="mx-6 is-size-2 has-text-white has-text-weight-bold">Folder Name</h2>
     </div>
 
     <div class="field is-grouped m-4 mx-6">
@@ -92,90 +103,81 @@
     </div>
 
     <div class="upload-button-sec" style="text-align: center;">
-        <button class="button ml-2 mb-2" id="folder-button">
-            Create Folder
+        <button class="button ml-2 mb-2" id="upload-button">
+            Upload File
         </button>
 
-        <button class="button ml-2 mb-2" id="delete-button">
-            Delete Folder
+        <button class="button ml-2 mb-2" id="delete-file-button">
+            Delete File
         </button>
 
-        <button class="button ml-2 mb-2" id="rename-button">
-            Rename Folder
+        <button class="button ml-2 mb-2" id="rename-file-button">
+            Rename File
         </button>
     </div>
 
-    <div class="container section is-widescreen" id="files">
-        <div class="subject-folders is-flex" id="folder-container">
-            <!-- The folders will be appended here -->
-        <a href="#">
-            <div class="is-flex" id="files-info">
-                <div class="" id="folder-info">
-                    <img src="images/folder.png" alt="Folder" class="image is-128x128">
-                    <p class="has-text-black has-text-centered">My File #1</p>
-                </div>
-            </div>
-        </a>
-
+    <div class="container is-widescreen" id="files">
+        <div class="subject-folders m-5" id="folder-container">
+            <!-- The files will be appended here -->
         </div>
     </div>
         
 
 </section>
 
-<div class="modal" id="folder-modal">
+<div class="modal" id="upload-modal">
     <div class="modal-background"></div>
     <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
-        <button class="close is-pulled-right has-text-black is-size-4" id="close-folder-modal">&times;</button>
-        <h1 class="has-text-black has-text-centered is-size-2-desktop">Create Folder</h1>
-        <form id="create-folder-form">
-            <label for="folder-name" class="has-text-black">Folder Name:</label>
-            <input class="input has-background-white my-4 has-text-black" type="text" id="folder-name"/>
-            <button class="has-text-white button is-black mt-4" type="submit">Create</button>
-        </form>
+        <button class="close is-pulled-right has-text-black is-size-4" id="close-upload-file-modal">&times;</button>
+        <h1 class="has-text-black has-text-centered is-size-2-desktop">Upload</h1>
+            <form enctype="multipart/form-data">
+                <label for="file-name" class="has-text-black">File Name:</label>
+                <input class="input has-background-white my-4 has-text-black" type="text" placeholder="" id="file-name"/>
+                <input type="file" name="file">
+            </form>
+            <button class="has-text-white button is-primary is-small mt-4" id="butt-upload">Upload</button>
+        </div>
     </div>
 </div>
 
-<div class="modal" id="delete-folder-modal">
+<div class="modal" id="rename-file-modal">
     <div class="modal-background"></div>
     <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
-        <button class="close is-pulled-right has-text-black is-size-4" id="close-delete-modal">&times;</button>
-        <h1 class="has-text-black has-text-centered is-size-2-desktop">Delete Folder</h1>
-        <form id="delete-folder">
-            <label for="folder-name" class="has-text-black">Type folder name to delete:</label>
-            <input class="input has-background-white my-4 has-text-black" type="text" id="delete-folder-name"/>
-            <button class="has-text-white button is-black mt-4" type="submit">Delete Folder</button>
-        </form>
-    </div>
-</div>
+        <button class="close is-pulled-right has-text-black is-size-4" id="close-file-modal">&times;</button>
+        <h1 class="has-text-black has-text-centered is-size-2-desktop">Select a file to rename</h1>
 
-<div class="modal" id="rename-folder-modal">
-    <div class="modal-background"></div>
-    <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
-        <button class="close is-pulled-right has-text-black is-size-4" id="close-rename-modal">&times;</button>
-        <h1 class="has-text-black has-text-centered is-size-2-desktop">Select folder to rename</h1>
-
-        <form id="rename-folder">
+        <form id="rename-select-file">
             <div>
-                <label for="folder-name" class="has-text-black">Rename the folder:</label>
+                <label for="folder-name" class="has-text-black">Rename the file:</label>
             </div>
             <div class="select is-small">
-                <select id="rename-folder-select">
-                    <option>Select Folder</option> <!--The folder that i've created is not displayed.-->
+                <select id="rename-file-select">
+                    <option>Select File</option> 
                 </select>
             </div>
-            <input class="input has-background-white my-4 has-text-black" type="text" id="rename-folder-name"/>
-            <button class="has-text-white button is-black mt-4" type="submit">Rename</button>
+            <input class="input has-background-white my-4 has-text-black" type="text" id="rename-file-name"/>
+            <button class="has-text-white button is-black mt-4" type="submit">Rename File</button>
+        </form>
+
+    </div>
+</div>
+
+<div class="modal" id="delete-file-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
+        <button class="close is-pulled-right has-text-black is-size-4" id="close-file-delete-modal">&times;</button>
+        <h1 class="has-text-black has-text-centered is-size-2-desktop">Select a file to delete</h1>
+
+        <form id="delete-file">
+            <label for="file-name" class="has-text-black">Type file name to delete:</label>
+            <input class="input has-background-white my-4 has-text-black" type="text" id="delete-file-name"/>
+            <button class="has-text-white button is-black mt-4" type="submit">Delete File</button>
         </form>
 
     </div>
 </div>
 
 </body>
-<script src="js/modal.js"></script>
-<script src="js/renameFolder.js"></script>
+<script src="js/modalFiles.js"></script>
 <script src="js/signOut.js"></script>
-<script src="js/loadFolder.js"></script>
-<script src="js/createFolder.js"></script>
-<script src="js/deleteFolder.js"></script>
 </html>
