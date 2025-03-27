@@ -1,7 +1,7 @@
 const uploadBtn = document.getElementById("upload-file-button");
 
 uploadBtn.addEventListener('click', async() => {
-    const folderName = folderName = new URLSearchParams(window.location.search).get('folder');
+    const folderName = new URLSearchParams(window.location.search).get('folder');
     const fileInput = document.querySelector('input[type="file"]');
     const customName = document.getElementById('file-name').value;
 
@@ -10,9 +10,14 @@ uploadBtn.addEventListener('click', async() => {
         return;
     }
 
+    if (!customName) {
+        alert("Invalid file name. Please try again.");
+        return;
+    }
+
     const formData = new FormData();
     formData.append('file', fileInput.files[0]);
-    formData.append('folder', customName);
+    formData.append('customName', customName);
 
     try{
         const response = await fetch(`/upload?folder=${encodeURIComponent(folderName)}`, {

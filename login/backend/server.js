@@ -7,17 +7,16 @@ const path = require("path");
 const hash  = require("crypto");
 const fs = require("fs");
 const multer = require("multer");
+const session = require("express-session");
 
 const app = express();
 dotenv.config();
 app.use(express.json());
 app.use(cors());
+app.use(express.static(path.join(__dirname, "../public")));
+const secretKey = process.env.SECRET_KEY;
 
 const PORT = process.env.PORT || 3000;
-
-app.use(express.static(path.join(__dirname, "../public")));
-
-app.set('view engine', 'ejs');
 
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
@@ -49,7 +48,7 @@ app.post("/signup", (req, res) => {
 
     try {
         // Check if the user's email already exists in the database
-        db.query("SELECT * FROM teachers WHERE teacherEmail = ?", [email], (err, result) => {
+        db.execute("SELECT * FROM teachers WHERE teacherEmail = ?", [email], (err, result) => {
             if (err) {
                 console.log(`Error: ${err}`);
                 return res.status(500).json({ message: "Database error" });
@@ -91,7 +90,7 @@ app.post("/studentsignup", (req, res) =>{
     }
 
     //Checking if the user is already existing in the database
-    db.query("SELECT * FROM students WHERE studentEmail = ? OR studentID = ?", [email, studentID], (err, result) => {
+    db.execute("SELECT * FROM students WHERE studentEmail = ? OR studentID = ?", [email, studentID], (err, result) => {
         if (err) {
             console.error(`Database error: ${err}`);
             return res.status(500).json({ message: "Database error" });
@@ -136,7 +135,7 @@ app.post("/teacherSignedin", (req, res) => {
 
     //Check if the user(teacher) exists
     const sql = "SELECT * FROM teachers WHERE teacherEmail = ?";
-    db.query(sql, [email], (err, results) => {
+    db.execute(sql, [email], (err, results) => {
         if(err){
             console.error(err);
             return res.status(500).json({ message: "Error in the Database"});
@@ -154,6 +153,11 @@ app.post("/teacherSignedin", (req, res) => {
             return res.status(401).json({ message: "Password is invalid or wrong!"});
         }
         res.status(200).json({ message: "You're signed in!"});
+
+        req.session.user = {
+            teacherID: user.teacherID,
+            teacherEmail: user.teacherEmail
+        };
     })
 })
 
@@ -176,7 +180,7 @@ app.post("/studentSignin", (req, res) => {
     }
 
     const sql = "SELECT * FROM students WHERE studentEmail = ?";
-    db.query(sql, [email], (err, results) => {
+    db.execute(sql, [email], (err, results) => {
         if(err){
             console.error(err);
             return res.status(500).json({ message: "Error in the Database"});
@@ -195,6 +199,11 @@ app.post("/studentSignin", (req, res) => {
         }
 
         res.status(200).json({ message: "You're signed in!"});
+
+        req.session.user = {
+            studentID: user.studentID,
+            studentEmail: user.studentEmail
+        }
     })
 })
 //Sign in Students
@@ -213,7 +222,7 @@ app.post("/adminsignedin", (req, res) => {
     }
 
     const sql = "SELECT * FROM admin WHERE adminUsername = ?";
-    db.query(sql, [username], (err, results) => {
+    db.execute(sql, [username], (err, results) => {
         if(err){
             console.error(err);
             return res.status(500).json({ message: "Error in the database"});
@@ -232,6 +241,7 @@ app.post("/adminsignedin", (req, res) => {
         }
         res.status(200).json({ message: "You're signed in!"});
     })
+
 })
 
 app.get("/newadmin", (req , res) => {
@@ -368,12 +378,6 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({ storage: storage });
-
-app.post('/upload', upload.single('file'), (req, res) => {
-    res.send('File uploaded successfully!');
-});
-
 app.get('/api/folder/:folderName/files', (req, res) => {
     const folderName = req.params.folderName;
     const folderPath = path.join(__dirname, `../public/uploads/${folderName}`);
@@ -390,6 +394,7 @@ app.get('/api/folder/:folderName/files', (req, res) => {
 //Access Folder
 
 //Upload Files
+
 //Upload Files
 app.listen(PORT, () => {
     console.log("Server is running on port 3000");

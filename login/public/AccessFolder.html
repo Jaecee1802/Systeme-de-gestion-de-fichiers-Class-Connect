@@ -42,18 +42,15 @@
             background-color: #1C4E80;
         }
 
-        #folder-info{
-            gap: 2%;
+        #folder-container{
+            justify-content: left;
+
+        }
+        
+        #files-info{
+            margin-top: 20px;
         }
 
-        #files-info{
-            justify-content: center;
-            gap: 50%;
-            border: 2px solid #1C4E80;
-            max-width: 80vw;
-            margin: 10px;
-            padding: 20px;
-        }
         @media screen and (width <= 412px){
             .upload-button-sec{
                 position: -webkit-sticky;
@@ -118,12 +115,102 @@
         </button>
     </div>
 
-    <div class="container is-widescreen" id="files">
-        <div class="subject-folders m-5" id="folder-container">
-            <!-- The files will be appended here -->
+    <div class="container section is-widescreen" id="files">
+        <div class="subject-folders is-flex is-flex-wrap-wrap" id="folder-container">
+            <!-- The folders will be appended here -->
+        <a href="#">
+            <div class="is-flex" id="files-info">
+                <div class="" id="folder-info">
+                    <img src="images/DOCX file.png" alt="Folder" class="image is-128x128">
+                    <p class="has-text-black has-text-centered mt-2">DOCX File Name</p>
+                </div>
+            </div>
+        </a>
+
+        <a href="#">
+            <div class="is-flex" id="files-info">
+                <div class="" id="file-info">
+                    <img src="images/PPTX file.png" alt="Folder" class="image is-128x128">
+                    <p class="has-text-black has-text-centered mt-2">PPTX File Name</p>
+                </div>
+            </div>
+        </a>
+
+        <a href="#">
+            <div class="is-flex" id="files-info">
+                <div class="" id="folder-info">
+                    <img src="images/EXCEL file.png" alt="Folder" class="image is-128x128">
+                    <p class="has-text-black has-text-centered mt-2">EXCEL File Name</p>
+                </div>
+            </div>
+        </a>
+
+        <a href="#">
+            <div class="is-flex" id="files-info">
+                <div class="" id="folder-info">
+                    <img src="images/PDF file.png" alt="Folder" class="image is-128x128">
+                    <p class="has-text-black has-text-centered mt-2">PDF File Name</p>
+                </div>
+            </div>
+        </a>
+
+        <a href="#">
+            <div class="is-flex" id="files-info">
+                <div class="" id="folder-info">
+                    <img src="images/PPTX file.png" alt="Folder" class="image is-128x128">
+                    <p class="has-text-black has-text-centered mt-2">PPTX File Name</p>
+                </div>
+            </div>
+        </a>
+
+        <a href="#">
+            <div class="is-flex" id="files-info">
+                <div class="" id="folder-info">
+                    <img src="images/Audio File.png" alt="Folder" class="image is-128x128">
+                    <p class="has-text-black has-text-centered mt-2">Audio File Name</p>
+                </div>
+            </div>
+        </a>
+
+        <a href="#">
+            <div class="is-flex" id="files-info">
+                <div class="" id="folder-info">
+                    <img src="images/RAR file.png" alt="Folder" class="image is-128x128">
+                    <p class="has-text-black has-text-centered mt-2">RAR File Name</p>
+                </div>
+            </div>
+        </a>
+
+        <a href="#">
+            <div class="is-flex" id="files-info">
+                <div class="" id="folder-info">
+                    <img src="images/ZIP file.png" alt="Folder" class="image is-128x128">
+                    <p class="has-text-black has-text-centered mt-2">ZIP File Name</p>
+                </div>
+            </div>
+        </a>
+
+        
+        <a href="#">
+            <div class="is-flex" id="files-info">
+                <div class="" id="folder-info">
+                    <img src="images/Video file.png" alt="Folder" class="image is-128x128">
+                    <p class="has-text-black has-text-centered mt-2">Video File Name</p>
+                </div>
+            </div>
+        </a>
+
+        <a href="#">
+            <div class="is-flex" id="files-info">
+                <div class="" id="folder-info">
+                    <img src="images/Image.png" alt="Folder" class="image is-128x128">
+                    <p class="has-text-black has-text-centered mt-2">IMG File Name</p>
+                </div>
+            </div>
+        </a>
+
         </div>
     </div>
-        
 
 </section>
 

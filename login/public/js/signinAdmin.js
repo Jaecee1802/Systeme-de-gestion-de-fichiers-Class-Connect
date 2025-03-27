@@ -30,6 +30,6 @@ adminSign.addEventListener('click', async() => {
     }
     catch(err){
         console.error(err);
-        alert("Soemthing went wrong while you're logging in!");
+        alert("Something went wrong while you're logging in!");
     }
 })
