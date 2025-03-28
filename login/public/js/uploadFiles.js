@@ -5,13 +5,18 @@ uploadBtn.addEventListener('click', async() => {
     const fileInput = document.querySelector('input[type="file"]');
     const customName = document.getElementById('file-name').value;
 
-    if(!fileInput.files[0]){
+    if(!fileInput.files.length){
         alert('Please attach a file');
         return;
     }
 
-    if (!customName) {
+    if (!folderName) {
         alert("Invalid file name. Please try again.");
+        return;
+    }
+
+    if(!customName){
+        alert('Please enter a custom name for the file');
         return;
     }
 

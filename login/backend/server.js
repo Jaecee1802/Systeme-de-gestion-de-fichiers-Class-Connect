@@ -14,7 +14,6 @@ dotenv.config();
 app.use(express.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname, "../public")));
-const secretKey = process.env.SECRET_KEY;
 
 const PORT = process.env.PORT || 3000;
 
@@ -394,8 +393,64 @@ app.get('/api/folder/:folderName/files', (req, res) => {
 //Access Folder
 
 //Upload Files
+const uploadDir = path.join(__dirname, `../public/uploads`);
+if(!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
 
+const fileStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "uploads/");
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+        cb(null, uniqueSuffix + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({ storage });
+
+app.post("/upload", upload.single("file"), (req, res) => {
+    const { customName } = req.body;
+    const folderName = req.query.folder;  
+
+    if (!req.file || !customName || !folderName) {
+        return res.status(400).json({ message: "Missing file or data" });
+    }
+
+    const folderPath = path.join(__dirname, `../public/uploads/${folderName}`);
+    if (!fs.existsSync(folderPath)) {
+        fs.mkdirSync(folderPath, { recursive: true });
+    }
+
+    const newFilePath = path.join(folderPath, req.file.filename);
+    fs.rename(req.file.path, newFilePath, (err) => {
+        if (err) {
+            console.error("Error moving file:", err);
+            return res.status(500).json({ message: "Error saving file" });
+        }
+
+        // Insert file details into MySQL
+        const sql =
+            "INSERT INTO files (custom_name, original_name, file_path, folder_name, upload_date) VALUES (?, ?, ?, ?, ?)";
+        db.query(
+            sql,
+            [customName, req.file.originalname, path.join(folderName, req.file.filename), folderName, new Date()],
+            (err) => {
+                if (err) {
+                    console.error("Database error:", err);
+                    return res.status(500).json({ message: "Database error" });
+                }
+                res.json({ message: "File uploaded successfully", filePath: newFilePath });
+            }
+        );
+    });
+});
+
+app.use("/uploads", express.static("uploads"));
 //Upload Files
+
+
 app.listen(PORT, () => {
     console.log("Server is running on port 3000");
 });
