@@ -450,6 +450,21 @@ app.post("/upload", upload.single("file"), (req, res) => {
 app.use("/uploads", express.static("uploads"));
 //Upload Files
 
+//Load Files
+app.get("/files", (req, res) => {
+    const folderName = req.query.folder;
+    const sql = "SELECT * FROM files WHERE folder_name = ?";
+
+    db.query(sql, [folderName], (err, results) => {
+        if(err){
+            console.error(`Database error: ${err}`);
+            return res.status(500).json({message: "Database error"});
+        }
+        res.json(results);
+    })
+})
+//Load Files
+
 
 app.listen(PORT, () => {
     console.log("Server is running on port 3000");

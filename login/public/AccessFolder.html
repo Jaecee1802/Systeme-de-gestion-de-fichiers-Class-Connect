@@ -42,7 +42,7 @@
             background-color: #1C4E80;
         }
 
-        #folder-container{
+        #file-container{
             justify-content: left;
 
         }
@@ -116,9 +116,9 @@
     </div>
 
     <div class="container section is-widescreen" id="files">
-        <div class="subject-folders is-flex is-flex-wrap-wrap" id="folder-container">
+        <div class="subject-folders is-flex is-flex-wrap-wrap" id="file-container">
             <!-- The folders will be appended here -->
-        <a href="#">
+        <!-- <a href="#">
             <div class="is-flex" id="files-info">
                 <div class="" id="folder-info">
                     <img src="images/DOCX file.png" alt="Folder" class="image is-128x128">
@@ -204,10 +204,19 @@
             <div class="is-flex" id="files-info">
                 <div class="" id="folder-info">
                     <img src="images/Image.png" alt="Folder" class="image is-128x128">
-                    <p class="has-text-black has-text-centered mt-2">IMG File Name</p>
+                    <p class="has-text-black has-text-centered mt-2">Image File Name</p>
                 </div>
             </div>
         </a>
+
+        <a href="#">
+            <div class="is-flex" id="files-info">
+                <div class="" id="folder-info">
+                    <img src="images/Unknown file.png" alt="Folder" class="image is-128x128">
+                    <p class="has-text-black has-text-centered mt-2">Unknown File Name</p>
+                </div>
+            </div>
+        </a> -->
 
         </div>
     </div>
@@ -270,6 +279,7 @@
 <script src="js/modalFiles.js"></script>
 <script src="js/signOut.js"></script>
 <script src="js/uploadFiles.js"></script>
+<script src="js/fetchFiles.js"></script>
 <script>
     const urlParams = new URLSearchParams(window.location.search);
     const folderName = urlParams.get('folder');
