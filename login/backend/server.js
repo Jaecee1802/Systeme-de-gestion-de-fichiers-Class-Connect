@@ -15,6 +15,13 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname, "../public")));
 
+app.use(session({
+    secret: process.env.SECRET_KEY,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false, httpOnly: true, maxAge: 1000 * 60 * 60 }
+}))
+
 const PORT = process.env.PORT || 3000;
 
 const db = mysql.createConnection({
@@ -115,7 +122,7 @@ app.post("/studentsignup", (req, res) =>{
 
 //Students Sign-up
 
-//Dashboard Route
+//Dashboard Route(Admin)
 app.get("/dashboard", (req, res) => {
     res.sendFile(path.join(__dirname, "../public/Dashboard.html"));
 })
@@ -238,7 +245,7 @@ app.post("/adminsignedin", (req, res) => {
         if(!passwordMatch){
             return res.status(401).json({ message: "Password is invalid or wrong!"});
         }
-        res.status(200).json({ message: "You're signed in!"});
+        res.status(200).json({ message: "You're signed in!", admin: req.session.admin });
     })
 
 })
@@ -266,9 +273,9 @@ app.post("/insertadmin", (req, res) => {
 })
 //Admin and Data Extractor(for admins)
 
-//Sign out
+//Sign out(with Session)
 app.post("/signout", (req, res) => {
-    res.status(200).json({ message: "You're signed out!"});
+        res.json({ message: "You're signed out!" });
 });
 //Sign out
 
@@ -323,6 +330,13 @@ app.post('/api/deletefolder', (req, res) => {
             }
             return res.json({ success: true, message: 'Folder deleted.' });
         })
+
+        db.query("DELETE FROM files WHERE folder_name = ?", [folderName], (err, result) => {
+            if(err){
+                console.error(err);
+                return res.json({ success: false, message: 'Database error.' });
+            }
+        })
     })
 })
 //Delete Folder
@@ -357,6 +371,13 @@ app.post('/api/renamefolder', (req, res) => {
             }
 
             return res.json({ success: true, message: 'Folder renamed.' });
+        })
+
+        db.query("UPDATE files SET folder_name = ? WHERE folder_name = ?", [newFolderName, selectedFolder], (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.json({ success: false, message: 'Database error updating files table.' });
+            }
         })
     })
  })
@@ -465,6 +486,12 @@ app.get("/files", (req, res) => {
 })
 //Load Files
 
+
+//Delete File
+//Delete File
+
+//Rename File
+//Rename File
 
 app.listen(PORT, () => {
     console.log("Server is running on port 3000");
