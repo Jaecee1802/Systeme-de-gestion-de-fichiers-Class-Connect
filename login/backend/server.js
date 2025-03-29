@@ -15,13 +15,6 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname, "../public")));
 
-app.use(session({
-    secret: process.env.SECRET_KEY,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false, httpOnly: true, maxAge: 1000 * 60 * 60 }
-}))
-
 const PORT = process.env.PORT || 3000;
 
 const db = mysql.createConnection({
@@ -159,11 +152,6 @@ app.post("/teacherSignedin", (req, res) => {
             return res.status(401).json({ message: "Password is invalid or wrong!"});
         }
         res.status(200).json({ message: "You're signed in!"});
-
-        req.session.user = {
-            teacherID: user.teacherID,
-            teacherEmail: user.teacherEmail
-        };
     })
 })
 
@@ -206,10 +194,6 @@ app.post("/studentSignin", (req, res) => {
 
         res.status(200).json({ message: "You're signed in!"});
 
-        req.session.user = {
-            studentID: user.studentID,
-            studentEmail: user.studentEmail
-        }
     })
 })
 //Sign in Students
@@ -245,7 +229,7 @@ app.post("/adminsignedin", (req, res) => {
         if(!passwordMatch){
             return res.status(401).json({ message: "Password is invalid or wrong!"});
         }
-        res.status(200).json({ message: "You're signed in!", admin: req.session.admin });
+        res.status(200).json({ message: "You're signed in!"});
     })
 
 })
