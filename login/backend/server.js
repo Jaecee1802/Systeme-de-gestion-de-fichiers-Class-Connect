@@ -7,7 +7,6 @@ const path = require("path");
 const hash  = require("crypto");
 const fs = require("fs");
 const multer = require("multer");
-const session = require("express-session");
 
 const app = express();
 dotenv.config();
@@ -71,7 +70,7 @@ app.post("/signup", (req, res) => {
         });
     } catch (err) {
         console.log(`Error: ${err}`);
-        return res.status(500).json({ message: "Database error" });
+        return res.status(500).json({ message: "Database error", name: user.teacherName });
     }
 });
 //Teachers Sign-up
@@ -108,7 +107,7 @@ app.post("/studentsignup", (req, res) =>{
                 console.error(`Database error: ${err}`);
                 return res.status(500).json({ message: "Database error" });
             }
-            res.status(201).json({ message: "Successfully signed up!" });
+            res.status(201).json({ message: "Successfully signed up!", name: user.studentName });
         });
     });
 })
@@ -151,7 +150,7 @@ app.post("/teacherSignedin", (req, res) => {
         if(!passwordMatch){
             return res.status(401).json({ message: "Password is invalid or wrong!"});
         }
-        res.status(200).json({ message: "You're signed in!"});
+        res.status(200).json({ message: "You're signed in!", name: user.teacherName });
     })
 })
 
@@ -192,7 +191,7 @@ app.post("/studentSignin", (req, res) => {
             return res.status(401).json({ message: "Password is invalid or wrong!"});
         }
 
-        res.status(200).json({ message: "You're signed in!"});
+        res.status(200).json({ message: "You're signed in!", name: user.studentName });
 
     })
 })
@@ -229,7 +228,7 @@ app.post("/adminsignedin", (req, res) => {
         if(!passwordMatch){
             return res.status(401).json({ message: "Password is invalid or wrong!"});
         }
-        res.status(200).json({ message: "You're signed in!"});
+        res.status(200).json({ message: "You're signed in!", admin: user.adminUsername });
     })
 
 })
