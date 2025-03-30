@@ -3,7 +3,7 @@ const renameForm = document.getElementById('rename-folder');
 renameForm.addEventListener('submit', async(event) => {
     event.preventDefault();
 
-    const selectedFolder = document.querySelector('#rename-folder-select').value; //I declared it correctly
+    const selectedFolder = document.querySelector('#rename-folder-select').value;
     const newFolderName = document.querySelector('#rename-folder-name').value.trim();
 
     if(selectedFolder === 'Select Folder' && !newFolderName){
@@ -59,6 +59,6 @@ async function loadFoldersInDropdown() {
         }
     }
     catch(err){
-        console.error(`error laoding folders: ${err}`);
+        console.error(`error loading folders: ${err}`);
     }
 }

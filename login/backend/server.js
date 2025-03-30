@@ -475,6 +475,60 @@ app.get("/files", (req, res) => {
 //Delete File
 
 //Rename File
+app.get("/api/fileslist", (req, res) => {
+    const sql = "SELECT * FROM files";
+    db.query(sql, (err, results) => {
+        if(err){
+            console.error(`Database error: ${err}`);
+        }
+
+        res.json({ success: true, files: results });
+    })
+})
+
+app.post("/api/renamefile", (req, res) => {
+    const { selectedFile, newFileName } = req.body;
+
+    const sqlSelect = "SELECT folder_name, original_name FROM files WHERE custom_name = ?";
+    db.query(sqlSelect, [selectedFile], (err, results) => {
+        if (err) {
+            console.error(`Database error: ${err}`);
+            return res.json({ success: false, message: 'Database error while fetching folder name.' });
+        }
+        if (results.length === 0) {
+            return res.json({ success: false, message: 'File not found.' });
+        }
+        
+        const folderName = results[0].folder_name;
+        const originalFileName = results[0].original_name; 
+        const fileExtension = path.extname(originalFileName); // File extension
+        const sanitizedNewFileName = newFileName.replace(/\s+/g, '_') + fileExtension; // Ensure new name has the file extension
+    
+        const oldFilePath = path.join(__dirname, `../public/uploads/${folderName}/${originalFileName}`);
+        const newFilePath = path.join(__dirname, `../public/uploads/${folderName}/${sanitizedNewFileName}`);
+    
+        if (!fs.existsSync(oldFilePath)) {
+            return res.json({ success: false, message: 'Original file does not exist.' });
+        }
+    
+        fs.rename(oldFilePath, newFilePath, (err) => {
+            if (err) {
+                console.error(`File system error: ${err}`);
+                return res.json({ success: false, message: 'File rename failed.' });
+            }
+    
+            const sqlUpdate = "UPDATE files SET custom_name = ?, original_name = ? WHERE custom_name = ?";
+            db.query(sqlUpdate, [newFileName, sanitizedNewFileName, selectedFile], (err, result) => {
+                if (err) {
+                    console.error(err);
+                    return res.json({ success: false, message: 'Database error while renaming file.' });
+                }
+    
+                return res.json({ success: true, message: 'File renamed successfully.' });
+            });
+        });
+    });
+});
 //Rename File
 
 app.listen(PORT, () => {
