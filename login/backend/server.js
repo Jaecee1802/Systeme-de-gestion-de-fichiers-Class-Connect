@@ -472,6 +472,52 @@ app.get("/files", (req, res) => {
 
 
 //Delete File
+app.post("/api/deletefile", (req, res) => {
+    const { fileName } = req.body;
+
+    if (!fileName) {
+        return res.json({ success: false, message: "Please provide a file name to delete." });
+    }
+
+    const sqlSelect = "SELECT folder_name, original_name FROM files WHERE custom_name = ?";
+    db.query(sqlSelect, [fileName], (err, results) => {
+        if (err) {
+            console.error(`Database error: ${err}`);
+            return res.json({ success: false, message: "Database error while fetching file details." });
+        }
+
+        if (results.length === 0) {
+            return res.json({ success: false, message: "File not found." });
+        }
+
+        const folderName = results[0].folder_name;
+        const originalFileName = results[0].original_name; // Full file name
+        const filePath = path.join(__dirname, `../public/uploads/${folderName}/${originalFileName}`);
+
+        // Check if file exists before attempting to delete
+        if (!fs.existsSync(filePath)) {
+            return res.json({ success: false, message: "File does not exist on server." });
+        }
+
+        fs.unlink(filePath, (err) => {
+            if (err) {
+                console.error(`File system error: ${err}`);
+                return res.json({ success: false, message: "Error deleting file from server." });
+            }
+
+            // Remove file entry from the database
+            const sqlDelete = "DELETE FROM files WHERE custom_name = ?";
+            db.query(sqlDelete, [fileName], (err, result) => {
+                if (err) {
+                    console.error(err);
+                    return res.json({ success: false, message: "Database error while deleting file." });
+                }
+
+                return res.json({ success: true, message: "File deleted successfully." });
+            });
+        });
+    });
+});
 //Delete File
 
 //Rename File
