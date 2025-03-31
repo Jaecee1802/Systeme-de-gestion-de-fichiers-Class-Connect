@@ -1,6 +1,6 @@
-const deleteFile = document.getElementById('delete-file-form');
+const deletefile = document.getElementById('delete-file-form');
 
-deleteFile.addEventListener('submit', async(event) => {
+deletefile.addEventListener('submit', async(event) => {
     event.preventDefault();
 
     const fileName = document.querySelector('#delete-file-name').value.trim();
@@ -18,7 +18,7 @@ deleteFile.addEventListener('submit', async(event) => {
 
         if(result.success){
             alert(`File ${fileName} deleted successfully`);
-            deleteFile.classList.remove('is-active');
+            deletefile.classList.remove('is-active');
             window.location.reload();
         }
         else{
@@ -27,6 +27,6 @@ deleteFile.addEventListener('submit', async(event) => {
     }
     else{
         alert('Please enter a file name that you want to be deleted');  
-        deleteFile.classList.remove('is-active');
+        deletefile.classList.remove('is-active');
     }
 })

@@ -46,8 +46,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const fileNameWithExtension = `${file.custom_name}.${fileType}`;
 
             const fileElement = document.createElement("a");
-            fileElement.href = filePath;
-            fileElement.target = "_blank";
+            fileElement.href = "#";
             fileElement.innerHTML = `
                 <div class="is-flex" id="files-info">
                     <div id="file-info">

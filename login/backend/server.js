@@ -396,6 +396,10 @@ app.get('/api/folder/:folderName/files', (req, res) => {
 })
 //Access Folder
 
+///////////////////////////////////////////////////
+//FILES SECTION////////////////////////////////////
+///////////////////////////////////////////////////
+
 //Upload Files
 const uploadDir = path.join(__dirname, `../public/uploads`);
 if(!fs.existsSync(uploadDir)) {
@@ -404,7 +408,11 @@ if(!fs.existsSync(uploadDir)) {
 
 const fileStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "uploads/");
+        const uploadPath = path.join(__dirname, "../public/uploads/");
+        if (!fs.existsSync(uploadPath)) {
+            fs.mkdirSync(uploadPath, { recursive: true });
+        }
+        cb(null, uploadPath);
     },
     filename: (req, file, cb) => {
         const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
@@ -415,43 +423,58 @@ const fileStorage = multer.diskStorage({
 const upload = multer({ storage });
 
 app.post("/upload", upload.single("file"), (req, res) => {
+    console.log("File upload started...");
+
     const { customName } = req.body;
     const folderName = req.query.folder;  
 
+    console.log("Received File:", req.file);
+    console.log("Custom Name:", customName);
+    console.log("Folder Name:", folderName);
+
     if (!req.file || !customName || !folderName) {
+        console.log("Error: Missing file or data");
         return res.status(400).json({ message: "Missing file or data" });
     }
 
     const folderPath = path.join(__dirname, `../public/uploads/${folderName}`);
     if (!fs.existsSync(folderPath)) {
+        console.log("Creating folder:", folderPath);
         fs.mkdirSync(folderPath, { recursive: true });
     }
 
     const newFilePath = path.join(folderPath, req.file.filename);
+    console.log("New File Path:", newFilePath);
+
     fs.rename(req.file.path, newFilePath, (err) => {
         if (err) {
             console.error("Error moving file:", err);
             return res.status(500).json({ message: "Error saving file" });
         }
 
-        // Insert file details into MySQL
+        console.log("File moved successfully.");
+
+        const filePath = `uploads/${folderName}/${req.file.filename}`;
         const sql =
             "INSERT INTO files (custom_name, original_name, file_path, folder_name, upload_date) VALUES (?, ?, ?, ?, ?)";
+
         db.query(
             sql,
-            [customName, req.file.originalname, path.join(folderName, req.file.filename), folderName, new Date()],
+            [customName, req.file.originalname, filePath, folderName, new Date()],
             (err) => {
                 if (err) {
                     console.error("Database error:", err);
                     return res.status(500).json({ message: "Database error" });
                 }
-                res.json({ message: "File uploaded successfully", filePath: newFilePath });
+                console.log("Database insert successful.");
+                res.json({ message: "File uploaded successfully", filePath });
             }
         );
     });
 });
 
-app.use("/uploads", express.static("uploads"));
+
+app.use("/uploads", express.static(path.join(__dirname, "../public/uploads")));
 //Upload Files
 
 //Load Files
