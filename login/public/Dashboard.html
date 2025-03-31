@@ -16,6 +16,10 @@
         #recent-title{
             border-bottom: 2px solid black;
         }
+
+        #folder-container{
+           gap: 50px;
+        }
     </style>
 </head>
 <body>
@@ -87,48 +91,24 @@
 
         <div class="added-folders is-flex-desktop has-text-centered is-flex-tablet-only">
 
-            <div class="my-file-folders">
-
-                <a href="#">
-                    <img src="images/folder.png" alt="Folder" class="image is-128x128">
-                    <p class="has-text-black">My File #1</p>
-                </a>
-
+            <div class="subject-folders is-flex" id="folder-container">
+                <!-- The folders will be appended here -->
+            <a href="#">
+                <div class="is-flex" id="files-info">
+                    <div class="" id="folder-info">
+                        <img src="images/folder.png" alt="Folder" class="image is-128x128">
+                        <p class="has-text-black has-text-centered">My File #1</p>
+                    </div>
+                </div>
+            </a>
+    
             </div>
-
-            <div class="my-file-folders">
-                <a href="#">
-                    <img src="images/folder.png" alt="Folder" class="image is-128x128">
-                    <p class="has-text-black">My File #2</p>
-                </a>
-            </div>
-
-            <div class="my-file-folders">
-                <a href="#">
-                    <img src="images/folder.png" alt="Folder" class="image is-128x128">
-                    <p class="has-text-black">My File #3</p>
-                </a>
-            </div>
-
-            <div class="my-file-folders">
-                <a href="#">
-                    <img src="images/folder.png" alt="Folder" class="image is-128x128">
-                    <p class="has-text-black">My File #4</p>
-                </a>
-            </div>
-
-            <div class="my-file-folders">
-                <a href="#">
-                    <img src="images/folder.png" alt="Folder" class="image is-128x128">
-                    <p class="has-text-black">My File #5</p>
-                </a>
-            </div>
-
         </div>
     </div>
 </section>
 
 <script src="js/signOut.js"></script>
 <script src="js/displayAccountname.js"></script>
+<script src="js/loadFolder.js"></script>
 </body>
 </html>
