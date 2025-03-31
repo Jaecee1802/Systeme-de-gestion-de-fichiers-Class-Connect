@@ -36,3 +36,17 @@ openDeleteFile.addEventListener('click', () => {
 closeDeleteFile.addEventListener('click', () => {
     deleteFile.classList.remove('is-active');
 })
+
+
+//Download File Modal
+const openDownloadFile = document.getElementById('download-file-button');
+const closeDownloadFile = document.getElementById('close-download-file-modal');
+const downloadFile = document.getElementById('download-file-modal');
+
+openDownloadFile.addEventListener('click', () => {
+    downloadFile.classList.add('is-active');
+});
+
+closeDownloadFile.addEventListener('click', () => {
+    downloadFile.classList.remove('is-active');
+})

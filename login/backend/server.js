@@ -7,6 +7,7 @@ const path = require("path");
 const hash  = require("crypto");
 const fs = require("fs");
 const multer = require("multer");
+const archiver = require('archiver');
 
 const app = express();
 dotenv.config();
@@ -598,6 +599,11 @@ app.post("/api/renamefile", (req, res) => {
     });
 });
 //Rename File
+
+//Download File
+
+//Download File
+
 
 app.listen(PORT, () => {
     console.log("Server is running on port 3000");

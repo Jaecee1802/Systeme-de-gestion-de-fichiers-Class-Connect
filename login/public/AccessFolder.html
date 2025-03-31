@@ -18,7 +18,7 @@
             border-bottom: 2px solid black;
         }
 
-        #upload-button, #delete-file-button, #rename-file-button{
+        #upload-button, #delete-file-button, #rename-file-button, #download-file-button{
             height: 40px;
             width: 200px;
             background-color: #1C4E80;
@@ -112,6 +112,10 @@
 
         <button class="button ml-2 mb-2" id="rename-file-button">
             Rename File
+        </button>
+
+        <button class="button ml-2 mb-2" id="download-file-button">
+            Download File(s)
         </button>
     </div>
 
@@ -275,13 +279,38 @@
     </div>
 </div>
 
-<!--Access Files-->
-<div class="modal" id="access-file-modal">
+<div class="modal" id="download-file-modal">
     <div class="modal-background"></div>
     <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
-        <button class="close is-pulled-right has-text-black is-size-4" id="close-file-access-modal">&times;</button>
-        <h1 class="has-text-black has-text-centered is-size-2-desktop">File Preview</h1>
-        <div id="file-preview"></div>
+        <button class="close is-pulled-right has-text-black is-size-4" id="close-download-file-modal">&times;</button>
+        <h1 class="has-text-black has-text-centered is-size-2-desktop">Select a file to Download</h1>
+
+        <form id="download-select-file">
+            <div>
+                <label for="folder-name" class="has-text-black">Pick a file to download:</label>
+            </div>
+            
+            <div>
+                <!-- This is the checkbox -->
+                <label class="checkbox has-text-black">
+                    <input type="checkbox"/>
+                    File #1
+                </label>
+            </div>
+
+            <div>
+                <!-- This is the checkbox -->
+                <label class="checkbox has-text-black">
+                    <input type="checkbox"/>
+                    File #2
+                </label>    
+            </div>
+    
+            <div>
+                <button class="has-text-white button is-black mt-4" type="submit">Download File</button>
+            </div>
+        </form>
+
     </div>
 </div>
 
@@ -293,6 +322,7 @@
 <script src="js/displayAccountname.js"></script>
 <script src="js/renameFile.js"></script>
 <script src="js/deleteFile.js"></script>
+<script src="js/downloadFile.js"></script>
 <script>
     const urlParams = new URLSearchParams(window.location.search);
     const folderName = urlParams.get('folder');
