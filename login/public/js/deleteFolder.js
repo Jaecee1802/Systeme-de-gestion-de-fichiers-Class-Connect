@@ -18,7 +18,7 @@ deleteFolderForm.addEventListener('submit', async(event) => {
 
         if(result.success){
             alert(`Folder ${folderName} deleted successfully`);
-            deleteFile.classList.remove('is-active');
+            deleteModal.classList.remove('is-active');
             window.location.reload();
         }
         else{
