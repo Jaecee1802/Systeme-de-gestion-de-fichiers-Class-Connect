@@ -70,7 +70,7 @@ app.post("/signup", (req, res) => {
         });
     } catch (err) {
         console.log(`Error: ${err}`);
-        return res.status(500).json({ message: "Database error", name: user.teacherName });
+        return res.status(500).json({ message: "Database error", name: user.studentName });
     }
 });
 //Teachers Sign-up
