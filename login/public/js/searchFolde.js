@@ -1,8 +1,8 @@
-document.getElementById('search-btn').addEventListener('click', async function() {
+document.getElementById('search').addEventListener('input', async function() {
     const searchTerm = document.getElementById('search').value.trim();
 
     if (searchTerm === '') {
-        return; // Do nothing if the search term is empty
+        return;
     }
 
     const response = await fetch(`/api/search-folders?query=${encodeURIComponent(searchTerm)}`);
