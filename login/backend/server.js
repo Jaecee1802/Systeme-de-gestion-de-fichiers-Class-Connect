@@ -275,6 +275,17 @@ app.get('/api/folders', async(req, res) => {
 })
 //Load Folders//
 
+//Load Folders at the Dashboard//
+app.get('/api/recent-folders', async (req, res) => {
+    db.query("SELECT * FROM folders ORDER BY dateofCreation DESC LIMIT 5", (err, result) => {
+        if(err){
+            return res.status(500).json({  error: err.message });
+        }
+        res.json(result);
+    })
+})
+//Load Folders at the Dashboard//
+
 //Create Folder//
 app.post('/api/createfolder', (req, res) => {
     const { folderName } = req.body;
@@ -295,6 +306,22 @@ app.post('/api/createfolder', (req, res) => {
     })
 })
 //Create Folder//
+
+//Search Folder
+app.get('/api/search-folders', (req, res) => {
+    const { query } = req.query;
+
+    // Escape user input to prevent SQL injection
+    const searchQuery = `%${query}%`;
+
+    db.query("SELECT * FROM folders WHERE name LIKE ?", [searchQuery], (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.json(result);
+    });
+});
+//Search Folder
 
 //Delete Folder
 app.post('/api/deletefolder', (req, res) => {
