@@ -290,7 +290,7 @@
                 <label for="folder-name" class="has-text-black">Pick a file to download:</label>
             </div>
             
-            <div>
+            <div id="download-checkboxes">
                 <!-- This is the checkbox -->
                 <label class="checkbox has-text-black">
                     <input type="checkbox"/>
@@ -298,14 +298,6 @@
                 </label>
             </div>
 
-            <div>
-                <!-- This is the checkbox -->
-                <label class="checkbox has-text-black">
-                    <input type="checkbox"/>
-                    File #2
-                </label>    
-            </div>
-    
             <div>
                 <button class="has-text-white button is-black mt-4" type="submit">Download File</button>
             </div>
@@ -322,8 +314,10 @@
 <script src="js/displayAccountname.js"></script>
 <script src="js/renameFile.js"></script>
 <script src="js/deleteFile.js"></script>
-<script src="js/downloadFile.js"></script>
+<script src="js/downloadFiles.js"></script>
+<script src="js/loadFilesDownload.js"></script>
 <script>
+    //Accessing Folders
     const urlParams = new URLSearchParams(window.location.search);
     const folderName = urlParams.get('folder');
     document.getElementById('head-folder-name').textContent = folderName;
