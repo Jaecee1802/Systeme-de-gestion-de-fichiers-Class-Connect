@@ -8,8 +8,6 @@ const hash  = require("crypto");
 const fs = require("fs");
 const multer = require("multer");
 const archiver = require('archiver');
-const { FILE } = require("dns");
-const router = express.Router();
 
 const app = express();
 dotenv.config();
@@ -73,7 +71,7 @@ app.post("/signup", (req, res) => {
         });
     } catch (err) {
         console.log(`Error: ${err}`);
-        return res.status(500).json({ message: "Database error", name: user.studentName });
+        return res.status(500).json({ message: "Database error", name: user.teacherName });
     }
 });
 //Teachers Sign-up

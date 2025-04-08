@@ -36,7 +36,7 @@ studButton.addEventListener('click', async() => {
     };
 
     try{
-        const response = await fetch("http://localhost:3000/studentsignup", {
+        const response = await fetch("/studentsignup", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
