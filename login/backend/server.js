@@ -637,9 +637,71 @@ app.post("/api/renamefile", (req, res) => {
 ////// MY FILES SECTION //////
 //////////////////////////////
 
+
+
+
 ////////////////////////////////////////
 ////// Enrolled Subjects Section //////
 ///////////////////////////////////////
+
+
+//Create a Subject Folder
+app.post("/api/createsubjectfolder", (req, res) => {
+    const { subjectFolderName } = req.body;
+    const folderPath = path.join(__dirname, `../public/subject-uploads/${subjectFolderName}`);
+
+    fs.mkdir(folderPath, { recursive: true }, (err) => {
+        if(err){
+            return res.json({ success: false, message: 'Folder creation failed' });
+        }
+
+        db.query("INSERT INTO subjectfolders (subjectname) VALUES (?)", [subjectFolderName], (err, result) => {
+            if(err){
+                console.error(err);
+                return res.json({ success: false, message: 'Database error.' });
+            }
+            return res.json({ success: true, message: 'Folder created.' });
+        })
+    })
+})
+
+//Load Subject Folders
+app.get("/api/subjectfolders", async (req, res) => {
+    db.query("SELECT * FROM subjectfolders", (err, result) => {
+        if(err){
+            return res.status(500).json({  error: err.message });
+        }
+        res.json(result);
+    });
+})
+
+//Delete Subject Folder
+app.post('/api/deletesubjectfolder', (req, res) => {
+    const { subjectFolderName } = req.body;
+    const folderPath = path.join(__dirname, `../public/subject-uploads/${subjectFolderName}`);
+
+    fs.rm(folderPath, { recursive: true}, (err) => {
+        if(err){
+            console.error(err);
+            return res.json({ success: false, message: `Deleting ${subjectFolderName} failed.` });
+        }
+
+        db.query("DELETE FROM subjectfolders WHERE subjectname = ?", [subjectFolderName], (err, result) => {
+            if(err){
+                console.error(err);
+                return res.json({ success: false, message: 'Database error.' });
+            }
+            return res.json({ success: true, message: 'Folder deleted.' });
+        })
+
+        // db.query("DELETE FROM files WHERE folder_name = ?", [subjectFolderName], (err, result) => {
+        //     if(err){
+        //         console.error(err);
+        //         return res.json({ success: false, message: 'Database error.' });
+        //     }
+        // })
+    })
+})
 
 ////////////////////////////////////////
 ////// Enrolled Subjects Section //////

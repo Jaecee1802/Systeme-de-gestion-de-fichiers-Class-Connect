@@ -28,6 +28,11 @@
             border-radius: 20px;
         }
 
+        #subject-folders-container{
+            gap: 2%;
+            justify-content: center;
+        }
+
         #file-name{
             border: 0;
         }
@@ -86,22 +91,10 @@
         </button>
     </div>
 
-    <div class="subject-folders is-flex-desktop has-text-centered is-flex-wrap-wrap is-flex-touch mt-6">
+    <div class="subject-folders has-text-centered is-flex-touch mt-6">
 
-        <div class="subj-folders">
-
-            <a href="#">
-                <img src="images/folder.png" alt="Folder" class="image is-128x128">
-                <p class="has-text-black">Subject #1</p>
-            </a>
-
-        </div>
-
-        <div class="subj-folders">
-            <a href="#">
-                <img src="images/folder.png" alt="Folder" class="image is-128x128">
-                <p class="has-text-black">Subject #2</p>
-            </a>
+        <div id="subject-folders-container" class="is-flex is-flex-wrap-wrap">
+                <!--Subject Folders will be shown here-->
         </div>
     </div>
 
@@ -112,11 +105,13 @@
     <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
         <button class="close is-pulled-right has-text-black is-size-4" id="close-folder-modal">&times;</button>
         <h1 class="has-text-black has-text-centered is-size-2-desktop">Create Folder</h1>
-        <form id="create-folder-form">
+
+        <form id="create-subject-folder-form">
             <label for="folder-name" class="has-text-black">Folder Name:</label>
-            <input class="input has-background-white my-4 has-text-black" type="text" id="folder-name"/>
+            <input class="input has-background-white my-4 has-text-black" type="text" id="subject-folder-name"/>
             <button class="has-text-white button is-black mt-4" type="submit">Create</button>
         </form>
+
     </div>
 </div>
 
@@ -125,11 +120,13 @@
     <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
         <button class="close is-pulled-right has-text-black is-size-4" id="close-delete-modal">&times;</button>
         <h1 class="has-text-black has-text-centered is-size-2-desktop">Delete Folder</h1>
-        <form id="delete-folder">
+
+        <form id="delete-subject-folder">
             <label for="folder-name" class="has-text-black">Type folder name to delete:</label>
-            <input class="input has-background-white my-4 has-text-black" type="text" id="delete-folder-name"/>
+            <input class="input has-background-white my-4 has-text-black" type="text" id="delete-subject-folder-name"/>
             <button class="has-text-white button is-black mt-4" type="submit">Delete Folder</button>
         </form>
+
     </div>
 </div>
 
@@ -139,7 +136,7 @@
         <button class="close is-pulled-right has-text-black is-size-4" id="close-rename-modal">&times;</button>
         <h1 class="has-text-black has-text-centered is-size-2-desktop">Select folder to rename</h1>
 
-        <form id="rename-folder">
+        <form id="rename-subject-folder">
             <div>
                 <label for="folder-name" class="has-text-black">Rename the folder:</label>
             </div>
@@ -155,8 +152,11 @@
     </div>
 </div>
 
+<script src="js/loadSubjectFolders.js"></script>
+<script src="js/deleteSubjectFolder.js"></script>
 <script src="js/modalSubject.js"></script>
 <script src="js/signOut.js"></script>
 <script src="js/displayAccountname.js"></script>
+<script src="js/createSubjectFolder.js"></script>
 </body>
 </html>

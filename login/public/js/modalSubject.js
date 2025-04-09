@@ -1,4 +1,4 @@
-//Create Folder Modal
+//Create Subject Folder Modal
 const openFolderModal = document.getElementById('folder-button');
 const closeFolderModal = document.getElementById('close-folder-modal');
 const folderModal = document.getElementById('subject-folder-modal');
@@ -11,7 +11,7 @@ closeFolderModal.addEventListener('click', () => {
     folderModal.classList.remove('is-active');
 });
 
-//Delete Folder Modal
+//Delete Subject Folder Modal
 const openDeleteModal = document.getElementById('delete-button');
 const closeDeleteModal = document.getElementById('close-delete-modal');
 const deleteModal = document.getElementById('delete-subject-folder-modal');
@@ -24,7 +24,7 @@ closeDeleteModal.addEventListener('click', () => {
     deleteModal.classList.remove('is-active');
 });
 
-//Rename Folder Modal
+//Rename Subject Folder Modal
 const openRenameModal = document.getElementById('rename-button');
 const closeRenameModal = document.getElementById('close-rename-modal');
 const renameModal = document.getElementById('rename-subject-folder-modal');
