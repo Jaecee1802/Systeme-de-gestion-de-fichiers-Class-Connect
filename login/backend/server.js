@@ -703,6 +703,12 @@ app.post('/api/deletesubjectfolder', (req, res) => {
     })
 })
 
+//Rename Subject Folder
+app.post('/api/renamesubjectfolder', (req, res) => {
+    const { selectedSubject, newSubjectName } = req.body;
+})
+
+
 ////////////////////////////////////////
 ////// Enrolled Subjects Section //////
 ///////////////////////////////////////
