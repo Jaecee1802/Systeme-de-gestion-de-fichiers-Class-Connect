@@ -1,3 +1,5 @@
+//Displaying the files INSIDE the folder
+
 document.addEventListener("DOMContentLoaded", async () => {
     const folderName = new URLSearchParams(window.location.search).get('folder');
     const fileContainer = document.getElementById('file-container');

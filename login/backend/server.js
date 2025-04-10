@@ -704,8 +704,69 @@ app.post('/api/deletesubjectfolder', (req, res) => {
 })
 
 //Rename Subject Folder
+app.get('/api/subjectslist', (req, res) => {
+    db.query('SELECT * FROM subjectfolders', (err, results) => {
+        if(err){
+            console.error(err);
+            return res.status(500).json({ success: false, message: 'Database error.' });
+        }
+        res.json({ success: true, folders: results });
+    })
+})
+
 app.post('/api/renamesubjectfolder', (req, res) => {
     const { selectedSubject, newSubjectName } = req.body;
+    const oldSubjectPath = path.join(__dirname, `../public/subject-uploads/${selectedSubject}`);
+    const newSubjectPath = path.join(__dirname, `../public/subject-uploads/${newSubjectName}`);
+
+    fs.rename(oldSubjectPath, newSubjectPath, (err) => {
+        if(err){
+            console.error(err);
+            return res.json({ success: false, message: 'Renaming Subject Folder Failed.' });
+        }
+        db.query("UPDATE subjectfolders SET subjectname = ? WHERE subjectname = ?", [newSubjectName, selectedSubject], (err, result) => {
+            if(err){
+                console.error(err);
+                return res.json({ success: false, message: 'Database error.' });
+            }
+            return res.json({ success: true, message: 'Subject Folder Renamed.' });
+        })
+        // db.query("UPDATE files SET folder_name = ? WHERE folder_name = ?", [newFolderName, selectedFolder], (err, result) => {
+        //     if (err) {
+        //         console.error(err);
+        //         return res.json({ success: false, message: 'Database error updating files table.' });
+        //     }
+        // })
+    })
+})
+
+//Access Subject Folder
+const subjectStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const subjectFolderName  = req.body.folder;
+        const folderPath = path.join(__dirname, `../public/subject-uploads/${subjectFolderName}`);
+        if(!fs.existsSync(folderPath)){
+            fs.mkdirSync(folderPath, { recursive: true });
+        }
+        cb(null, folderPath);
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname);
+    }
+});
+
+app.get('/api/folder/:subjectFolderName/files', (req, res) => {
+    const subjectFolderName = req.params.subjectFolderName;
+    const folderPath = path.join(__dirname, `../public/uploads/${subjectFolderName}`);
+
+    res.sendFile(path.join(__dirname, "../public/AccessFolder.html"));
+
+    fs.readdir(folderPath, (err, files) => {
+        if(err){
+            return res.status(500).json({ error: err});
+        }
+        res.json(files);
+    })
 })
 
 
