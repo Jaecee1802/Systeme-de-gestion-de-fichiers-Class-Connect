@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en" class="has-background-white-bis">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/dashboardDesign.css"><!--SIDEBAR NAVIGATION-->
+    <link rel="stylesheet" href="css/enrolledsubDesign.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <title>ClassConnect: Folder Name</title>
+    <style>
+        .header{
+            padding-top: 100px;
+            padding-bottom: 20px;
+            background-color: #1C4E80;
+        }
+        #recent-title{
+            border-bottom: 2px solid black;
+        }
+
+        #upload-button, #delete-file-button, #rename-file-button, #download-file-button{
+            height: 40px;
+            width: 200px;
+            background-color: #1C4E80;
+        }
+
+        #modal-box{
+            border-radius: 20px;
+        }
+
+        #file-name{
+            border: 0;
+        }
+
+        #upload-file-button{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #upload-file-button{
+            background-color: #1C4E80;
+        }
+
+        #file-container{
+            justify-content: left;
+
+        }
+        
+        #files-info{
+            margin-top: 20px;
+        }
+
+        @media screen and (width <= 412px){
+            .upload-button-sec{
+                position: -webkit-sticky;
+                position: sticky;
+                top: 0; /* required */
+            }
+        }
+    </style>
+</head>
+<body>
+    <input type="checkbox" id="check">
+    <label for="check">
+      <i class="fas fa-bars" id="btn"></i>
+      <i class="fas fa-times" id="cancel"></i>
+    </label>
+
+    <div class="overlay"></div>
+
+    <div class="sidebar">
+    <header>
+        <h2 class="is-size-6 has-text-black-bis my-6" id="account-name">Account Name</h2>
+    </header>
+        <ul>
+            <li><a href="Subjects.html" class="has-text-centered has-text-weight-bold">Enrolled Subjects</a></li>
+            <li><a href="Dashboard.html" class="has-text-centered">Dashboard</a></li>
+            <li><a href="My Files.html" class="has-text-centered">My Files</a></li>
+            <li><a href="Grades.html" class="has-text-centered">Grades</a></li>
+            <li><a href="#" class="has-text-centered">Settings</a></li>
+            <div class="has-text-centered">
+                <li><button class="button is-danger is-centered mt-6" id="sign-out">Sign-out</button></li>
+            </div>
+        </ul>
+    </div>
+
+<section>
+    <div class="header">
+        <h2 class="mx-6 is-size-2 has-text-white has-text-weight-bold" id="head-folder-name">Folder Name</h2>
+    </div>
+
+    <div class="field is-grouped m-4 mx-6">
+        <p class="control is-expanded">
+            <input class="input has-background-grey-light" type="text" placeholder="Search..." id="search">
+        </p>
+        <button class="button is-ghost has-text-black-ter">
+            Search
+        </button>
+    </div>
+
+    <!--This is the buttons for uploading, deleting, and renaming files-->
+
+    <div class="upload-button-sec" style="text-align: center;">
+        <button class="button ml-2 mb-2" id="upload-button">
+            Upload File
+        </button>
+
+        <button class="button ml-2 mb-2" id="delete-file-button">
+            Delete File
+        </button>
+
+        <button class="button ml-2 mb-2" id="rename-file-button">
+            Rename File
+        </button>
+
+        <button class="button ml-2 mb-2" id="download-file-button">
+            Download File(s)
+        </button>
+    </div>
+
+    <div class="container section is-widescreen" id="files">
+        <div class="subject-folders is-flex is-flex-wrap-wrap" id="file-container">
+            <!-- The folders will be appended here -->
+        <!-- <a href="#">
+            <div class="is-flex" id="files-info">
+                <div class="" id="folder-info">
+                    <img src="images/DOCX file.png" alt="Folder" class="image is-128x128">
+                    <p class="has-text-black has-text-centered mt-2">DOCX File Name</p>
+                </div>
+            </div>
+        </a>
+
+        <a href="#">
+            <div class="is-flex" id="files-info">
+                <div class="" id="file-info">
+                    <img src="images/PPTX file.png" alt="Folder" class="image is-128x128">
+                    <p class="has-text-black has-text-centered mt-2">PPTX File Name</p>
+                </div>
+            </div>
+        </a>
+
+        <a href="#">
+            <div class="is-flex" id="files-info">
+                <div class="" id="folder-info">
+                    <img src="images/EXCEL file.png" alt="Folder" class="image is-128x128">
+                    <p class="has-text-black has-text-centered mt-2">EXCEL File Name</p>
+                </div>
+            </div>
+        </a>
+
+        <a href="#">
+            <div class="is-flex" id="files-info">
+                <div class="" id="folder-info">
+                    <img src="images/PDF file.png" alt="Folder" class="image is-128x128">
+                    <p class="has-text-black has-text-centered mt-2">PDF File Name</p>
+                </div>
+            </div>
+        </a>
+
+        <a href="#">
+            <div class="is-flex" id="files-info">
+                <div class="" id="folder-info">
+                    <img src="images/PPTX file.png" alt="Folder" class="image is-128x128">
+                    <p class="has-text-black has-text-centered mt-2">PPTX File Name</p>
+                </div>
+            </div>
+        </a>
+
+        <a href="#">
+            <div class="is-flex" id="files-info">
+                <div class="" id="folder-info">
+                    <img src="images/Audio File.png" alt="Folder" class="image is-128x128">
+                    <p class="has-text-black has-text-centered mt-2">Audio File Name</p>
+                </div>
+            </div>
+        </a>
+
+        <a href="#">
+            <div class="is-flex" id="files-info">
+                <div class="" id="folder-info">
+                    <img src="images/RAR file.png" alt="Folder" class="image is-128x128">
+                    <p class="has-text-black has-text-centered mt-2">RAR File Name</p>
+                </div>
+            </div>
+        </a>
+
+        <a href="#">
+            <div class="is-flex" id="files-info">
+                <div class="" id="folder-info">
+                    <img src="images/ZIP file.png" alt="Folder" class="image is-128x128">
+                    <p class="has-text-black has-text-centered mt-2">ZIP File Name</p>
+                </div>
+            </div>
+        </a>
+
+        
+        <a href="#">
+            <div class="is-flex" id="files-info">
+                <div class="" id="folder-info">
+                    <img src="images/Video file.png" alt="Folder" class="image is-128x128">
+                    <p class="has-text-black has-text-centered mt-2">Video File Name</p>
+                </div>
+            </div>
+        </a>
+
+        <a href="#">
+            <div class="is-flex" id="files-info">
+                <div class="" id="folder-info">
+                    <img src="images/Image.png" alt="Folder" class="image is-128x128">
+                    <p class="has-text-black has-text-centered mt-2">Image File Name</p>
+                </div>
+            </div>
+        </a>
+
+        <a href="#">
+            <div class="is-flex" id="files-info">
+                <div class="" id="folder-info">
+                    <img src="images/Unknown file.png" alt="Folder" class="image is-128x128">
+                    <p class="has-text-black has-text-centered mt-2">Unknown File Name</p>
+                </div>
+            </div>
+        </a> -->
+
+        </div>
+    </div>
+
+</section>
+
+<div class="modal" id="upload-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
+        <button class="close is-pulled-right has-text-black is-size-4" id="close-upload-file-modal">&times;</button>
+        <h1 class="has-text-black has-text-centered is-size-2-desktop">Upload</h1>
+            <form id = "upload-form" enctype="multipart/form-data" method="POST">
+                <label for="file-name" class="has-text-black">File Name:</label>
+                <input class="input has-background-white my-4 has-text-black" type="text" placeholder="" id="file-name"/>
+                <input type="file" name="file">
+            </form>
+            <button class="has-text-white button is-primary is-small mt-4" id="upload-file-button">Upload</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="rename-file-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
+        <button class="close is-pulled-right has-text-black is-size-4" id="close-file-modal">&times;</button>
+        <h1 class="has-text-black has-text-centered is-size-2-desktop">Select a file to rename</h1>
+
+        <form id="rename-select-file">
+            <div>
+                <label for="folder-name" class="has-text-black">Rename the file:</label>
+            </div>
+            <div class="select is-small">
+                <select id="rename-file-select">
+                    <option>Select File</option> 
+                </select>
+            </div>
+            <input class="input has-background-white my-4 has-text-black" type="text" id="rename-file-name"/>
+            <button class="has-text-white button is-black mt-4" type="submit">Rename File</button>
+        </form>
+
+    </div>
+</div>
+
+<div class="modal" id="delete-file-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
+        <button class="close is-pulled-right has-text-black is-size-4" id="close-file-delete-modal">&times;</button>
+        <h1 class="has-text-black has-text-centered is-size-2-desktop">Delete a File</h1>
+
+        <form id="delete-file-form">
+            <label for="file-name" class="has-text-black">Type file name to delete:</label>
+            <input class="input has-background-white my-4 has-text-black" type="text" id="delete-file-name"/>
+            <button class="has-text-white button is-black mt-4" type="submit">Delete File</button>
+        </form>
+
+    </div>
+</div>
+
+<div class="modal" id="download-file-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
+        <button class="close is-pulled-right has-text-black is-size-4" id="close-download-file-modal">&times;</button>
+        <h1 class="has-text-black has-text-centered is-size-2-desktop">Select a file to Download</h1>
+
+        <form id="download-select-file">
+            <div>
+                <label for="folder-name" class="has-text-black">Pick a file to download:</label>
+            </div>
+            
+            <div id="download-checkboxes">
+                <!-- This is the checkbox -->
+                <label class="checkbox has-text-black">
+                    <input type="checkbox"/>
+                    File #1
+                </label>
+            </div>
+
+            <div>
+                <button class="has-text-white button is-black mt-4" type="submit">Download File</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+</body>
+<script src="js/modalFiles.js"></script>
+<script src="js/signOut.js"></script>
+<script src="js/uploadFiles.js"></script>
+<script src="js/fetchFiles.js"></script>
+<script src="js/displayAccountname.js"></script>
+<script src="js/renameFile.js"></script>
+<script src="js/deleteFile.js"></script>
+<script src="js/downloadFiles.js"></script>
+<script src="js/loadFilesDownload.js"></script>
+<script src="js/loadSubjectFolders.js"></script>
+<script src="js/accessSubFolder.js"></script>
+</html>
