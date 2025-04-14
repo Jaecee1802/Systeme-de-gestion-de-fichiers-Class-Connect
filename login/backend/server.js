@@ -759,7 +759,7 @@ app.get('/api/folder/:subjectFolderName/files', (req, res) => {
     const subjectFolderName = req.params.subjectFolderName;
     const folderPath = path.join(__dirname, `../public/uploads/${subjectFolderName}`);
 
-    res.sendFile(path.join(__dirname, "../public/AccessFolder.html"));
+    res.sendFile(path.join(__dirname, "../public/AccessSubjFolder.html"));
 
     fs.readdir(folderPath, (err, files) => {
         if(err){
@@ -769,6 +769,7 @@ app.get('/api/folder/:subjectFolderName/files', (req, res) => {
     })
 })
 
+//Upload Subject File
 
 ////////////////////////////////////////
 ////// Enrolled Subjects Section //////
