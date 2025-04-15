@@ -38,7 +38,7 @@
             align-items: center;
         }
 
-        #upload-file-button{
+        #subject-file-button{
             background-color: #1C4E80;
         }
 
@@ -232,14 +232,15 @@
     <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
         <button class="close is-pulled-right has-text-black is-size-4" id="close-upload-file-modal">&times;</button>
         <h1 class="has-text-black has-text-centered is-size-2-desktop">Upload</h1>
+
             <form id = "upload-form" enctype="multipart/form-data" method="POST">
                 <label for="file-name" class="has-text-black">File Name:</label>
-                <input class="input has-background-white my-4 has-text-black" type="text" placeholder="" id="file-name"/>
+                <input class="input has-background-white my-4 has-text-black" type="text" placeholder="" id="subject-file-name"/>
                 <input type="file" name="file">
             </form>
-            <button class="has-text-white button is-primary is-small mt-4" id="upload-file-button">Upload</button>
+
+            <button class="has-text-white button is-primary is-small mt-4" id="subject-file-button">Upload</button>
         </div>
-    </div>
 </div>
 
 <div class="modal" id="rename-file-modal">
@@ -309,8 +310,8 @@
 </body>
 <script src="js/modalFileSubj.js"></script>
 <script src="js/signOut.js"></script>
-<script src="js/uploadFiles.js"></script>
-<script src="js/fetchFiles.js"></script>
+<script src="js/uploadSubFile.js"></script>
+<script src="js/fetchSubjFile.js"></script>
 <script src="js/displayAccountname.js"></script>
 <script src="js/renameFile.js"></script>
 <script src="js/deleteFile.js"></script>

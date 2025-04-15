@@ -770,6 +770,94 @@ app.get('/api/folder/:subjectFolderName/files', (req, res) => {
 })
 
 //Upload Subject File
+const uploadSubDir = path.join(__dirname, `../public/subject-uploads`);
+if(!fs.existsSync(uploadSubDir)) {
+    fs.mkdirSync(uploadSubDir, { recursive: true });
+}
+
+const subjectStor = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const uploadPath = path.join(__dirname, "../public/subject-uploads/");
+        if (!fs.existsSync(uploadPath)) {
+            fs.mkdirSync(uploadPath, { recursive: true });
+        }
+        cb(null, uploadPath);
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+        cb(null, uniqueSuffix + path.extname(file.originalname));
+    }
+});
+
+const subUpload = multer({ storage: subjectStor });
+
+app.post("/subjupload", subUpload.single("file"), (req, res) => {
+    console.log("File upload started...");
+
+    const { customName } = req.body;
+    const subjectFolderName = req.query.folder;  
+
+    console.log("Received File:", req.file);
+    console.log("Custom Name:", customName);
+    console.log("Folder Name:", subjectFolderName);
+
+    if (!req.file || !customName || !subjectFolderName) {
+        console.log("Error: Missing file or data");
+        return res.status(400).json({ message: "Missing file or data" });
+    }
+
+    const folderPath = path.join(__dirname, `../public/subject-uploads/${subjectFolderName}`);
+    if (!fs.existsSync(folderPath)) {
+        console.log("Creating folder:", folderPath);
+        fs.mkdirSync(folderPath, { recursive: true });
+    }
+
+    const newFilePath = path.join(folderPath, req.file.filename);
+    console.log("New File Path:", newFilePath);
+
+    fs.rename(req.file.path, newFilePath, (err) => {
+        if (err) {
+            console.error("Error moving file:", err);
+            return res.status(500).json({ message: "Error saving file" });
+        }
+
+        console.log("File moved successfully.");
+
+        const filePath = `subject-uploads/${subjectFolderName}/${req.file.filename}`;
+        const sql =
+            "INSERT INTO subjectfiles (custom_name, original_name, file_path, folder_name, upload_date) VALUES (?, ?, ?, ?, ?)";
+
+        db.query(
+            sql,
+            [customName, req.file.originalname, filePath, subjectFolderName, new Date()],
+            (err) => {
+                if (err) {
+                    console.error("Database error:", err);
+                    return res.status(500).json({ message: "Database error" });
+                }
+                console.log("Database insert successful.");
+                res.json({ message: "File uploaded successfully", filePath });
+            }
+        );
+    });
+});
+
+
+app.use("/subjuploads", express.static(path.join(__dirname, "../public/subject-uploads")));
+
+//Display the File in Subject Folder
+app.get("/subjfiles", (req, res) => {
+    const folderName = req.query.folder;
+    const sql = "SELECT * FROM subjectfiles WHERE folder_name = ?";
+
+    db.query(sql, [folderName], (err, results) => {
+        if(err){
+            console.error(`Database error: ${err}`);
+            return res.status(500).json({message: "Database error"});
+        }
+        res.json(results);
+    })
+})
 
 ////////////////////////////////////////
 ////// Enrolled Subjects Section //////
