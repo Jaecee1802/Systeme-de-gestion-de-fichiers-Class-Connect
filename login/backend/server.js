@@ -694,12 +694,12 @@ app.post('/api/deletesubjectfolder', (req, res) => {
             return res.json({ success: true, message: 'Folder deleted.' });
         })
 
-        // db.query("DELETE FROM files WHERE folder_name = ?", [subjectFolderName], (err, result) => {
-        //     if(err){
-        //         console.error(err);
-        //         return res.json({ success: false, message: 'Database error.' });
-        //     }
-        // })
+        db.query("DELETE FROM subjectfiles WHERE folder_name = ?", [subjectFolderName], (err, result) => {
+            if(err){
+                console.error(err);
+                return res.json({ success: false, message: 'Database error.' });
+            }
+        })
     })
 })
 
@@ -731,12 +731,12 @@ app.post('/api/renamesubjectfolder', (req, res) => {
             }
             return res.json({ success: true, message: 'Subject Folder Renamed.' });
         })
-        // db.query("UPDATE files SET folder_name = ? WHERE folder_name = ?", [newFolderName, selectedFolder], (err, result) => {
-        //     if (err) {
-        //         console.error(err);
-        //         return res.json({ success: false, message: 'Database error updating files table.' });
-        //     }
-        // })
+        db.query("UPDATE subjectfiles SET folder_name = ? WHERE folder_name = ?", [newFolderName, selectedFolder], (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.json({ success: false, message: 'Database error updating files table.' });
+            }
+        })
     })
 })
 
@@ -858,6 +858,112 @@ app.get("/subjfiles", (req, res) => {
         res.json(results);
     })
 })
+
+//Delete Subject File
+app.post("/api/deletesubjfile", (req, res) => {
+    const { fileName } = req.body;
+
+    if (!fileName) {
+        return res.json({ success: false, message: "Please provide a file name to delete." });
+    }
+
+    const sqlSelect = "SELECT folder_name, file_path FROM subjectfiles WHERE custom_name = ?";
+    db.query(sqlSelect, [fileName], (err, results) => {
+        if (err) {
+            console.error(`Database error: ${err}`);
+            return res.json({ success: false, message: "Database error while fetching file details." });
+        }
+
+        if (results.length === 0) {
+            return res.json({ success: false, message: "File not found." });
+        }
+
+        const subjectFolderName = results[0].folder_name;
+        const originalFileName = results[0].original_name; // Full file name
+        const filePath = path.join(__dirname, "../public", results[0].file_path);
+
+        // Check if file exists before attempting to delete
+        if (!fs.existsSync(filePath)) {
+            return res.json({ success: false, message: "File does not exist on server." });
+        }
+
+        fs.unlink(filePath, (err) => {
+            if (err) {
+                console.error(`File system error: ${err}`);
+                return res.json({ success: false, message: "Error deleting file from server." });
+            }
+
+            // Remove file entry from the database
+            const sqlDelete = "DELETE FROM subjectfiles WHERE custom_name = ?";
+            db.query(sqlDelete, [fileName], (err, result) => {
+                if (err) {
+                    console.error(err);
+                    return res.json({ success: false, message: "Database error while deleting file." });
+                }
+
+                return res.json({ success: true, message: "File deleted successfully." });
+            });
+        });
+    });
+});
+
+//Rename Subject File
+app.get("/api/subjfileslist", (req, res) => {
+    const sql = "SELECT * FROM subjectfiles";
+    db.query(sql, (err, results) => {
+        if(err){
+            console.error(`Database error: ${err}`);
+        }
+
+        res.json({ success: true, files: results });
+    })
+})
+
+
+
+app.post("/api/renamesubjfile", (req, res) => {
+    const { selectedSubFile, newSubFileName  } = req.body;
+
+    const sqlSelect = "SELECT folder_name, original_name FROM subjectfiles WHERE custom_name = ?";
+    db.query(sqlSelect, [selectedSubFile], (err, results) => {
+        if (err) {
+            console.error(`Database error: ${err}`);
+            return res.json({ success: false, message: 'Database error while fetching folder name.' });
+        }
+        if (results.length === 0) {
+            return res.json({ success: false, message: 'File not found.' });
+        }
+        
+        const subjectFolderName = results[0].folder_name;
+        const originalFileName = results[0].original_name; 
+        const fileExtension = path.extname(originalFileName); // File extension
+        const sanitizedNewFileName = newSubFileName.replace(/\s+/g, '_') + fileExtension; // Ensure new name has the file extension
+    
+        const oldFilePath = path.join(__dirname, `../public/subject-uploads/${subjectFolderName}/${originalFileName}`);
+        const newFilePath = path.join(__dirname, `../public/subject-uploads/${subjectFolderName}/${sanitizedNewFileName}`);
+    
+        if (!fs.existsSync(oldFilePath)) {
+            return res.json({ success: false, message: 'Original file does not exist.' });
+        }
+    
+        fs.rename(oldFilePath, newFilePath, (err) => {
+            if (err) {
+                console.error(`File system error: ${err}`);
+                return res.json({ success: false, message: 'File rename failed.' });
+            }
+    
+            const sqlUpdate = "UPDATE subjectfiles SET custom_name = ?, original_name = ? WHERE custom_name = ?";
+            db.query(sqlUpdate, [newSubFileName, sanitizedNewFileName, selectedSubFile], (err, result) => {
+                if (err) {
+                    console.error(err);
+                    return res.json({ success: false, message: 'Database error while renaming file.' });
+                }
+    
+                return res.json({ success: true, message: 'File renamed successfully.' });
+            });
+        });
+    });
+});
 
 ////////////////////////////////////////
 ////// Enrolled Subjects Section //////
