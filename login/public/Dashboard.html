@@ -58,33 +58,17 @@
         <h3 class="m-5 mx-6 has-text-black-bis is-size-4" id="recent-title">Recent Subjects</h3>
 
         <div class="subjects-fold is-flex-wrap-wrap" id="subjects">
-            <a href="#">
-                <div class="subject-1" id="subject-folder">
-                    <img src="images/folder.png" alt="Folder" class="image is-48x48 mx-2">
-                    <p class="has-text-black-bis is-size-5 my-2">Subject 1</p>
-                </div>
-            </a>
 
-            <a href="#">
-                <div class="subject-1" id="subject-folder">
-                    <img src="images/folder.png" alt="Folder" class="image is-48x48 mx-2">
-                    <p class="has-text-black-bis is-size-5 my-2">Subject 2</p>
-                </div>
-            </a>
+            <div id="subject-container">
+                <!-- The folders will be appended here -->
+                    <a href="#">
+                        <div class="subject-1" id="subject-folder">
+                            <img src="images/folder.png" alt="Folder" class="image is-48x48 mx-2">
+                            <p class="has-text-black-bis is-size-5 my-2">Subject 1</p>
+                        </div>
+                    </a>
+            </div>
 
-            <a href="#">
-                <div class="subject-1" id="subject-folder">
-                    <img src="images/folder.png" alt="Folder" class="image is-48x48 mx-2">
-                    <p class="has-text-black-bis is-size-5 my-2">Subject 3</p>
-                </div>
-            </a>
-
-            <a href="#">
-                <div class="subject-1" id="subject-folder">
-                    <img src="images/folder.png" alt="Folder" class="image is-48x48 mx-2">
-                    <p class="has-text-black-bis is-size-5 my-2">Subject 4</p>
-                </div>
-            </a>
         </div>
     </div>
 
@@ -105,6 +89,7 @@
             </a>
     
             </div>
+
         </div>
     </div>
 </section>
@@ -112,5 +97,6 @@
 <script src="js/signOut.js"></script>
 <script src="js/displayAccountname.js"></script>
 <script src="js/loadRecentFolder.js"></script>
+<script src="js/loadRecentSub.js"></script>
 </body>
 </html>

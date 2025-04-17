@@ -919,9 +919,8 @@ app.get("/api/subjfileslist", (req, res) => {
     })
 })
 
-
 app.post("/api/renamesubjfile", (req, res) => {
-    const { selectedSubFile, newSubFileName  } = req.body;
+    const { selectedSubFile, newFileName, } = req.body;
 
     const sqlSelect = "SELECT folder_name, original_name FROM subjectfiles WHERE custom_name = ?";
     db.query(sqlSelect, [selectedSubFile], (err, results) => {
@@ -933,13 +932,13 @@ app.post("/api/renamesubjfile", (req, res) => {
             return res.json({ success: false, message: 'File not found.' });
         }
         
-        const subjectFolderName = results[0].folder_name;
+        const subFolderName = results[0].folder_name;
         const originalFileName = results[0].original_name; 
         const fileExtension = path.extname(originalFileName); // File extension
-        const sanitizedNewFileName = newSubFileName.replace(/\s+/g, '_') + fileExtension; // Ensure new name has the file extension
+        const sanitizedNewFileName = newFileName.replace(/\s+/g, '_') + fileExtension; // Ensure new name has the file extension
     
-        const oldFilePath = path.join(__dirname, `../public/subject-uploads/${subjectFolderName}/${originalFileName}`);
-        const newFilePath = path.join(__dirname, `../public/subject-uploads/${subjectFolderName}/${sanitizedNewFileName}`);
+        const oldFilePath = path.join(__dirname, `../public/subject-uploads/${subFolderName}/${originalFileName}`);
+        const newFilePath = path.join(__dirname, `../public/subject-uploads/${subFolderName}/${sanitizedNewFileName}`);
     
         if (!fs.existsSync(oldFilePath)) {
             return res.json({ success: false, message: 'Original file does not exist.' });
@@ -952,7 +951,7 @@ app.post("/api/renamesubjfile", (req, res) => {
             }
     
             const sqlUpdate = "UPDATE subjectfiles SET custom_name = ?, original_name = ? WHERE custom_name = ?";
-            db.query(sqlUpdate, [newSubFileName, sanitizedNewFileName, selectedSubFile], (err, result) => {
+            db.query(sqlUpdate, [newFileName, sanitizedNewFileName, selectedSubFile], (err, result) => {
                 if (err) {
                     console.error(err);
                     return res.json({ success: false, message: 'Database error while renaming file.' });
@@ -963,6 +962,16 @@ app.post("/api/renamesubjfile", (req, res) => {
         });
     });
 });
+
+//Load Subject Folders in Dashboard
+app.get('/api/recent-subject-folders', async (req, res) => {
+    db.query("SELECT * FROM subjectfolders ORDER BY folderCreation DESC LIMIT 4", (err, result) => {
+        if(err){
+            return res.status(500).json({  error: err.message });
+        }
+        res.json(result);
+    })
+})
 
 ////////////////////////////////////////
 ////// Enrolled Subjects Section //////

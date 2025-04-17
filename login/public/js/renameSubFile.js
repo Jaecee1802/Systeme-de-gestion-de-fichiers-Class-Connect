@@ -4,9 +4,9 @@ renamefile.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const selectedSubFile = document.querySelector("#rename-file-subj-select").value;
-    const newSubFileName = document.querySelector("#rename-file-name").value.trim();
+    const newFileName = document.querySelector("#rename-file-name").value.trim();
 
-    if(selectedSubFile === 'Select File' && !newSubFileName){
+    if(selectedSubFile === 'Select File' && !newFileName){
         alert('Please select a file to rename it');
         return;
     }
@@ -17,7 +17,7 @@ renamefile.addEventListener("submit", async (event) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ selectedSubFile, newSubFileName })
+            body: JSON.stringify({ selectedSubFile, newFileName })
         });
 
         const result = await response.json();
