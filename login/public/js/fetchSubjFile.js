@@ -54,6 +54,19 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <div id="file-info">
                         <img src="${fileIcon}" alt="${fileType} file" class="image is-128x128">
                         <p class="has-text-black has-text-centered mt-2">${fileNameWithExtension}</p>
+                        <div class="dropdown is-right is-hoverable is-active-on-click">
+                        <div class="dropdown-trigger">
+                          <button class="button is-white is-small" aria-haspopup="true" aria-controls="dropdown-menu" data-file="DOCX File Name">
+                            <img src="images/three-dots.png" alt="Three dots">
+                          </button>
+                        </div>
+                        <div class="dropdown-menu" role="menu">
+                          <div class="dropdown-content">
+                            <a href="#" class="dropdown-item rename-file" data-filename="${fileNameWithExtension}">Rename</a>
+                            <a href="#" class="dropdown-item delete-file" data-filename="${fileNameWithExtension}">Delete</a>
+                          </div>
+                        </div>
+                    </div>
                     </div>
                 </div>`;
 

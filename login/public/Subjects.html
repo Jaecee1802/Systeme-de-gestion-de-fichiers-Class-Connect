@@ -82,14 +82,6 @@
             Create Folder
         </button>
 
-        <button class="button ml-2 mb-2" id="delete-button">
-            Delete Folder
-        </button>
-
-        <button class="button ml-2 mb-2" id="rename-button">
-            Rename Folder
-        </button>
-
         <button class="button ml-2 mb-2" id="deadline-button">
             Set Deadline
         </button>
@@ -119,43 +111,6 @@
     </div>
 </div>
 
-<div class="modal" id="delete-subject-folder-modal">
-    <div class="modal-background"></div>
-    <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
-        <button class="close is-pulled-right has-text-black is-size-4" id="close-delete-modal">&times;</button>
-        <h1 class="has-text-black has-text-centered is-size-2-desktop">Delete Folder</h1>
-
-        <form id="delete-subject-folder">
-            <label for="folder-name" class="has-text-black">Type folder name to delete:</label>
-            <input class="input has-background-white my-4 has-text-black" type="text" id="delete-subject-folder-name"/>
-            <button class="has-text-white button is-black mt-4" type="submit">Delete Folder</button>
-        </form>
-
-    </div>
-</div>
-
-<div class="modal" id="rename-subject-folder-modal">
-    <div class="modal-background"></div>
-    <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
-        <button class="close is-pulled-right has-text-black is-size-4" id="close-rename-modal">&times;</button>
-        <h1 class="has-text-black has-text-centered is-size-2-desktop">Select folder to rename</h1>
-
-        <form id="rename-subject-folder">
-            <div>
-                <label for="folder-name" class="has-text-black">Rename the folder:</label>
-            </div>
-            <div class="select is-small">
-                <select id="rename-subject-folder-select">
-                    <option>Select Subject Folder</option> <!--The folder that i've created is not displayed.-->
-                </select>
-            </div>
-            <input class="input has-background-white my-4 has-text-black" type="text" id="rename-subject-folder-name"/>
-            <button class="has-text-white button is-black mt-4" type="submit">Rename</button>
-        </form>
-
-    </div>
-</div>
-
 <div class="modal" id="setdeadline-subject-folder-modal">
     <div class="modal-background"></div>
     <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
@@ -177,9 +132,9 @@
     </div>
 </div>
 
+<script src="js/renameSubFolder.js"></script>
 <script src="js/loadSubjectFolders.js"></script>
 <script src="js/deleteSubjectFolder.js"></script>
-<script src="js/renameSubFolder.js"></script>
 <script src="js/modalSubject.js"></script>
 <script src="js/signOut.js"></script>
 <script src="js/displayAccountname.js"></script>

@@ -11,32 +11,6 @@ closeModal.addEventListener('click', () => {
     modal.classList.remove('is-active');
 });
 
-//Rename Files Modal 
-const openRenameFile = document.getElementById('rename-subject-file-button');
-const closeRenameFile = document.getElementById('close-file-modal');
-const renameFile = document.getElementById('rename-file-modal');
-
-openRenameFile.addEventListener('click', () => {
-    renameFile.classList.add('is-active');
-});
-
-closeRenameFile.addEventListener('click', () => {
-    renameFile.classList.remove('is-active');
-});
-
-//Delete File Modal 
-const openDeleteFile = document.getElementById('delete-subject-file-button');
-const closeDeleteFile = document.getElementById('close-file-delete-modal');
-const deleteFile = document.getElementById('delete-file-modal');
-
-openDeleteFile.addEventListener('click', () => {
-    deleteFile.classList.add('is-active');
-});
-
-closeDeleteFile.addEventListener('click', () => {
-    deleteFile.classList.remove('is-active');
-})
-
 
 //Download File Modal
 const openDownloadFile = document.getElementById('download-subject-file-button');
@@ -50,3 +24,16 @@ openDownloadFile.addEventListener('click', () => {
 closeDownloadFile.addEventListener('click', () => {
     downloadFile.classList.remove('is-active');
 })
+
+//Delete and Rename Modal
+document.querySelectorAll('.dropdown-trigger button').forEach(button => {
+    button.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const dropdown = button.closest('.dropdown');
+      dropdown.classList.toggle('is-active');
+    });
+  });
+  
+  window.addEventListener('click', () => {
+    document.querySelectorAll('.dropdown.is-active').forEach(drop => drop.classList.remove('is-active'));
+  });
