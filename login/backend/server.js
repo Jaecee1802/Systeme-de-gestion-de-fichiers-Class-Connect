@@ -115,7 +115,7 @@ app.post("/studentsignup", (req, res) =>{
 
 //Students Sign-up
 
-//Dashboard Route(Admin)
+//Dashboard Route
 app.get("/dashboard", (req, res) => {
     res.sendFile(path.join(__dirname, "../public/Dashboard.html"));
 })
