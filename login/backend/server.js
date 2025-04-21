@@ -731,7 +731,7 @@ app.post('/api/renamesubjectfolder', (req, res) => {
             }
             return res.json({ success: true, message: 'Subject Folder Renamed.' });
         })
-        db.query("UPDATE subjectfiles SET folder_name = ? WHERE folder_name = ?", [newFolderName, selectedFolder], (err, result) => {
+        db.query("UPDATE subjectfiles SET folder_name = ? WHERE folder_name = ?", [newSubjectName, selectedSubject], (err, result) => {
             if (err) {
                 console.error(err);
                 return res.json({ success: false, message: 'Database error updating files table.' });
