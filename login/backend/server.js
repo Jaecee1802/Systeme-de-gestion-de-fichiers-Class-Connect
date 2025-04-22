@@ -806,7 +806,7 @@ app.post("/subjupload", subUpload.single("file"), (req, res) => {
         return res.status(400).json({ message: "Missing file or data" });
     }
 
-    const folderPath = path.join(__dirname, `../public/subject-uploads/${subjectFolderName}`);
+    const folderPath = path.join(__dirname, `../public/enrolled_uploads/${subjectFolderName}`);
     if (!fs.existsSync(folderPath)) {
         console.log("Creating folder:", folderPath);
         fs.mkdirSync(folderPath, { recursive: true });
@@ -823,7 +823,7 @@ app.post("/subjupload", subUpload.single("file"), (req, res) => {
 
         console.log("File moved successfully.");
 
-        const filePath = `subject-uploads/${subjectFolderName}/${req.file.filename}`;
+        const filePath = `enrolled_uploads/${subjectFolderName}/${req.file.filename}`;
         const sql =
             "INSERT INTO subjectfiles (custom_name, original_name, file_path, folder_name, upload_date) VALUES (?, ?, ?, ?, ?)";
 
@@ -843,7 +843,7 @@ app.post("/subjupload", subUpload.single("file"), (req, res) => {
 });
 
 
-app.use("/subjuploads", express.static(path.join(__dirname, "../public/subject-uploads")));
+app.use("/subjuploads", express.static(path.join(__dirname, "../public/enrolled_uploads")));
 
 //Display the File in Subject Folder
 app.get("/subjfiles", (req, res) => {
@@ -920,7 +920,7 @@ app.get("/api/subjfileslist", (req, res) => {
 })
 
 app.post("/api/renamesubjfile", (req, res) => {
-    const { selectedSubFile, newFileName, } = req.body;
+    const { selectedSubFile, newFileName } = req.body;
 
     const sqlSelect = "SELECT folder_name, original_name FROM subjectfiles WHERE custom_name = ?";
     db.query(sqlSelect, [selectedSubFile], (err, results) => {
@@ -931,32 +931,35 @@ app.post("/api/renamesubjfile", (req, res) => {
         if (results.length === 0) {
             return res.json({ success: false, message: 'File not found.' });
         }
-        
-        const subFolderName = results[0].folder_name;
-        const originalFileName = results[0].original_name; 
-        const fileExtension = path.extname(originalFileName); // File extension
-        const sanitizedNewFileName = newFileName.replace(/\s+/g, '_') + fileExtension; // Ensure new name has the file extension
-    
-        const oldFilePath = path.join(__dirname, `../public/subject-uploads/${subFolderName}/${originalFileName}`);
-        const newFilePath = path.join(__dirname, `../public/subject-uploads/${subFolderName}/${sanitizedNewFileName}`);
-    
+
+        const folderName = results[0].folder_name;
+        const originalFileName = results[0].original_name;
+        const fileExtension = path.extname(originalFileName);
+        const sanitizedNewFileName = newFileName.replace(/\s+/g, '_') + fileExtension;
+
+        const oldFilePath = path.join(__dirname, `../public/enrolled_uploads/${folderName}/${originalFileName}`);
+        const newFilePath = path.join(__dirname, `../public/enrolled_uploads/${folderName}/${sanitizedNewFileName}`);
+
+        console.log("Old File Path:", oldFilePath);
+        console.log("New File Path:", newFilePath);
+
         if (!fs.existsSync(oldFilePath)) {
             return res.json({ success: false, message: 'Original file does not exist.' });
         }
-    
+
         fs.rename(oldFilePath, newFilePath, (err) => {
             if (err) {
                 console.error(`File system error: ${err}`);
                 return res.json({ success: false, message: 'File rename failed.' });
             }
-    
+
             const sqlUpdate = "UPDATE subjectfiles SET custom_name = ?, original_name = ? WHERE custom_name = ?";
             db.query(sqlUpdate, [newFileName, sanitizedNewFileName, selectedSubFile], (err, result) => {
                 if (err) {
                     console.error(err);
                     return res.json({ success: false, message: 'Database error while renaming file.' });
                 }
-    
+
                 return res.json({ success: true, message: 'File renamed successfully.' });
             });
         });

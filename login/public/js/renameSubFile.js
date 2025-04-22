@@ -6,7 +6,7 @@ renamefile.addEventListener("submit", async (event) => {
     const selectedSubFile = document.querySelector("#rename-file-subj-select").value;
     const newFileName = document.querySelector("#rename-file-name").value.trim();
 
-    if(selectedSubFile === 'Select File' && !newFileName){
+    if(selectedSubFile === 'Select File' || !newFileName){
         alert('Please select a file to rename it');
         return;
     }
