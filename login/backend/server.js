@@ -8,6 +8,7 @@ const hash  = require("crypto");
 const fs = require("fs");
 const multer = require("multer");
 const archiver = require('archiver');
+const zip = require('express-zip');
 
 const app = express();
 dotenv.config();
@@ -630,8 +631,8 @@ app.post("/api/renamefile", (req, res) => {
 });
 //Rename File
 
-//Download File
-//Download File
+//Download File(s)
+//Download File(s)
 
 //////////////////////////////
 ////// MY FILES SECTION //////
