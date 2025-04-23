@@ -644,7 +644,7 @@ app.get('/listFolders', (req, res) => {
 });
 
 app.get('/downloadFolder', (req, res) => {
-    const folderName = req.query;
+    const folderName = req.query.folderName;
     if (!folderName) return res.status(400).send('Folder name is required.');
 
     const folderPath = path.join(__dirname, `../public/uploads/${folderName}`);
