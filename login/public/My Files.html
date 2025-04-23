@@ -178,14 +178,23 @@
     <div class="modal-background"></div>
     <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
         <button class="close is-pulled-right has-text-black is-size-4" id="close-download-file-modal">&times;</button>
-        <h1 class="has-text-black has-text-centered is-size-2-desktop">Select a file to Download</h1>
+        <h1 class="has-text-black has-text-centered is-size-2-desktop">Select a folder to Download</h1>
 
         <form action="/downloadAll" method="get" id="download-select-file">
             <div>
-                <label for="folder-name" class="has-text-black">Pick a file to download:</label>
+                <label for="folder-name" class="has-text-black">Pick a folder to download:</label>
             </div>
-            <input type="hidden" name="folderName" value="">
-            <button class="has-text-white button is-black mt-4" type="submit">Download all Folders</button>
+
+            <div class="select is-small">
+                <select id="rename-folder-select">
+                    <option>Select Folder</option> <!--The folder that i've created is not displayed.-->
+                </select>
+            </div>
+
+            <div>
+                <input type="hidden" name="folderName" value="">
+                <button class="has-text-white button is-black mt-4" type="submit">Download Selected Folder</button>
+            </div>
         </form>
 
     </div>
@@ -200,4 +209,17 @@
 <script src="js/deleteFolder.js"></script>
 <script src="js/displayAccountname.js"></script>
 <script src="js/searchFolde.js"></script>
+<script>
+    fetch('/listFolders')
+        .then(res => res.json())
+        .then(folders => {
+            const select = document.getElementById('rename-folder-select');
+            folders.forEach(folder => {
+                const option = document.createElement('option');
+                option.value = folder;
+                option.textContent = folder;
+                select.appendChild(option);
+            });
+        });
+</script>
 </html>

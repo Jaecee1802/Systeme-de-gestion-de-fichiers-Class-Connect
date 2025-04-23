@@ -632,33 +632,56 @@ app.post("/api/renamefile", (req, res) => {
 //Rename File
 
 //Download All Folders
-app.get("/downloadAll", (req, res) => {
-    const folderPath = path.join(__dirname, 'public', 'uploads');
-    const archiveName = 'all-files.zip';
+app.get('/listFolders', (req, res) => {
+    const uploadsDir = path.join(__dirname, 'public', 'uploads');
+
+    fs.readdir(uploadsDir, { withFileTypes: true }, (err, files) => {
+        if (err) {
+            console.error(err);
+            return res.sendStatus(500);
+        }
+
+        const folders = files
+            .filter(dirent => dirent.isDirectory())
+            .map(dirent => dirent.name);
+
+        res.json(folders);
+    });
+});
+
+app.get('/downloadFolder', (req, res) => {
+    const folderName = req.query.folderName;
+    if (!folderName) return res.status(400).send('Folder name is required.');
+
+    const folderPath = path.join(__dirname, 'public', 'uploads', folderName);
+    const archiveName = `${folderName}.zip`;
     const archivePath = path.join(__dirname, archiveName);
 
+    // Check if folder exists
+    if (!fs.existsSync(folderPath)) {
+        return res.status(404).send('Folder not found.');
+    }
+
     const output = fs.createWriteStream(archivePath);
-    const archive = archiver('zip', {
-        zlib: { level: 9 }
-    });
+    const archive = archiver('zip', { zlib: { level: 9 } });
 
     output.on('close', () => {
         res.download(archivePath, archiveName, (err) => {
             if (err) {
-                console.error('Error sending file:', err);
+                console.error('Download error:', err);
                 res.sendStatus(500);
             }
-            // Optional: delete the zip after sending
-            fs.unlinkSync(archivePath);
+            fs.unlinkSync(archivePath); // cleanup
         });
     });
 
     archive.on('error', (err) => {
-        throw err;
+        console.error('Archiving error:', err);
+        res.sendStatus(500);
     });
 
     archive.pipe(output);
-    archive.directory(folderPath, false); // false = don't keep base folder
+    archive.directory(folderPath, folderName); // zip folder with name
     archive.finalize();
 });
 //Download All Folders
