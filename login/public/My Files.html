@@ -180,13 +180,13 @@
         <button class="close is-pulled-right has-text-black is-size-4" id="close-download-file-modal">&times;</button>
         <h1 class="has-text-black has-text-centered is-size-2-desktop">Select a folder to Download</h1>
 
-        <form action="/downloadAll" method="get" id="download-select-file">
+        <form  id="download-select-file">
             <div>
                 <label for="folder-name" class="has-text-black">Pick a folder to download:</label>
             </div>
 
             <div class="select is-small">
-                <select id="rename-folder-select">
+                <select id="download-folder-select">
                     <option>Select Folder</option> <!--The folder that i've created is not displayed.-->
                 </select>
             </div>
@@ -201,6 +201,7 @@
 </div>
 
 </body>
+<script src="js/downloadFile.js"></script>
 <script src="js/modal.js"></script>
 <script src="js/renameFolder.js"></script>
 <script src="js/signOut.js"></script>
@@ -209,17 +210,4 @@
 <script src="js/deleteFolder.js"></script>
 <script src="js/displayAccountname.js"></script>
 <script src="js/searchFolde.js"></script>
-<script>
-    fetch('/listFolders')
-        .then(res => res.json())
-        .then(folders => {
-            const select = document.getElementById('rename-folder-select');
-            folders.forEach(folder => {
-                const option = document.createElement('option');
-                option.value = folder;
-                option.textContent = folder;
-                select.appendChild(option);
-            });
-        });
-</script>
 </html>
