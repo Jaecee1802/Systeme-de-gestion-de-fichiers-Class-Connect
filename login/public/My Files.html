@@ -18,7 +18,7 @@
             border-bottom: 2px solid black;
         }
 
-        #upload-button, #folder-button, #delete-button, #rename-button{
+        #upload-button, #folder-button, #delete-button, #rename-button, #download-file-button{
             height: 40px;
             width: 200px;
             background-color: #1C4E80;
@@ -102,6 +102,10 @@
         <button class="button ml-2 mb-2" id="rename-button">
             Rename Folder
         </button>
+
+        <button class="button ml-2 mb-2" id="download-file-button">
+            Download Folder(s)
+        </button>
     </div>
 
     <div class="container section is-widescreen" id="files">
@@ -165,6 +169,23 @@
             </div>
             <input class="input has-background-white my-4 has-text-black" type="text" id="rename-folder-name"/>
             <button class="has-text-white button is-black mt-4" type="submit">Rename</button>
+        </form>
+
+    </div>
+</div>
+
+<div class="modal" id="download-file-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
+        <button class="close is-pulled-right has-text-black is-size-4" id="close-download-file-modal">&times;</button>
+        <h1 class="has-text-black has-text-centered is-size-2-desktop">Select a file to Download</h1>
+
+        <form id="download-select-file" action="/multipleDownload" method="get">
+            <div>
+                <label for="folder-name" class="has-text-black">Pick a file to download:</label>
+            </div>
+            <input type="hidden" name="folderName" value="">
+            <button class="has-text-white button is-black mt-4" type="submit">Download all Folders</button>
         </form>
 
     </div>

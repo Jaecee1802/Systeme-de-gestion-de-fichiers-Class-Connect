@@ -631,8 +631,11 @@ app.post("/api/renamefile", (req, res) => {
 });
 //Rename File
 
-//Download File(s)
-//Download File(s)
+//Download All Folders
+app.get("/downloadAll", (req, res) => {
+    res.download(__dirname, "../public/uploads");
+});
+//Download All Folders
 
 //////////////////////////////
 ////// MY FILES SECTION //////

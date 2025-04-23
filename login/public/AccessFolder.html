@@ -113,10 +113,6 @@
         <button class="button ml-2 mb-2" id="rename-file-button">
             Rename File
         </button>
-
-        <button class="button ml-2 mb-2" id="download-file-button">
-            Download File(s)
-        </button>
     </div>
 
     <div class="container section is-widescreen" id="files">
@@ -285,32 +281,12 @@
         <button class="close is-pulled-right has-text-black is-size-4" id="close-download-file-modal">&times;</button>
         <h1 class="has-text-black has-text-centered is-size-2-desktop">Select a file to Download</h1>
 
-        <form id="download-select-file">
+        <form id="download-select-file" action="/downloadAll" method="get">
             <div>
-                <label for="folder-name" class="has-text-black">Pick a file to download:</label>
+                <label for="folder-name" class="has-text-black">Pick a folder to download:</label>
             </div>
-
-            <div class="select is-small">
-                <select id="single-download-file-select">
-                    <option>Select File</option> 
-                </select>
-            </div>
-
-            <div>
-                <button class="has-text-white button is-black mt-4" type="submit">Download File</button>
-            </div>
+            <button class="has-text-white button is-black mt-4" type="submit">Download all Files</button>
         </form>
-
-        <div class="mt-2">
-            <label for="folder-name" class="has-text-black">or</label>
-        </div>
-
-        <form id="download-all-files-form">
-            <div>
-                <button class="has-text-white button is-black mt-4" type="submit" id="download-all-files-button">Download All Files</button>
-            </div>
-        </form>
-
 
     </div>
 </div>
