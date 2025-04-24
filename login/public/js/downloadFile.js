@@ -40,16 +40,29 @@ downloadForm.addEventListener('submit', async (event) => {
 
 window.addEventListener('DOMContentLoaded', async () => {
     try {
-        const res = await fetch('/listFolders');
-        const data = await res.json();
+        const response = await fetch('/listFolders');
+        const data = await response.json();
 
-        const select = document.getElementById('download-folder-select');
-        data.files.forEach(file => {
-            const option = document.createElement('option');
-            option.value = file.folderName; // make sure this column exists
-            option.textContent = file.folderName;
-            select.appendChild(option);
-        });
+        if (data.success) {
+            const select = document.getElementById('download-folder-select');
+            select.innerHTML = `<option>Select Folder</option>`;
+
+            // Create a Set to avoid duplicates
+            const folderSet = new Set();
+
+            data.files.forEach(file => {
+                if (!folderSet.has(file.folder_name)) {
+                    folderSet.add(file.folder_name);
+                    const option = document.createElement('option');
+                    option.value = file.folder_name;
+                    option.textContent = file.folder_name;
+                    select.appendChild(option);
+                }
+            });
+        } else {
+            alert('Failed to load folders');
+            console.log('Failed to load folders');
+        }
     } catch (err) {
         console.error('Error fetching folder list:', err);
     }
