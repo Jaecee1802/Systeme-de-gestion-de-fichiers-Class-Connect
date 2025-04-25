@@ -18,11 +18,10 @@ downloadForm.addEventListener('submit', async (event) => {
             throw new Error('Failed to download folder.');
         }
 
-        // Get the zip blob
+
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
 
-        // Create a temporary link to trigger download
         const a = document.createElement('a');
         a.href = url;
         a.download = `${selectedFolder}.zip`;
@@ -47,7 +46,6 @@ window.addEventListener('DOMContentLoaded', async () => {
             const select = document.getElementById('download-folder-select');
             select.innerHTML = `<option>Select Folder</option>`;
 
-            // Create a Set to avoid duplicates
             const folderSet = new Set();
 
             data.files.forEach(file => {

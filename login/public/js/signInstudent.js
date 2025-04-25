@@ -19,7 +19,8 @@ signinStudent.addEventListener('click', async() => {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(studentObj)
+            body: JSON.stringify(studentObj),
+            credentials: "include"
         });
 
         const data = await response.json();
@@ -27,7 +28,7 @@ signinStudent.addEventListener('click', async() => {
         if(response.ok){
             alert(data.message);
             localStorage.setItem("accountName", data.name);
-            window.location.href = "/dashboard";
+            window.location.replace("/studentDashboard");
         }
         else{
             alert(data.message);

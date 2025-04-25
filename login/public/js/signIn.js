@@ -20,7 +20,8 @@ signinButtonteacher.addEventListener('click', async() => {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(signInObj)
+            body: JSON.stringify(signInObj),
+            credentials: "include"
         });
 
         const data = await response.json();
@@ -28,7 +29,7 @@ signinButtonteacher.addEventListener('click', async() => {
         if(response.ok){
             alert(data.message);
             localStorage.setItem("accountName", data.name);
-            window.location.href = "/dashboard";
+            window.location.replace("/dashboard");
         }
         else{
             alert(data.message);

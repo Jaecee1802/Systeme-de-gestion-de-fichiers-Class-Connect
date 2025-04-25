@@ -7,8 +7,9 @@ signOut.addEventListener('click', async (e) => {
         const response = await fetch("/signout", {
             method: "POST",
             headers: {
-                "Content-Type": 'text/html',
-            }
+                "Content-Type": 'application/json',
+            },
+             credentials: "include"
         });
 
         if(response.ok){

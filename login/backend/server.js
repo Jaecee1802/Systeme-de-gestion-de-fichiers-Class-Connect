@@ -9,11 +9,31 @@ const fs = require("fs");
 const multer = require("multer");
 const archiver = require('archiver');
 const zip = require('express-zip');
+const session = require("express-session");
 
 const app = express();
 dotenv.config();
+
+app.use((req, res, next) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
+    next();
+});
+
+app.use(session({
+    secret: process.env.SECRET_KEY,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 3600000 } //1 hour
+}))
+
+
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:3000",
+    credentials: true
+}));
 app.use(express.static(path.join(__dirname, "../public")));
 
 const PORT = process.env.PORT || 3000;
@@ -30,12 +50,20 @@ db.connect(err => {
         console.log(`Database connection error: ${err}`);
     }
     else{
-        console.log("Database connected");
+        console.log("Database Connected!");
     }
 });
 
+const noCache = (req, res, next) => {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
+    next();
+}
+
+
 //Teachers Sign-up
-app.get("/teachers", (req, res) => {
+app.get("/teachers", noCache, (req, res) => {
     res.sendFile(path.join(__dirname, "../public/sign-up(teacher).html"));
 })
 
@@ -59,7 +87,7 @@ app.post("/signup", (req, res) => {
             }
 
             const hashedPassword = bcrypt.hashSync(password, 10);
-
+           
             // Insert new user/teacher if the data doesn't exist
             const sql = "INSERT INTO teachers (teacherName, teacherEmail, teacherPassword, department) VALUES (?, ?, ?, ?)";
             db.query(sql, [name, email, hashedPassword, department], (err, result) => {
@@ -78,7 +106,7 @@ app.post("/signup", (req, res) => {
 //Teachers Sign-up
 
 //Students Sign-up
-app.get("/students", (req, res) => {
+app.get("/students", noCache, (req, res) => {
     res.sendFile(path.join(__dirname, "../public/sign-up.html"));
 })
 
@@ -116,13 +144,37 @@ app.post("/studentsignup", (req, res) =>{
 
 //Students Sign-up
 
-//Dashboard Route
+//Dashboard Route(Teachers)
 app.get("/dashboard", (req, res) => {
-    res.sendFile(path.join(__dirname, "../public/Dashboard.html"));
+    if (req.session.teacher) {
+        res.sendFile(path.join(__dirname, "../public/Dashboard.html"));
+    } else {
+        res.status(401).json({ message: "Session not active" });
+    }
+})
+
+//Dashboard Route(Students)
+app.get("/studentDashboard", (req, res) => {
+    if(req.session.student){
+        res.sendFile(path.join(__dirname, "../public/Dashboard.html"));
+    }
+    else{
+        res.status(401).json({ message: "Session not active" });
+    }
+})
+
+//Dashboard Route(Admin)
+app.get("/adminDashboard", (req, res) => {
+    if(req.session.admin){
+        res.sendFile(path.join(__dirname, "../public/Dashboard.html"));
+    }
+    else{
+        res.status(401).json({ message: "Session not active" });
+    }
 })
 
 //Sign In Teachers
-app.get("/teachersign", (req, res) => {
+app.get("/teachersign", noCache,  (req, res) => {
     res.sendFile(path.join(__dirname, "../public/sign-in(teacher).html"));
 })
 
@@ -152,14 +204,23 @@ app.post("/teacherSignedin", (req, res) => {
         if(!passwordMatch){
             return res.status(401).json({ message: "Password is invalid or wrong!"});
         }
-        res.status(200).json({ message: "You're signed in!", name: user.teacherName });
+
+        if(passwordMatch){
+            req.session.teacher = {
+                id: user.teacherID,
+                name: user.teacherName,
+                email: user.teacherEmail,
+                department: user.department
+            };
+            res.status(200).json({ message: "You're signed in!", name: user.teacherName });
+        }
     })
 })
 
 //Sign in teachers
 
 //Sign in Students
-app.get("/", (req, res) => {
+app.get("/", noCache, (req, res) => {
     res.sendFile(path.join(__dirname, "../public/sign-in.html"))
 })
 
@@ -193,6 +254,16 @@ app.post("/studentSignin", (req, res) => {
             return res.status(401).json({ message: "Password is invalid or wrong!"});
         }
 
+        if(passwordMatch){
+            req.session.student = {
+                id: user.studID,
+                name: user.studentName,
+                email: user.studentEmail,
+                course: user.course,
+                section: user.section
+            }
+        }
+
         res.status(200).json({ message: "You're signed in!", name: user.studentName });
 
     })
@@ -201,7 +272,7 @@ app.post("/studentSignin", (req, res) => {
 
 
 //Admin and Data Extractor(for admins)
-app.get("/admin", (req, res) => {
+app.get("/admin", noCache, (req, res) => {
     res.sendFile(path.join(__dirname, "../public/sign-in(admin).html"));
 })
 
@@ -229,6 +300,13 @@ app.post("/adminsignedin", (req, res) => {
 
         if(!passwordMatch){
             return res.status(401).json({ message: "Password is invalid or wrong!"});
+        }
+
+        if(passwordMatch){
+            req.session.admin = {
+                id: user.adminID,
+                username: user.adminUsername
+            }
         }
         res.status(200).json({ message: "You're signed in!", admin: user.adminUsername });
     })
@@ -260,7 +338,14 @@ app.post("/insertadmin", (req, res) => {
 
 //Sign out(with Session)
 app.post("/signout", (req, res) => {
-        res.json({ message: "You're signed out!" });
+       req.session.destroy((err) => {
+           if(err){
+               console.error(err);
+               return res.status(500).json({ message: "Error signing out."});
+           }
+           res.clearCookie("connect.sid");
+           res.status(200).json({ message: "You're signed out!"});
+       })
 });
 //Sign out
 

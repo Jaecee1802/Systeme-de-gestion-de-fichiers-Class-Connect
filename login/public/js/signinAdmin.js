@@ -15,14 +15,15 @@ adminSign.addEventListener('click', async() => {
             headers:{
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(adminSignObj)
+            body: JSON.stringify(adminSignObj),
+            credentials: "include"
         });
 
         const data = await response.json();
 
         if(response.ok){
             alert(data.message);
-            window.location.href = "/dashboard";
+            window.location.replace("/adminDashboard");
         }
         else{
             alert(data.message);
