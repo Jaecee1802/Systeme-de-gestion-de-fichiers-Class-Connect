@@ -149,7 +149,7 @@ app.get("/dashboard", (req, res) => {
     if (req.session.teacher) {
         res.sendFile(path.join(__dirname, "../public/Dashboard.html"));
     } else {
-        res.status(401).json({ message: "Session not active" });
+        res.redirect("/");
     }
 })
 
@@ -159,7 +159,7 @@ app.get("/studentDashboard", (req, res) => {
         res.sendFile(path.join(__dirname, "../public/Dashboard.html"));
     }
     else{
-        res.status(401).json({ message: "Session not active" });
+        res.redirect("/");
     }
 })
 
@@ -169,7 +169,7 @@ app.get("/adminDashboard", (req, res) => {
         res.sendFile(path.join(__dirname, "../public/Dashboard.html"));
     }
     else{
-        res.status(401).json({ message: "Session not active" });
+        res.redirect("/");
     }
 })
 
