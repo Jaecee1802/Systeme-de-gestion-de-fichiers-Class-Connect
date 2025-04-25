@@ -120,6 +120,45 @@ app.get("/dashboard", (req, res) => {
     res.sendFile(path.join(__dirname, "../public/Dashboard.html"));
 })
 
+//My Files Route(admin)
+app.get("/MyFiles", (req, res) => {
+    if(req.session.admin){
+        res.sendFile(path.join(__dirname, "../public/My Files.html"));
+    }
+    else{
+        res.redirect("/");
+    }
+})
+
+//Grades Route(admin)
+app.get("/Grades", (req, res) => {
+    if(req.session.admin){
+        res.sendFile(path.join(__dirname, "../public/Grades.html"));
+    }
+    else{
+        res.redirect("/");
+    }
+})
+
+//Settings Route(admin)
+app.get("/Settings", (req, res) => {
+    if(req.session.admin){
+        res.sendFile(path.join(__dirname, "../public/Grades.html"));
+    }
+    else{
+        res.redirect("/");
+    }
+})
+
+app.get("/Subjects", (req, res) => {
+    if(req.session.admin){
+        res.sendFile(path.join(__dirname, "../public/Subjects.html"));
+    }
+    else{
+        res.redirect("/");
+    }
+})
+
 //Sign In Teachers
 app.get("/teachersign", (req, res) => {
     res.sendFile(path.join(__dirname, "../public/sign-in(teacher).html"));
