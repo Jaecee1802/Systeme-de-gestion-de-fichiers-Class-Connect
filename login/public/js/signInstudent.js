@@ -28,7 +28,7 @@ signinStudent.addEventListener('click', async() => {
         if(response.ok){
             alert(data.message);
             localStorage.setItem("accountName", data.name);
-            window.location.replace("/studentDashboard");
+            window.location.replace("/dashboard");
         }
         else{
             alert(data.message);

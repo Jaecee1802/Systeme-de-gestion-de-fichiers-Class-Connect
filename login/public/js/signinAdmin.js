@@ -23,7 +23,7 @@ adminSign.addEventListener('click', async() => {
 
         if(response.ok){
             alert(data.message);
-            window.location.replace("/adminDashboard");
+            window.location.replace("/dashboard");
         }
         else{
             alert(data.message);

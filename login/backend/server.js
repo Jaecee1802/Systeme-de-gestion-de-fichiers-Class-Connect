@@ -144,29 +144,81 @@ app.post("/studentsignup", (req, res) =>{
 
 //Students Sign-up
 
-//Dashboard Route(Teachers)
-app.get("/dashboard", (req, res) => {
+//Dashboard Route
+app.get("/dashboard", noCache,(req, res) => {
     if (req.session.teacher) {
         res.sendFile(path.join(__dirname, "../public/Dashboard.html"));
-    } else {
+    }
+    else if(req.session.student){
+        res.sendFile(path.join(__dirname, "../public/Dashboard.html"));
+    }
+    else if(req.session.admin){
+        res.sendFile(path.join(__dirname, "../public/Dashboard.html"));
+    }
+     else {
         res.redirect("/");
     }
 })
 
-//Dashboard Route(Students)
-app.get("/studentDashboard", (req, res) => {
-    if(req.session.student){
-        res.sendFile(path.join(__dirname, "../public/Dashboard.html"));
+
+//Subject Route
+app.get("/subjectRoute", noCache, (req, res) => {
+    if(req.session.admin){
+        res.sendFile(path.join(__dirname, "../public/Subjects.html"));
+    }
+    else if(req.session.teacher){
+        res.sendFile(path.join(__dirname, "../public/Subjects.html"));
+    }
+    else if(req.session.student){
+        res.sendFile(path.join(__dirname, "../public/Subjects.html"));
     }
     else{
         res.redirect("/");
     }
 })
 
-//Dashboard Route(Admin)
-app.get("/adminDashboard", (req, res) => {
+//My Files Route
+app.get("/myfilesRoute", noCache, (req, res) => {
     if(req.session.admin){
-        res.sendFile(path.join(__dirname, "../public/Dashboard.html"));
+        res.sendFile(path.join(__dirname, "../public/My Files.html"));
+    }
+    else if(req.session.teacher){
+        res.sendFile(path.join(__dirname, "../public/My Files.html"));
+    }
+    else if(req.session.student){
+        res.sendFile(path.join(__dirname, "../public/My Files.html"));
+    }
+    else{
+        res.redirect("/");
+    }
+})
+
+//Grades Route
+app.get("/gradesRoute", noCache, (req, res) => {
+    if(req.session.admin){
+        res.sendFile(path.join(__dirname, "../public/Grades.html"));
+    }
+    else if(req.session.teacher){
+        res.sendFile(path.join(__dirname, "../public/Grades.html"));
+    }
+    else if(req.session.student){
+        res.sendFile(path.join(__dirname, "../public/Grades.html"));
+    }
+    else{
+        res.redirect("/");
+    }
+})
+
+//Settings Route
+app.get("/settingsRoute", noCache, (req, res) => {
+    if(req.session.admin){
+        res.sendFile(path.join(__dirname, "../public/Settings.html"));
+    }
+    else if(req.session.teacher){
+        res.sendFile(path.join(__dirname, "../public/Settings.html"));
+    }
+    else if(req.session.student){
+        res.sendFile(path.join(__dirname, "../public/Settings.html"));
     }
     else{
         res.redirect("/");
@@ -1087,5 +1139,5 @@ app.get('/api/recent-subject-folders', async (req, res) => {
 ////// Enrolled Subjects Section //////
 ///////////////////////////////////////
 app.listen(PORT, () => {
-    console.log("Server is running on port 3000");
+    console.log("Server is running on port 3100");
 });
