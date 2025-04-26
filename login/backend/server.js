@@ -60,8 +60,6 @@ const noCache = (req, res, next) => {
     res.setHeader("Expires", "0");
     next();
 }
-
-
 //Teachers Sign-up
 app.get("/teachers", noCache, (req, res) => {
     res.sendFile(path.join(__dirname, "../public/sign-up(teacher).html"));
