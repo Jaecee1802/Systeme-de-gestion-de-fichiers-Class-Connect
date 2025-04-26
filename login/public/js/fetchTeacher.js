@@ -32,7 +32,8 @@ signUpButt.addEventListener('click', async() => {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(teacherObj)
+            body: JSON.stringify(teacherObj),
+            credentials: "include"
         });
 
         const data = await response.json();
@@ -40,7 +41,7 @@ signUpButt.addEventListener('click', async() => {
         if(response.ok){
             alert("Successfully signed up!");
             localStorage.setItem("accountName", data.name);
-            window.location.href = "/dashboard";
+            window.location.replace("/dashboard");
         }
         else{
             alert("Error: " + data.message);

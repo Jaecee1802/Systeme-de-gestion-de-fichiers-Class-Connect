@@ -41,7 +41,8 @@ studButton.addEventListener('click', async() => {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(studentObj)
+            body: JSON.stringify(studentObj),
+            credentials: "include"
         });
 
         const data = await response.json();
@@ -49,7 +50,7 @@ studButton.addEventListener('click', async() => {
         if(response.ok){
             alert("Successfully signed up!");
             localStorage.setItem("accountName", data.name);
-            window.location.href = "/dashboard";
+            window.location.replace("/dashboard");
         }
         else{
             alert("Error: " + data.message);

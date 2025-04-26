@@ -93,7 +93,13 @@ app.post("/signup", (req, res) => {
                     console.log(`Error: ${err}`);
                     return res.status(500).json({ message: "Database error" });
                 }
-                res.status(201).json({ message: "Successfully signed up!" });
+                req.session.teacher = {
+                    id: result.insertId,
+                    name,
+                    email,
+                    department
+                };
+                res.status(201).json({ message: "Successfully signed up!", name });
             });
         });
     } catch (err) {
@@ -135,7 +141,15 @@ app.post("/studentsignup", (req, res) =>{
                 console.error(`Database error: ${err}`);
                 return res.status(500).json({ message: "Database error" });
             }
-            res.status(201).json({ message: "Successfully signed up!", name: user.studentName });
+            req.session.student = {
+                id: result.insertId,
+                name,
+                email,
+                studentID,
+                course,
+                section
+            };
+            res.status(201).json({ message: "Successfully signed up!", name });
         });
     });
 })
