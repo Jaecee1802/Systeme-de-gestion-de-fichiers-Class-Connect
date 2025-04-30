@@ -419,9 +419,16 @@ app.post("/signout", (req, res) => {
 
 //Load Folders//
 app.get('/api/folders', async(req, res) => {
-    db.query("SELECT * FROM folders", (err, result) => {
-        if(err){
-            return res.status(500).json({  error: err.message });
+    const userId = req.session.teacher ? req.session.teacher.id : req.session.student ? req.session.student.id : null;
+    const role = req.session.teacher ? 'teacher' : req.session.student ? 'student' : null;
+
+    if (!userId || !role) {
+        return res.status(401).json({ message: 'You must be logged in to view folders' });
+    }
+
+    db.query("SELECT * FROM folders WHERE ownerID = ? AND ownerRole = ?", [userId, role], (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
         }
         res.json(result);
     });
@@ -442,22 +449,44 @@ app.get('/api/recent-folders', async (req, res) => {
 //Create Folder//
 app.post('/api/createfolder', (req, res) => {
     const { folderName } = req.body;
+    
+    let role = null;
+    let userId = null;
+
+    if (req.session.teacher) {
+        role = 'teacher';
+        userId = req.session.teacher.id;
+    } else if (req.session.student) {
+        role = 'student';
+        userId = req.session.student.id;
+    } else if (req.session.admin) {
+        role = 'admin';
+        userId = req.session.admin.id;
+    }
+
+    console.log('Detected Role:', role, '| User ID:', userId); 
+
+    if (!userId || !role) {
+        return res.status(401).json({ message: 'You must be logged in to create a folder' });
+    }
+
     const folderPath = path.join(__dirname, `../public/uploads/${folderName}`);
 
     fs.mkdir(folderPath, { recursive: true }, (err) => {
-        if(err){
+        if (err) {
             return res.json({ success: false, message: 'Folder creation failed' });
         }
 
-        db.query("INSERT INTO folders (name) VALUES (?)", [folderName], (err, result) => {
-            if(err){
+        const sql = "INSERT INTO folders (name, ownerID, ownerRole) VALUES (?, ?, ?)";
+        db.query(sql, [folderName, userId, role], (err, result) => {
+            if (err) {
                 console.error(err);
                 return res.json({ success: false, message: 'Database error.' });
             }
             return res.json({ success: true, message: 'Folder created.' });
-        })
-    })
-})
+        });
+    });
+});
 //Create Folder//
 
 //Search Folder

@@ -19,6 +19,14 @@ signUpButt.addEventListener('click', async() => {
         return;
     }
 
+    const allowedDomains = ['gmail.com', 'epcst.edu.ph'];
+    const emailDomain = inputEmail.split('@')[1];
+
+    if (!allowedDomains.includes(emailDomain)) {
+        alert("Only Gmail or epcst.edu.ph(Microsoft) email addresses are allowed.");
+        return;
+    }   
+
     const teacherObj = {
         name: inputName,
         email: inputEmail,
