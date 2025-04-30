@@ -18,7 +18,7 @@
             border-bottom: 2px solid black;
         }
 
-        #upload-button, #folder-button, #delete-button, #rename-button, #deadline-button{
+        #upload-button, #folder-button, #delete-button, #rename-button, #deadline-button, #download-file-button{
             height: 40px;
             width: 200px;
             background-color: #1C4E80;
@@ -88,6 +88,10 @@
 
         <button class="button ml-2 mb-2" id="rename-button">
             Rename Folder
+        </button>
+
+        <button class="button ml-2 mb-2" id="download-file-button">
+            Download a Folder
         </button>
 
         <button class="button ml-2 mb-2" id="deadline-button">
@@ -177,8 +181,36 @@
     </div>
 </div>
 
+<div class="modal" id="download-file-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
+        <button class="close is-pulled-right has-text-black is-size-4" id="close-download-file-modal">&times;</button>
+        <h1 class="has-text-black has-text-centered is-size-2-desktop">Select a folder to Download</h1>
+
+        <form  id="download-select-folder">
+            <div>
+                <label for="folder-name" class="has-text-black">Pick a folder to download:</label>
+            </div>
+
+            <div class="select is-small">
+                <select id="download-folder-select">
+                    <option>Select Folder</option> <!--The folder that i've created is not displayed.-->
+                </select>
+            </div>
+
+            <div>
+                <input type="hidden" name="folderName" value="">
+                <button class="has-text-white button is-black mt-4" type="submit" id="download-button">Download Selected Folder</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
 <script src="js/loadSubjectFolders.js"></script>
 <script src="js/deleteSubjectFolder.js"></script>
+<script src="js/downloadSubFolder.js"></script>
 <script src="js/renameSubFolder.js"></script>
 <script src="js/modalSubject.js"></script>
 <script src="js/signOut.js"></script>

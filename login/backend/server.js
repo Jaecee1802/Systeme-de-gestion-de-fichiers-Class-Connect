@@ -577,6 +577,74 @@ app.get('/api/folder/:folderName/files', (req, res) => {
 })
 //Access Folder
 
+//Download All Folders
+app.get('/listFolders', (req, res) => {
+    const sql = "SELECT * FROM files";
+    db.query(sql, (err, results) => {
+        if(err){
+            console.error(`Database error: ${err}`);
+        }
+
+        res.json({ success: true, files: results });
+    })
+});
+
+
+//Download All Folders
+app.get('/downloadFolder', (req, res) => {
+    const folderName = req.query.folderName;
+    if (!folderName) return res.status(400).send('Folder name is required.');
+
+    const archiveName = `${folderName}.zip`;
+    const archivePath = path.join(__dirname, archiveName);
+
+    const output = fs.createWriteStream(archivePath);
+    const archive = archiver('zip', { zlib: { level: 9 } });
+
+    output.on('close', () => {
+        res.download(archivePath, archiveName, (err) => {
+            if (err) {
+                console.error('Download error:', err);
+                res.sendStatus(500);
+            }
+            fs.unlinkSync(archivePath); // cleanup
+        });
+    });
+
+    archive.on('error', (err) => {
+        console.error('Archiving error:', err);
+        res.sendStatus(500);
+    });
+
+    archive.pipe(output);
+
+    const query = 'SELECT file_path, custom_name, original_name FROM files WHERE folder_name = ?';
+
+    db.query(query, [folderName], (err, results) => {
+        if (err) {
+            console.error('Database query error:', err);
+            res.sendStatus(500);
+            return;
+        }
+
+        if (results.length === 0) {
+            res.status(404).send('No files found for this folder.');
+            return;
+        }
+
+        results.forEach(file => {
+            const fullPath = path.join(__dirname, '../public', file.file_path);
+            if (fs.existsSync(fullPath)) {
+                const ext = path.extname(file.original_name);
+                const customFileName = `${file.custom_name}${ext}`;
+                archive.file(fullPath, { name: `${folderName}/${customFileName}` });
+            }
+        });
+
+        archive.finalize();
+    });
+});
+
 ///////////////////////////////////////////////////
 //FILES SECTION////////////////////////////////////
 ///////////////////////////////////////////////////
@@ -780,55 +848,6 @@ app.post("/api/renamefile", (req, res) => {
 });
 //Rename File
 
-//Download All Folders
-app.get('/listFolders', (req, res) => {
-    const sql = "SELECT * FROM files";
-    db.query(sql, (err, results) => {
-        if(err){
-            console.error(`Database error: ${err}`);
-        }
-
-        res.json({ success: true, files: results });
-    })
-});
-
-app.get('/downloadFolder', (req, res) => {
-    const folderName = req.query.folderName;
-    if (!folderName) return res.status(400).send('Folder name is required.');
-
-    const folderPath = path.join(__dirname, `../public/uploads/${folderName}`);
-    const archiveName = `${folderName}.zip`;
-    const archivePath = path.join(__dirname, archiveName);
-
-    // Check if folder exists
-    if (!fs.existsSync(folderPath)) {
-        return res.status(404).send('Folder not found.');
-    }
-
-    const output = fs.createWriteStream(archivePath);
-    const archive = archiver('zip', { zlib: { level: 9 } });
-
-    output.on('close', () => {
-        res.download(archivePath, archiveName, (err) => {
-            if (err) {
-                console.error('Download error:', err);
-                res.sendStatus(500);
-            }
-            fs.unlinkSync(archivePath); // cleanup
-        });
-    });
-
-    archive.on('error', (err) => {
-        console.error('Archiving error:', err);
-        res.sendStatus(500);
-    });
-
-    archive.pipe(output);
-    archive.directory(folderPath, folderName); // zip folder with name
-    archive.finalize();
-});
-//Download All Folders
-
 //////////////////////////////
 ////// MY FILES SECTION //////
 //////////////////////////////
@@ -964,6 +983,62 @@ app.get('/api/folder/:subjectFolderName/files', (req, res) => {
         res.json(files);
     })
 })
+
+//Download All Folders
+app.get('/downloadSubFolder', (req, res) => {
+    const folderName = req.query.folderName;
+    if (!folderName) return res.status(400).send('Folder name is required.');
+
+    const archiveName = `${folderName}.zip`;
+    const archivePath = path.join(__dirname, archiveName);
+
+    const output = fs.createWriteStream(archivePath);
+    const archive = archiver('zip', { zlib: { level: 9 } });
+
+    output.on('close', () => {
+        res.download(archivePath, archiveName, (err) => {
+            if (err) {
+                console.error('Download error:', err);
+                res.sendStatus(500);
+            }
+            fs.unlinkSync(archivePath);
+        });
+    });
+
+    archive.on('error', (err) => {
+        console.error('Archiving error:', err);
+        res.sendStatus(500);
+    });
+
+    archive.pipe(output);
+
+    const query = 'SELECT file_path, custom_name, original_name FROM subjectfiles WHERE folder_name = ?';
+
+    db.query(query, [folderName], (err, results) => {
+        if (err) {
+            console.error('Database query error:', err);
+            res.sendStatus(500);
+            return;
+        }
+
+        if (results.length === 0) {
+            res.status(404).send('No files found for this folder.');
+            return;
+        }
+
+        results.forEach(file => {
+            const fullPath = path.join(__dirname, '../public', file.file_path);
+            if (fs.existsSync(fullPath)) {
+                const ext = path.extname(file.original_name);
+                const customFileName = `${file.custom_name}${ext}`;
+                archive.file(fullPath, { name: `${folderName}/${customFileName}` });
+            }
+        });
+
+        archive.finalize();
+    });
+});
+
 
 //Upload Subject File
 const uploadSubDir = path.join(__dirname, `../public/subject-uploads`);
