@@ -10,7 +10,7 @@ downloadForm.addEventListener('submit', async (event) => {
     }
 
     try {
-        const response = await fetch(`/downloadSubFolder?folderName=${encodeURIComponent(selectedFolder)}`, {
+        const response = await fetch(`/downloadSubFolder?subjectFolderName=${encodeURIComponent(selectedFolder)}`, {
             method: 'GET'
         });
 

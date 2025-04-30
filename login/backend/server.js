@@ -986,10 +986,10 @@ app.get('/api/folder/:subjectFolderName/files', (req, res) => {
 
 //Download All Folders
 app.get('/downloadSubFolder', (req, res) => {
-    const folderName = req.query.folderName;
-    if (!folderName) return res.status(400).send('Folder name is required.');
+    const subjectFolderName = req.query.folderName; // fixed key
+    if (!subjectFolderName) return res.status(400).send('Folder name is required.');
 
-    const archiveName = `${folderName}.zip`;
+    const archiveName = `${subjectFolderName}.zip`;
     const archivePath = path.join(__dirname, archiveName);
 
     const output = fs.createWriteStream(archivePath);
@@ -1014,7 +1014,7 @@ app.get('/downloadSubFolder', (req, res) => {
 
     const query = 'SELECT file_path, custom_name, original_name FROM subjectfiles WHERE folder_name = ?';
 
-    db.query(query, [folderName], (err, results) => {
+    db.query(query, [subjectFolderName], (err, results) => {
         if (err) {
             console.error('Database query error:', err);
             res.sendStatus(500);
@@ -1028,10 +1028,10 @@ app.get('/downloadSubFolder', (req, res) => {
 
         results.forEach(file => {
             const fullPath = path.join(__dirname, '../public', file.file_path);
-            if (fs.existsSync(fullPath)) {
+            if (fs.existsSync(fullPath) && fullPath.includes('subject-uploads')) {
                 const ext = path.extname(file.original_name);
                 const customFileName = `${file.custom_name}${ext}`;
-                archive.file(fullPath, { name: `${folderName}/${customFileName}` });
+                archive.file(fullPath, { name: `${subjectFolderName}/${customFileName}` });
             }
         });
 
