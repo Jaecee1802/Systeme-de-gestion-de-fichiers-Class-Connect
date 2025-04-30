@@ -863,7 +863,7 @@ app.post("/api/renamefile", (req, res) => {
 //Create a Subject Folder
 app.post("/api/createsubjectfolder", (req, res) => {
     const { subjectFolderName } = req.body;
-    const folderPath = path.join(__dirname, `../public/subject-uploads/${subjectFolderName}`);
+    const folderPath = path.join(__dirname, `../public/uploads/${subjectFolderName}`);
 
     fs.mkdir(folderPath, { recursive: true }, (err) => {
         if(err){
@@ -893,7 +893,7 @@ app.get("/api/subjectfolders", async (req, res) => {
 //Delete Subject Folder
 app.post('/api/deletesubjectfolder', (req, res) => {
     const { subjectFolderName } = req.body;
-    const folderPath = path.join(__dirname, `../public/subject-uploads/${subjectFolderName}`);
+    const folderPath = path.join(__dirname, `../public/uploads/${subjectFolderName}`);
 
     fs.rm(folderPath, { recursive: true}, (err) => {
         if(err){
@@ -931,8 +931,8 @@ app.get('/api/subjectslist', (req, res) => {
 
 app.post('/api/renamesubjectfolder', (req, res) => {
     const { selectedSubject, newSubjectName } = req.body;
-    const oldSubjectPath = path.join(__dirname, `../public/subject-uploads/${selectedSubject}`);
-    const newSubjectPath = path.join(__dirname, `../public/subject-uploads/${newSubjectName}`);
+    const oldSubjectPath = path.join(__dirname, `../public/uploads/${selectedSubject}`);
+    const newSubjectPath = path.join(__dirname, `../public/uploads/${newSubjectName}`);
 
     fs.rename(oldSubjectPath, newSubjectPath, (err) => {
         if(err){
@@ -959,7 +959,7 @@ app.post('/api/renamesubjectfolder', (req, res) => {
 const subjectStorage = multer.diskStorage({
     destination: (req, file, cb) => {
         const subjectFolderName  = req.body.folder;
-        const folderPath = path.join(__dirname, `../public/subject-uploads/${subjectFolderName}`);
+        const folderPath = path.join(__dirname, `../public/uploads/${subjectFolderName}`);
         if(!fs.existsSync(folderPath)){
             fs.mkdirSync(folderPath, { recursive: true });
         }
@@ -985,70 +985,17 @@ app.get('/api/folder/:subjectFolderName/files', (req, res) => {
 })
 
 //Download All Folders
-app.get('/downloadSubFolder', (req, res) => {
-    const subjectFolderName = req.query.folderName; // fixed key
-    if (!subjectFolderName) return res.status(400).send('Folder name is required.');
-
-    const archiveName = `${subjectFolderName}.zip`;
-    const archivePath = path.join(__dirname, archiveName);
-
-    const output = fs.createWriteStream(archivePath);
-    const archive = archiver('zip', { zlib: { level: 9 } });
-
-    output.on('close', () => {
-        res.download(archivePath, archiveName, (err) => {
-            if (err) {
-                console.error('Download error:', err);
-                res.sendStatus(500);
-            }
-            fs.unlinkSync(archivePath);
-        });
-    });
-
-    archive.on('error', (err) => {
-        console.error('Archiving error:', err);
-        res.sendStatus(500);
-    });
-
-    archive.pipe(output);
-
-    const query = 'SELECT file_path, custom_name, original_name FROM subjectfiles WHERE folder_name = ?';
-
-    db.query(query, [subjectFolderName], (err, results) => {
-        if (err) {
-            console.error('Database query error:', err);
-            res.sendStatus(500);
-            return;
-        }
-
-        if (results.length === 0) {
-            res.status(404).send('No files found for this folder.');
-            return;
-        }
-
-        results.forEach(file => {
-            const fullPath = path.join(__dirname, '../public', file.file_path);
-            if (fs.existsSync(fullPath) && fullPath.includes('subject-uploads')) {
-                const ext = path.extname(file.original_name);
-                const customFileName = `${file.custom_name}${ext}`;
-                archive.file(fullPath, { name: `${subjectFolderName}/${customFileName}` });
-            }
-        });
-
-        archive.finalize();
-    });
-});
 
 
 //Upload Subject File
-const uploadSubDir = path.join(__dirname, `../public/subject-uploads`);
+const uploadSubDir = path.join(__dirname, `../public/uploads`);
 if(!fs.existsSync(uploadSubDir)) {
     fs.mkdirSync(uploadSubDir, { recursive: true });
 }
 
 const subjectStor = multer.diskStorage({
     destination: (req, file, cb) => {
-        const uploadPath = path.join(__dirname, "../public/subject-uploads/");
+        const uploadPath = path.join(__dirname, "../public/uploads/");
         if (!fs.existsSync(uploadPath)) {
             fs.mkdirSync(uploadPath, { recursive: true });
         }
@@ -1077,7 +1024,7 @@ app.post("/subjupload", subUpload.single("file"), (req, res) => {
         return res.status(400).json({ message: "Missing file or data" });
     }
 
-    const folderPath = path.join(__dirname, `../public/subject-uploads/${subjectFolderName}`);
+    const folderPath = path.join(__dirname, `../public/uploads/${subjectFolderName}`);
     if (!fs.existsSync(folderPath)) {
         console.log("Creating folder:", folderPath);
         fs.mkdirSync(folderPath, { recursive: true });
@@ -1094,7 +1041,7 @@ app.post("/subjupload", subUpload.single("file"), (req, res) => {
 
         console.log("File moved successfully.");
 
-        const filePath = `subject-uploads/${subjectFolderName}/${req.file.filename}`;
+        const filePath = `uploads/${subjectFolderName}/${req.file.filename}`;
         const sql =
             "INSERT INTO subjectfiles (custom_name, original_name, file_path, folder_name, upload_date) VALUES (?, ?, ?, ?, ?)";
 
@@ -1114,7 +1061,7 @@ app.post("/subjupload", subUpload.single("file"), (req, res) => {
 });
 
 
-app.use("/subjuploads", express.static(path.join(__dirname, "../public/subject-uploads")));
+app.use("/subjuploads", express.static(path.join(__dirname, "../public/uploads")));
 
 //Display the File in Subject Folder
 app.get("/subjfiles", (req, res) => {
