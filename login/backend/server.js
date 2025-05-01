@@ -1287,32 +1287,16 @@ app.get('/api/recent-subject-folders', async (req, res) => {
 
 //Share Subjects to a Specific Section
 app.get("/sharefolderlist", async (req, res) => {
-    const teacherId = req.session.userId; // assuming session stores the teacher's ID
-
-    try {
-        const [folders] = await db.query(
-            "SELECT subjectFoldID, subjectname FROM subjectfolders WHERE ownerID = ? AND ownerRole = 'teacher'",
-            [teacherId]
-        );
-        res.json({ success: true, folders });
-    } catch (err) {
-        console.error(err);
-        res.json({ success: false });
-    }
+    
 });
 
 app.get("/sectionslist", async (req, res) => {
-    try {
-        const [sections] = await db.query(
-            "SELECT DISTINCT section FROM students WHERE section IS NOT NULL",
-        );
-        res.json({ success: true, sections });
-    } catch (err) {
-        console.error(err);
-        res.json({ success: false });
-    }
+    
 });
 
+app.post("/sharefolder", async (req, res) => {
+    
+});
 ////////////////////////////////////////
 ////// Enrolled Subjects Section //////
 ///////////////////////////////////////
