@@ -18,7 +18,7 @@
             border-bottom: 2px solid black;
         }
 
-        #upload-button, #folder-button, #delete-button, #rename-button, #deadline-button, #download-file-button{
+        #upload-button, #folder-button, #delete-button, #rename-button, #share-button, #download-file-button{
             height: 40px;
             width: 200px;
             background-color: #1C4E80;
@@ -94,8 +94,8 @@
             Download a Folder
         </button>
 
-        <button class="button ml-2 mb-2" id="deadline-button">
-            Set Deadline
+        <button class="button ml-2 mb-2" id="share-button">
+            Share folder
         </button>
     </div>
 
@@ -160,23 +160,37 @@
     </div>
 </div>
 
-<div class="modal" id="setdeadline-subject-folder-modal">
+<div class="modal" id="share-subject-folder-modal">
     <div class="modal-background"></div>
     <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
         <button class="close is-pulled-right has-text-black is-size-4" id="close-deadline-modal">&times;</button>
-        <h1 class="has-text-black has-text-centered is-size-4-desktop">Select folder to set the deadline</h1>
+        <h1 class="has-text-black has-text-centered is-size-4-desktop">Select folder to share</h1>
 
-        <form id="rename-subject-folder">
+        <form id="share-subject-folder">
             <div>
                 <label for="folder-name" class="has-text-black">Select the folder:</label>
             </div>
             <div class="select is-small">
-                <select id="rename-subject-folder-select">
+                <select id="share-sub-list">
                     <option>Select Subject Folder</option> <!--The folder that i've created is not displayed.-->
                 </select>
             </div>
-            <button class="has-text-white button is-black mt-4" type="submit">Set Deadline</button>
+
+            <div>
+                <label for="folder-name" class="has-text-black">Select Section:</label>
+            </div>
+
+            <div class="select is-small">
+                <select id="section-select">
+                    <option>Select Section</option> <!--The folder that i've created is not displayed.-->
+                </select>
+            </div>
+
+            <div>
+                <button class="has-text-white button is-black mt-4" type="submit">Share Folder</button>
+            </div>
         </form>
+
 
     </div>
 </div>
@@ -207,7 +221,7 @@
     </div>
 </div>
 
-
+<script src="js/shareFolder.js"></script>
 <script src="js/loadSubjectFolders.js"></script>
 <script src="js/deleteSubjectFolder.js"></script>
 <script src="js/downloadSubFolder.js"></script>
