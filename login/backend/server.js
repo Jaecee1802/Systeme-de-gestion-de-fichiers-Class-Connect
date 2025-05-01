@@ -437,12 +437,23 @@ app.get('/api/folders', async(req, res) => {
 
 //Load Folders at the Dashboard//
 app.get('/api/recent-folders', async (req, res) => {
-    db.query("SELECT * FROM folders ORDER BY dateofCreation DESC LIMIT 5", (err, result) => {
-        if(err){
-            return res.status(500).json({  error: err.message });
+
+    const userId = req.session.teacher ? req.session.teacher.id : req.session.student ? req.session.student.id : null;
+    const role = req.session.teacher ? 'teacher' : req.session.student ? 'student' : null;
+
+    if (!userId || !role) {
+        return res.status(401).json({ message: 'You must be logged in to view folders in the dashboard.' });
+    }
+
+    const sql = `SELECT * FROM folders WHERE ownerID = ? AND ownerRole = ? ORDER BY dateofCreation DESC LIMIT 5`;
+
+    db.query(sql, [userId, role], (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
         }
         res.json(result);
-    })
+    });
+
 })
 //Load Folders at the Dashboard//
 
@@ -894,12 +905,32 @@ app.post("/api/createsubjectfolder", (req, res) => {
     const { subjectFolderName } = req.body;
     const folderPath = path.join(__dirname, `../public/uploads/${subjectFolderName}`);
 
+    let role = null;
+    let userId = null;
+
+    if (req.session.teacher) {
+        role = 'teacher';
+        userId = req.session.teacher.id;
+    } else if (req.session.student) {
+        role = 'student';
+        userId = req.session.student.id;
+    } else if (req.session.admin) {
+        role = 'admin';
+        userId = req.session.admin.id;
+    }
+
+    console.log('Detected Role:', role, '| User ID:', userId); 
+
+    if (!userId || !role) {
+        return res.status(401).json({ message: 'You must be logged in to create a folder' });
+    }
+
     fs.mkdir(folderPath, { recursive: true }, (err) => {
         if(err){
             return res.json({ success: false, message: 'Folder creation failed' });
         }
 
-        db.query("INSERT INTO subjectfolders (subjectname) VALUES (?)", [subjectFolderName], (err, result) => {
+        db.query("INSERT INTO subjectfolders (subjectname, ownerID, ownerRole) VALUES (?, ?, ?)", [subjectFolderName, userId, role], (err, result) => {
             if(err){
                 console.error(err);
                 return res.json({ success: false, message: 'Database error.' });
@@ -911,7 +942,15 @@ app.post("/api/createsubjectfolder", (req, res) => {
 
 //Load Subject Folders
 app.get("/api/subjectfolders", async (req, res) => {
-    db.query("SELECT * FROM subjectfolders", (err, result) => {
+    const userId = req.session.teacher ? req.session.teacher.id : req.session.student ? req.session.student.id : null;
+    const role = req.session.teacher ? 'teacher' : req.session.student ? 'student' : null;
+
+    if (!userId || !role) {
+        return res.status(401).json({ message: 'You must be logged in to view folders' });
+    }
+
+
+    db.query("SELECT * FROM subjectfolders WHERE ownerID = ? AND ownerRole = ?", [userId, role], (err, result) => {
         if(err){
             return res.status(500).json({  error: err.message });
         }
@@ -1190,7 +1229,15 @@ app.post("/api/renamesubjfile", (req, res) => {
 
 //Load Subject Folders in Dashboard
 app.get('/api/recent-subject-folders', async (req, res) => {
-    db.query("SELECT * FROM subjectfolders ORDER BY folderCreation DESC LIMIT 4", (err, result) => {
+
+    const userId = req.session.teacher ? req.session.teacher.id : req.session.student ? req.session.student.id : null;
+    const role = req.session.teacher ? 'teacher' : req.session.student ? 'student' : null;
+
+    if (!userId || !role) {
+        return res.status(401).json({ message: 'You must be logged in to view folders in the dashboard.' });
+    }
+
+    db.query("SELECT * FROM subjectfolders WHERE ownerID = ? AND ownerRole = ? ORDER BY folderCreation DESC LIMIT 4", [userId, role], (err, result) => {
         if(err){
             return res.status(500).json({  error: err.message });
         }
