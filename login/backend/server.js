@@ -717,6 +717,26 @@ app.post("/upload", upload.single("file"), (req, res) => {
     const { customName } = req.body;
     const folderName = req.query.folder;  
 
+    let role = null;
+    let userId = null;
+
+    if (req.session.teacher) {
+        role = 'teacher';
+        userId = req.session.teacher.id;
+    } else if (req.session.student) {
+        role = 'student';
+        userId = req.session.student.id;
+    } else if (req.session.admin) {
+        role = 'admin';
+        userId = req.session.admin.id;
+    }
+
+    console.log('Detected Role:', role, '| User ID:', userId); 
+
+    if (!userId || !role) {
+        return res.status(401).json({ message: 'You must be logged in to upload a file.' });
+    }
+
     console.log("Received File:", req.file);
     console.log("Custom Name:", customName);
     console.log("Folder Name:", folderName);
@@ -745,11 +765,11 @@ app.post("/upload", upload.single("file"), (req, res) => {
 
         const filePath = `uploads/${folderName}/${req.file.filename}`;
         const sql =
-            "INSERT INTO files (custom_name, original_name, file_path, folder_name, upload_date) VALUES (?, ?, ?, ?, ?)";
+            "INSERT INTO files (custom_name, original_name, file_path, folder_name, upload_date, ownerID, ownerRole) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         db.query(
             sql,
-            [customName, req.file.originalname, filePath, folderName, new Date()],
+            [customName, req.file.originalname, filePath, folderName, new Date(), userId, role],
             (err) => {
                 if (err) {
                     console.error("Database error:", err);
@@ -769,7 +789,7 @@ app.use("/uploads", express.static(path.join(__dirname, "../public/uploads")));
 //Load Files
 app.get("/files", (req, res) => {
     const folderName = req.query.folder;
-    const sql = "SELECT * FROM files WHERE folder_name = ?";
+    const sql = "SELECT * FROM files WHERE folder_name AND ownerID = ? AND ownerRole = ?";
 
     db.query(sql, [folderName], (err, results) => {
         if(err){
@@ -1081,7 +1101,27 @@ app.post("/subjupload", subUpload.single("file"), (req, res) => {
     console.log("File upload started...");
 
     const { customName } = req.body;
-    const subjectFolderName = req.query.folder;  
+    const subjectFolderName = req.query.folder;
+    let role = null;
+    let userId = null;
+
+    if (req.session.teacher) {
+        role = 'teacher';
+        userId = req.session.teacher.id;
+    } else if (req.session.student) {
+        role = 'student';
+        userId = req.session.student.id;
+    } else if (req.session.admin) {
+        role = 'admin';
+        userId = req.session.admin.id;
+    }
+
+    console.log('Detected Role:', role, '| User ID:', userId); 
+
+    if (!userId || !role) {
+        return res.status(401).json({ message: 'You must be logged in to create a folder' });
+    }
+
 
     console.log("Received File:", req.file);
     console.log("Custom Name:", customName);
@@ -1111,11 +1151,11 @@ app.post("/subjupload", subUpload.single("file"), (req, res) => {
 
         const filePath = `uploads/${subjectFolderName}/${req.file.filename}`;
         const sql =
-            "INSERT INTO subjectfiles (custom_name, original_name, file_path, folder_name, upload_date) VALUES (?, ?, ?, ?, ?)";
+            "INSERT INTO subjectfiles (custom_name, original_name, file_path, folder_name, upload_date, ownerID, ownerRole) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         db.query(
             sql,
-            [customName, req.file.originalname, filePath, subjectFolderName, new Date()],
+            [customName, req.file.originalname, filePath, subjectFolderName, new Date(), userId, role],
             (err) => {
                 if (err) {
                     console.error("Database error:", err);
