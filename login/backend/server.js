@@ -687,7 +687,7 @@ app.get('/downloadFolder', (req, res) => {
         }
 
         if (results.length === 0) {
-            res.status(404).send('No files found for this folder.');
+            res.status(404).send('No files found for this subject folder.');
             return;
         }
 
@@ -808,16 +808,34 @@ app.use("/uploads", express.static(path.join(__dirname, "../public/uploads")));
 //Load Files
 app.get("/files", (req, res) => {
     const folderName = req.query.folder;
-    const sql = "SELECT * FROM files WHERE folder_name AND ownerID = ? AND ownerRole = ?";
+    
+    let role = null;
+    let userId = null;
 
-    db.query(sql, [folderName], (err, results) => {
-        if(err){
+    if (req.session.teacher) {
+        role = 'teacher';
+        userId = req.session.teacher.id;
+    } else if (req.session.student) {
+        role = 'student';
+        userId = req.session.student.id;
+    } else if (req.session.admin) {
+        role = 'admin';
+        userId = req.session.admin.id;
+    }
+
+    if (!userId || !role) {
+        return res.status(401).json({ message: "Not logged in" });
+    }
+
+    const sql = "SELECT * FROM files WHERE folder_name = ? AND ownerID = ? AND ownerRole = ?";
+    db.query(sql, [folderName, userId, role], (err, results) => {
+        if (err) {
             console.error(`Database error: ${err}`);
-            return res.status(500).json({message: "Database error"});
+            return res.status(500).json({ message: "Database error" });
         }
         res.json(results);
-    })
-})
+    });
+});
 //Load Files
 
 
