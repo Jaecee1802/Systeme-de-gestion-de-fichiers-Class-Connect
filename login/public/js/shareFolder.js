@@ -1,23 +1,3 @@
-document.getElementById("share-subject-folder").addEventListener("submit", async function(e){
-    e.preventDefault();
-
-    const folderId = document.getElementById("share-sub-list").value;
-    const section = document.getElementById("section-select").value;
-
-    const response = await fetch("/sharefolder", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ subjectFoldID: folderId, section })
-    });
-
-    const data = await response.json();
-    if(data.success){
-        alert("Folder shared successfully!");
-    } else {
-        alert("Failed to share folder.");
-    }
-});
-
 async function loadFolderstoShare(){
     try{
         const response = await fetch("/sharefolderlist");
@@ -31,7 +11,7 @@ async function loadFolderstoShare(){
                 const option = document.createElement('option');
                 option.value = subjectfolder.subjectname; 
                 option.textContent = subjectfolder.subjectname;
-                selectSubject.appendChild(option);
+                select.appendChild(option);
             })
         }
         else{
@@ -56,8 +36,8 @@ async function loadSections(){
 
             data.sections.forEach(section => {
                 const option = document.createElement('option');
-                option.value = section.name; 
-                option.textContent = section.name;
+                option.value = section.section; 
+                option.textContent = section.section;
                 select.appendChild(option);
             })
         }

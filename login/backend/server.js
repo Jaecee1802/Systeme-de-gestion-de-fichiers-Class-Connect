@@ -1287,11 +1287,26 @@ app.get('/api/recent-subject-folders', async (req, res) => {
 
 //Share Subjects to a Specific Section
 app.get("/sharefolderlist", async (req, res) => {
-    
+    db.query('SELECT * FROM subjectfolders', (err, results) => {
+        if(err){
+            console.error(err);
+            return res.status(500).json({ success: false, message: 'Database error.' });
+        }
+        res.json({ success: true, folders: results });
+    })
 });
 
 app.get("/sectionslist", async (req, res) => {
+    const sql = 'SELECT DISTINCT section FROM students WHERE section IS NOT NULL AND section != ""';
     
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ success: false, message: 'Database error.' });
+        }
+
+        res.json({ success: true, sections: results });
+    });
 });
 
 app.post("/sharefolder", async (req, res) => {
