@@ -49,11 +49,11 @@ window.addEventListener('DOMContentLoaded', async () => {
             const folderSet = new Set();
 
             data.files.forEach(file => {
-                if (!folderSet.has(file.folder_name)) {
-                    folderSet.add(file.folder_name);
+                if (!folderSet.has(file.name)) {
+                    folderSet.add(file.name);
                     const option = document.createElement('option');
-                    option.value = file.folder_name;
-                    option.textContent = file.folder_name;
+                    option.value = file.name;
+                    option.textContent = file.name; 
                     select.appendChild(option);
                 }
             });
