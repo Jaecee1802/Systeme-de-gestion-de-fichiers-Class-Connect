@@ -1369,6 +1369,25 @@ app.post("/sharefolder", async (req, res) => {
         });
     }
 });
+
+//Load Shared Folders
+app.get("/shared-folders", async (req, res) => {
+    const query = `
+    SELECT sf.folder_id, sf.section, sf.shared_at, s.subjectname 
+    FROM shared_folders sf
+    JOIN subjectfolders s ON sf.folder_id = s.subjectFoldID
+`;
+
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ success: false, message: 'Database error' });
+        }
+
+        res.json({ success: true, folders: results });
+    });
+});
+
 ////////////////////////////////////////
 ////// Enrolled Subjects Section //////
 ///////////////////////////////////////
