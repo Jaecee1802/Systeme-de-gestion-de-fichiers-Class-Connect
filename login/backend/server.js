@@ -619,14 +619,33 @@ app.get('/api/folder/:folderName/files', (req, res) => {
 
 //Download All Folders
 app.get('/listFolders', (req, res) => {
-    const sql = "SELECT * FROM files";
-    db.query(sql, (err, results) => {
-        if(err){
+    let role = null;
+    let userId = null;
+
+    if (req.session.teacher) {
+        role = 'teacher';
+        userId = req.session.teacher.id;
+    } else if (req.session.student) {
+        role = 'student';
+        userId = req.session.student.id;
+    } else if (req.session.admin) {
+        role = 'admin';
+        userId = req.session.admin.id;
+    }
+
+    if (!userId || !role) {
+        return res.status(401).json({ success: false, message: 'Not logged in' });
+    }
+
+    const sql = "SELECT * FROM folders WHERE ownerID = ? AND ownerRole = ?";
+    db.query(sql, [userId, role], (err, results) => {
+        if (err) {
             console.error(`Database error: ${err}`);
+            return res.status(500).json({ success: false });
         }
 
         res.json({ success: true, files: results });
-    })
+    });
 });
 
 
@@ -1319,48 +1338,41 @@ app.post("/sharefolder", async (req, res) => {
         });
     }
 
-    try {
-        // First verify the folder exists
-        db.query(
-            'SELECT subjectFoldID FROM subjectfolders WHERE subjectname = ?',
-            [folderName],
-            (err, folderResults) => {
-                if (err) {
-                    console.error(err);
-                    return res.status(500).json({ 
-                        success: false, 
-                        message: 'Database error' 
+try {
+        
+    db.query('SELECT subjectFoldID FROM subjectfolders WHERE subjectname = ?',[folderName],(err, folderResults) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ 
+                success: false, 
+                message: 'Database error' 
+             });
+        }
+
+    if (folderResults.length === 0) {
+            return res.status(404).json({ 
+            success: false, 
+            message: 'Folder not found' 
+            });
+        }
+
+db.query('INSERT INTO shared_folders (folder_id, section) VALUES (?, ?)', [folderResults[0].subjectFoldID, section], (insertErr) => {
+    if (insertErr) {
+    console.error(insertErr);
+    return res.status(500).json({ 
+    success: false, 
+    message: 'Failed to share folder' 
+    });
+}
+
+    res.json({ 
+        success: true, 
+        message: 'Folder shared successfully' 
                     });
-                }
-
-                if (folderResults.length === 0) {
-                    return res.status(404).json({ 
-                        success: false, 
-                        message: 'Folder not found' 
-                    });
-                }
-
-                // Insert into shared folders table
-                db.query(
-                    'INSERT INTO shared_folders (folder_id, section) VALUES (?, ?)',
-                    [folderResults[0].subjectFoldID, section],
-                    (insertErr) => {
-                        if (insertErr) {
-                            console.error(insertErr);
-                            return res.status(500).json({ 
-                                success: false, 
-                                message: 'Failed to share folder' 
-                            });
-                        }
-
-                        res.json({ 
-                            success: true, 
-                            message: 'Folder shared successfully' 
-                        });
-                    }
-                );
-            }
-        );
+             }
+            );
+        }
+);
     } catch (err) {
         console.error(err);
         res.status(500).json({ 
@@ -1385,6 +1397,91 @@ app.get("/shared-folders", async (req, res) => {
         }
 
         res.json({ success: true, folders: results });
+    });
+});
+
+//Download Subject Folder
+app.get('/listSubFolders', (req, res) => {
+    let role = null;
+    let userId = null;
+
+    if (req.session.teacher) {
+        role = 'teacher';
+        userId = req.session.teacher.id;
+    } else if (req.session.student) {
+        role = 'student';
+        userId = req.session.student.id;
+    } else if (req.session.admin) {
+        role = 'admin';
+        userId = req.session.admin.id;
+    }
+
+    if (!userId || !role) {
+        return res.status(401).json({ success: false, message: 'Not logged in' });
+    }
+
+    const sql = "SELECT * FROM subjectfolders WHERE ownerID = ? AND ownerRole = ?";
+    db.query(sql, [userId, role], (err, results) => {
+        if (err) {
+            console.error(`Database error: ${err}`);
+            return res.status(500).json({ success: false });
+        }
+
+        res.json({ success: true, files: results });
+    });
+});
+
+app.get('/downloadSubjectFolder', (req, res) => {
+    const folderName = req.query.folderName;
+    if (!folderName) return res.status(400).send('Folder name is required.');
+
+    const archiveName = `${folderName}.zip`;
+    const archivePath = path.join(__dirname, archiveName);
+
+    const output = fs.createWriteStream(archivePath);
+    const archive = archiver('zip', { zlib: { level: 9 } });
+
+    output.on('close', () => {
+        res.download(archivePath, archiveName, (err) => {
+            if (err) {
+                console.error('Download error:', err);
+                res.sendStatus(500);
+            }
+            fs.unlinkSync(archivePath); // cleanup
+        });
+    });
+
+    archive.on('error', (err) => {
+        console.error('Archiving error:', err);
+        res.sendStatus(500);
+    });
+
+    archive.pipe(output);
+
+    const query = 'SELECT file_path, custom_name, original_name FROM subjectfiles WHERE folder_name = ?';
+
+    db.query(query, [folderName], (err, results) => {
+        if (err) {
+            console.error('Database query error:', err);
+            res.sendStatus(500);
+            return;
+        }
+
+        if (results.length === 0) {
+            res.status(404).send('No files found for this subject folder.');
+            return;
+        }
+
+        results.forEach(file => {
+            const fullPath = path.join(__dirname, '../public', file.file_path);
+            if (fs.existsSync(fullPath)) {
+                const ext = path.extname(file.original_name);
+                const customFileName = `${file.custom_name}${ext}`;
+                archive.file(fullPath, { name: `${folderName}/${customFileName}` });
+            }
+        });
+
+        archive.finalize();
     });
 });
 
