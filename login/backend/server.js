@@ -1310,7 +1310,64 @@ app.get("/sectionslist", async (req, res) => {
 });
 
 app.post("/sharefolder", async (req, res) => {
-    
+    const { folderName, section } = req.body;
+
+    if (!folderName || !section) {
+        return res.status(400).json({ 
+            success: false, 
+            message: 'Missing required fields' 
+        });
+    }
+
+    try {
+        // First verify the folder exists
+        db.query(
+            'SELECT subjectFoldID FROM subjectfolders WHERE subjectname = ?',
+            [folderName],
+            (err, folderResults) => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).json({ 
+                        success: false, 
+                        message: 'Database error' 
+                    });
+                }
+
+                if (folderResults.length === 0) {
+                    return res.status(404).json({ 
+                        success: false, 
+                        message: 'Folder not found' 
+                    });
+                }
+
+                // Insert into shared folders table
+                db.query(
+                    'INSERT INTO shared_folders (folder_id, section) VALUES (?, ?)',
+                    [folderResults[0].subjectFoldID, section],
+                    (insertErr) => {
+                        if (insertErr) {
+                            console.error(insertErr);
+                            return res.status(500).json({ 
+                                success: false, 
+                                message: 'Failed to share folder' 
+                            });
+                        }
+
+                        res.json({ 
+                            success: true, 
+                            message: 'Folder shared successfully' 
+                        });
+                    }
+                );
+            }
+        );
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ 
+            success: false, 
+            message: 'Server error' 
+        });
+    }
 });
 ////////////////////////////////////////
 ////// Enrolled Subjects Section //////

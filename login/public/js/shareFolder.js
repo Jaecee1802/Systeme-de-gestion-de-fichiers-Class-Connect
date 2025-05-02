@@ -1,3 +1,42 @@
+document.getElementById('share-subject-folder').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const folderName = document.getElementById('share-sub-list').value;
+    const section = document.getElementById('section-select').value;
+
+    if (folderName === "Select Subject Folder" || section === "Select Section") {
+        alert("Please select both a folder and a section");
+        return;
+    }
+
+    try {
+        const response = await fetch('/sharefolder', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                folderName,
+                section
+            })
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+            alert('Folder shared successfully!');
+            shareModal.classList.remove('is-active');
+            document.getElementById('share-subject-folder').reset();
+        } else {
+            alert(result.message || 'Failed to share folder');
+        }
+    } catch (err) {
+        console.error('Sharing error:', err);
+        alert('Error sharing folder');
+    }
+});
+
+
 async function loadFolderstoShare(){
     try{
         const response = await fetch("/sharefolderlist");
