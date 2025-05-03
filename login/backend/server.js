@@ -1322,7 +1322,7 @@ app.get('/api/recent-subject-folders', async (req, res) => {
     })
 })
 
-//Share Subjects to a Specific Section
+//Share Subject Folder to a Specific Section
 app.get("/sharefolderlist", async (req, res) => {
     db.query('SELECT * FROM subjectfolders', (err, results) => {
         if(err){
@@ -1347,74 +1347,57 @@ app.get("/sectionslist", async (req, res) => {
 });
 
 app.post("/sharefolder", async (req, res) => {
-    const { folderName, section } = req.body;
+    const { folder, section } = req.body;
 
-    if (!folderName || !section) {
-        return res.status(400).json({ 
-            success: false, 
-            message: 'Missing required fields' 
-        });
+    if (!folder || !section) {
+        return res.status(400).json({ success: false, message: "Folder and section required." });
     }
 
-try {
-        
-    db.query('SELECT subjectFoldID FROM subjectfolders WHERE subjectname = ?',[folderName],(err, folderResults) => {
+    const sql = "INSERT INTO shared_folders (subjectname, section) VALUES (?, ?)";
+
+    db.query(sql, [folder, section], (err, result) => {
         if (err) {
             console.error(err);
-            return res.status(500).json({ 
-                success: false, 
-                message: 'Database error' 
-             });
+            return res.status(500).json({ success: false, message: "Database error." });
         }
 
-    if (folderResults.length === 0) {
-            return res.status(404).json({ 
-            success: false, 
-            message: 'Folder not found' 
-            });
-        }
-
-db.query('INSERT INTO shared_folders (folder_id, section) VALUES (?, ?)', [folderResults[0].subjectFoldID, section], (insertErr) => {
-    if (insertErr) {
-    console.error(insertErr);
-    return res.status(500).json({ 
-    success: false, 
-    message: 'Failed to share folder' 
+        res.json({ success: true, message: "Folder shared successfully." });
     });
-}
-
-    res.json({ 
-        success: true, 
-        message: 'Folder shared successfully' 
-                    });
-             }
-            );
-        }
-);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ 
-            success: false, 
-            message: 'Server error' 
-        });
-    }
 });
 
-//Load Shared Folders
-app.get("/shared-folders", async (req, res) => {
-    const query = `
-    SELECT sf.folder_id, sf.section, sf.shared_at, s.subjectname 
-    FROM shared_folders sf
-    JOIN subjectfolders s ON sf.folder_id = s.subjectFoldID
-`;
+//Load Shared Folders into front-end
+app.get("/shared-folders", (req, res) => {
+    const section = req.query.section;
 
-    db.query(query, (err, results) => {
+    let sql = "SELECT * FROM shared_folders";
+    const params = [];
+
+    if (section) {
+        sql += " WHERE section = ?";
+        params.push(section);
+    }
+
+    db.query(sql, params, (err, results) => {
         if (err) {
             console.error(err);
-            return res.status(500).json({ success: false, message: 'Database error' });
+            return res.status(500).json({ success: false, message: "Database error." });
         }
 
         res.json({ success: true, folders: results });
+    });
+});
+
+app.get('/student-info', (req, res) => {
+    const studentId = req.session.studentId;
+    if (!studentId) return res.status(401).json({ success: false });
+
+    const sql = "SELECT section FROM students WHERE id = ?";
+    db.query(sql, [studentId], (err, results) => {
+        if (err || results.length === 0) {
+            return res.status(500).json({ success: false });
+        }
+
+        res.json({ success: true, section: results[0].section });
     });
 });
 

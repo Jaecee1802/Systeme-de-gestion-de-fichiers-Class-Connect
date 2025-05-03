@@ -1,11 +1,11 @@
 document.getElementById('share-subject-folder').addEventListener('submit', async (e) => {
     e.preventDefault();
-    
-    const folderName = document.getElementById('share-sub-list').value;
+
+    const folder = document.getElementById('share-sub-list').value;
     const section = document.getElementById('section-select').value;
 
-    if (folderName === "Select Subject Folder" || section === "Select Section") {
-        alert("Please select both a folder and a section");
+    if (folder === "Select Subject Folder" || section === "Select Section") {
+        alert("Please select both a folder and a section.");
         return;
     }
 
@@ -13,26 +13,21 @@ document.getElementById('share-subject-folder').addEventListener('submit', async
         const response = await fetch('/sharefolder', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                folderName,
-                section
-            })
+            body: JSON.stringify({ folder, section })
         });
 
-        const result = await response.json();
-        
-        if (result.success) {
-            alert('Folder shared successfully!');
-            shareModal.classList.remove('is-active');
-            document.getElementById('share-subject-folder').reset();
+        const data = await response.json();
+
+        if (data.success) {
+            alert("Folder shared successfully!");
+            // Optionally close modal here
         } else {
-            alert(result.message || 'Failed to share folder');
+            alert("Failed to share folder.");
         }
     } catch (err) {
-        console.error('Sharing error:', err);
-        alert('Error sharing folder');
+        console.error("Error sharing folder:", err);
     }
 });
 
