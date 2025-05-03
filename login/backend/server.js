@@ -502,16 +502,36 @@ app.post('/api/createfolder', (req, res) => {
 
 //Search Folder
 app.get('/api/search-folders', (req, res) => {
-    const { query } = req.query;
+        const { query } = req.query;
 
-    // Escape user input to prevent SQL injection
     const searchQuery = `%${query}%`;
 
-    db.query("SELECT * FROM folders WHERE name LIKE ?", [searchQuery], (err, result) => {
+    let userId = null;
+    let role = null;
+
+    if (req.session.teacher) {
+        userId = req.session.teacher.id;
+        role = 'teacher';
+    } else if (req.session.student) {
+        userId = req.session.student.id;
+        role = 'student';
+    } else if (req.session.admin) {
+        userId = req.session.admin.id;
+        role = 'admin';
+    }
+
+    if (!userId || !role) {
+        return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
+
+    const sql = "SELECT * FROM folders WHERE name LIKE ? AND ownerID = ? AND ownerRole = ?";
+    db.query(sql, [searchQuery, userId, role], (err, results) => {
         if (err) {
-            return res.status(500).json({ error: err.message });
+            console.error(err);
+            return res.status(500).json({ success: false, message: "Database error" });
         }
-        res.json(result);
+
+        res.json(results);
     });
 });
 //Search Folder
@@ -1388,11 +1408,13 @@ app.get("/shared-folders", (req, res) => {
 });
 
 app.get('/student-info', (req, res) => {
-    const studentId = req.session.studentId;
-    if (!studentId) return res.status(401).json({ success: false });
+    const student = req.session.student;
+    if (!student || !student.id) {
+        return res.status(401).json({ success: false });
+    }
 
     const sql = "SELECT section FROM students WHERE id = ?";
-    db.query(sql, [studentId], (err, results) => {
+    db.query(sql, [student.id], (err, results) => {
         if (err || results.length === 0) {
             return res.status(500).json({ success: false });
         }
@@ -1484,6 +1506,41 @@ app.get('/downloadSubjectFolder', (req, res) => {
 
         archive.finalize();
     });
+});
+
+//Search Subject Folders
+app.get('/api/search-subj-folders', (req, res) => {
+    const { query } = req.query;
+
+const searchQuery = `%${query}%`;
+
+let userId = null;
+let role = null;
+
+if (req.session.teacher) {
+    userId = req.session.teacher.id;
+    role = 'teacher';
+} else if (req.session.student) {
+    userId = req.session.student.id;
+    role = 'student';
+} else if (req.session.admin) {
+    userId = req.session.admin.id;
+    role = 'admin';
+}
+
+if (!userId || !role) {
+    return res.status(401).json({ success: false, message: "Unauthorized" });
+}
+
+const sql = "SELECT * FROM subjectfolders WHERE subjectname LIKE ? AND ownerID = ? AND ownerRole = ?";
+db.query(sql, [searchQuery, userId, role], (err, results) => {
+    if (err) {
+        console.error(err);
+        return res.status(500).json({ success: false, message: "Database error" });
+    }
+
+    res.json(results);
+});
 });
 
 ////////////////////////////////////////

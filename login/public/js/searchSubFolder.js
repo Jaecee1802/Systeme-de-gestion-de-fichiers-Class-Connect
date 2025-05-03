@@ -1,6 +1,6 @@
 document.getElementById('search').addEventListener('input', async function() {
     const searchTerm = this.value.trim();
-    const folderContainer = document.getElementById('folder-container');
+    const folderContainer = document.getElementById('subject-folders-container');
     
     // Clear results immediately when typing
     folderContainer.innerHTML = searchTerm ? '' : '<p>Start typing to search folders.</p>';
@@ -8,18 +8,18 @@ document.getElementById('search').addEventListener('input', async function() {
     if (!searchTerm) return;
 
     try {
-        const response = await fetch(`/api/search-folders?query=${encodeURIComponent(searchTerm)}`);
-        const folders = await response.json();
+        const response = await fetch(`/api/search-subj-folders?query=${encodeURIComponent(searchTerm)}`);
+        const subjectfolder = await response.json();
         
-        folderContainer.innerHTML = folders.length === 0 
+        folderContainer.innerHTML = subjectfolder.length === 0 
             ? '<p>No folders found.</p>'
-            : folders.map(folder => `
+            : subjectfolder.map(subjectfolder => `
                 <div class="folder">
-                    <a href="AccessFolder.html?folder=${encodeURIComponent(folder.name)}">
+                    <a href="AccessSubjFolder.html?folder=${encodeURIComponent(subjectfolder.subjectname)}">
                         <div class="is-flex" id="files-info">
                             <div id="folder-info">
                                 <img src="images/folder.png" alt="Folder" class="image is-128x128">
-                                <p class="has-text-black has-text-centered">${folder.name}</p>
+                                <p class="has-text-black has-text-centered">${subjectfolder.subjectname}</p>
                             </div>
                         </div>
                     </a>
