@@ -637,7 +637,7 @@ app.get('/listFolders', (req, res) => {
         return res.status(401).json({ success: false, message: 'Not logged in' });
     }
 
-    const sql = "SELECT id, name AS folder_name FROM folders WHERE ownerID = ? AND ownerRole = ?";
+    const sql = "SELECT * FROM folders WHERE ownerID = ? AND ownerRole = ?";
     db.query(sql, [userId, role], (err, results) => {
         if (err) {
             console.error(`Database error: ${err}`);
