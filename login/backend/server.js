@@ -455,8 +455,10 @@ app.post("/changePassword", (req, res) => {
     }
 })
 
-app.delete("/delete-account", (req, res) => {
+app.delete("/deleteaccount", (req, res) => {
     const session = req.session;
+
+    console.log("Session during deletion:", req.session);
 
     if (session.student) {
         db.execute("DELETE FROM students WHERE studID = ?", [session.student.id], (err) => {

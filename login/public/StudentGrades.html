@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" class="has-background-white-bis">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/dashboardDesign.css"><!--SIDEBAR NAVIGATION-->
+    <link rel="stylesheet" href="css/grades.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <title>ClassConnect: Student</title>
+</head>
+    <style>
+        .header{
+            padding-top: 100px;
+            padding-bottom: 20px;
+            background-color: #1C4E80;
+        }
+        #recent-title{
+            border-bottom: 2px solid black;
+        }
+
+        #addgrade-button, #deletegrade-button, #editgrade-button{
+            height: 40px;
+            width: 200px;
+            background-color: #1C4E80;
+            margin-top: 20px;
+        }
+    </style>
+<body>
+    <input type="checkbox" id="check">
+    <label for="check">
+      <i class="fas fa-bars" id="btn"></i>
+      <i class="fas fa-times" id="cancel"></i>
+    </label>
+
+    <div class="overlay"></div>
+
+    <div class="sidebar">
+    <header>
+        <h2 class="is-size-6 has-text-black-bis my-6" id="account-name">Account Name</h2>
+    </header>
+        <ul>
+            <li><a href="/subjectRoute" class="has-text-centered">Enrolled Subjects</a></li>
+            <li><a href="/dashboard" class="has-text-centered ">Dashboard</a></li>
+            <li><a href="/myfilesRoute" class="has-text-centered">My Files</a></li>
+            <li><a href="/gradesRoute" class="has-text-centered has-text-weight-bold">Grades</a></li>
+            <li><a href="/settingsRoute" class="has-text-centered">Settings</a></li>
+            <div class="has-text-centered">
+                <li><button class="button is-danger is-centered mt-6" id="sign-out">Sign-out</button></li>
+            </div>
+        </ul>
+    </div>
+
+<section>
+    <div class="header">
+        <h2 class="mx-6 is-size-2 has-text-white has-text-weight-bold">Student Name</h2>
+    </div>
+
+    <div class="upload-button-sec" style="text-align: center;">
+        <button class="button ml-2 mb-2" id="addgrade-button">
+            Add Record
+        </button>
+
+        <button class="button ml-2 mb-2" id="deletegrade-button">
+            Delete Record
+        </button>
+
+        <button class="button ml-2 mb-2" id="editgrade-button">
+            Edit Record
+        </button>
+    </div>
+
+    <div class="activity-list container section">
+        <div class="activity-one is-flex my-4" id="sub-box">
+            <h1 class="has-text-black-bis">Activity #1</h1>
+            <button class="button is-small" id="view-button">View</button>
+        </div>
+
+        <div class="activity-two is-flex my-4" id="sub-box">
+            <h1 class="has-text-black-bis">Activity #2</h1>
+            <button class="button is-small" id="view-button">View</button>
+        </div>
+
+        <div class="activity-three is-flex my-4" id="sub-box">
+            <h1 class="has-text-black-bis">Activity #3</h1>
+            <button class="button is-small" id="view-button">View</button>
+        </div>
+
+        <div class="activity-four is-flex my-4" id="sub-box">
+            <h1 class="has-text-black-bis">Activity #4</h1>
+            <button class="button is-small" id="view-button">View</button>
+        </div>
+    </div>
+</section>
+
+<!-- Record Grades Modal -->
+<div class="modal" id="record-grades-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
+        <button class="close is-pulled-right has-text-black is-size-4" id="close-addgrade-modal">&times;</button>
+        <h1 class="has-text-black has-text-centered is-size-2-desktop">Record a activity</h1>
+
+        <form id="grade-student-form">
+            <label for="folder-name" class="has-text-black">Activity Name: </label>
+            <input class="input has-background-white my-4 has-text-black" type="text" id="activity-name"/>
+
+            <label for="folder-name" class="has-text-black">Student's Grade:</label>
+            <input class="input has-background-white my-4 has-text-black" type="text" id="grade-fill"/>
+
+            <label for="folder-name" class="has-text-black">Overall Grade:</label>
+            <input class="input has-background-white my-4 has-text-black" type="text" id="overall-grade-fill"/>
+            <button class="has-text-white button is-black mt-4" type="submit">Add</button>
+        </form>
+
+    </div>
+</div>
+
+<!-- Delete Grades Modal -->
+<div class="modal" id="delete-grades-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
+        <button class="close is-pulled-right has-text-black is-size-4" id="close-deletegrade-modal">&times;</button>
+        <h1 class="has-text-black has-text-centered is-size-2-desktop">Create Folder</h1>
+
+        <form id="delete-activity">
+            <div>
+                <label for="folder-name" class="has-text-black">Delete Activity</label>
+            </div>
+            <div class="select is-small">
+                <select id="delete-activity-select">
+                    <option>Select Activity</option> <!--The folder that i've created is not displayed.-->
+                </select>
+            </div>
+            <div>
+                <button class="has-text-white button is-black mt-4" type="submit">Rename</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<!--Edit Grades Modal-->
+<div class="modal" id="edit-grades-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
+        <button class="close is-pulled-right has-text-black is-size-4" id="close-editgrade-modal">&times;</button>
+        <h1 class="has-text-black has-text-centered is-size-2-desktop">Edit Grades</h1>
+
+        <form id="edit-grade-student-form">
+            <div>
+                <label for="folder-name" class="has-text-black">Activity Name:</label>
+                <div class="select is-small">
+                    <select id="edit-activity-select">
+                        <option>Select Activity</option> <!--The folder that i've created is not displayed.-->
+                    </select>
+                </div>
+            </div>
+
+            <label for="folder-name" class="has-text-black">Student's Grade:</label>
+            <input class="input has-background-white my-4 has-text-black" type="text" id="grade-fill"/>
+
+            <label for="folder-name" class="has-text-black">Overall Grade:</label>
+            <input class="input has-background-white my-4 has-text-black" type="text" id="overall-grade-fill"/>
+            <button class="has-text-white button is-black mt-4" type="submit">Edit</button>
+        </form>
+
+    </div>
+</div>
+
+<script src="js/GradesModal.js"></script>
+<script src="js/signOut.js"></script>
+<script src="js/displayAccountname.js"></script>
+</body>
+</html>
