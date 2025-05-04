@@ -102,6 +102,7 @@
                 </div>
             </div>
     
+            <!--Delete Account-->
             <div id="delete-account" class="container mx-6">
                 <button class="has-text-danger" id="delete-account">Delete Account</button>
             </div>
@@ -111,34 +112,44 @@
 
 </section>
 
+<!--Change Email Modal-->
 <div class="modal" id="change-email-modal">
     <div class="modal-background"></div>
     <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
         <button class="close is-pulled-right has-text-black is-size-4" id="close-email-modal">&times;</button>
         <h1 class="has-text-black has-text-centered is-size-2-desktop">Change Email</h1>
+
         <form id="change-email-form">
             <label for="folder-name" class="has-text-black">Change your email:</label>
-            <input class="input has-background-white my-4 has-text-black" type="text" id="folder-name"/>
+            <input class="input has-background-white my-4 has-text-black" type="text" id="new-email"/>
             <button class="has-text-white button is-black mt-4" type="submit">Change</button>
         </form>
+
     </div>
 </div>
+
+<!--Change Password Modal-->
 
 <div class="modal" id="change-password-modal">
     <div class="modal-background"></div>
     <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
         <button class="close is-pulled-right has-text-black is-size-4" id="close-password-modal">&times;</button>
         <h1 class="has-text-black has-text-centered is-size-2-desktop">Change Password</h1>
+
         <form id="change-password-form">
             <label for="folder-name" class="has-text-black">Change your password:</label>
-            <input class="input has-background-white my-4 has-text-black" type="password" id="folder-name"/>
+            <input class="input has-background-white my-4 has-text-black" type="password" id="new-password"/>
             <button class="has-text-white button is-black mt-4" type="submit">Change</button>
         </form>
+
     </div>
 </div>
 
 
 </body>
+<script src="js/deleteAccount.js"></script>
+<script src="js/changePassword.js"></script>
+<script src="js/changeEmail.js"></script>
 <script src="js/settingsModal.js"></script>  
 <script src="js/signOut.js"></script>
 </html>

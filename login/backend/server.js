@@ -413,7 +413,71 @@ app.post("/signout", (req, res) => {
 });
 //Sign out
 
-//Change information
+//Change email or password or delete account(depends on the user)
+app.post("/changeEmail", (req, res) => {
+    const newEmail = req.body.email;
+    const session = req.session;
+
+    if (session.student) {
+        db.execute("UPDATE students SET studentEmail = ? WHERE studID = ?", [newEmail, session.student.id], (err) => {
+            if (err) return res.status(500).json({ message: "Database error." });
+            session.student.email = newEmail;
+            res.json({ message: "Email updated successfully." });
+        });
+    } else if (session.teacher) {
+        db.execute("UPDATE teachers SET teacherEmail = ? WHERE teacherID = ?", [newEmail, session.teacher.id], (err) => {
+            if (err) return res.status(500).json({ message: "Database error." });
+            session.teacher.email = newEmail;
+            res.json({ message: "Email updated successfully." });
+        });
+    } else {
+        res.status(403).json({ message: "Unauthorized." });
+    }
+})
+
+app.post("/changePassword", (req, res) => {
+    const newPassword = req.body.password;
+    const hashedPassword = bcrypt.hashSync(newPassword, 10);
+    const session = req.session;
+
+    if (session.student) {
+        db.execute("UPDATE students SET studentPassword = ? WHERE studID = ?", [hashedPassword, session.student.id], (err) => {
+            if (err) return res.status(500).json({ message: "Database error." });
+            res.json({ message: "Password changed successfully." });
+        });
+    } else if (session.teacher) {
+        db.execute("UPDATE teachers SET teacherPassword = ? WHERE teacherID = ?", [hashedPassword, session.teacher.id], (err) => {
+            if (err) return res.status(500).json({ message: "Database error." });
+            res.json({ message: "Password changed successfully." });
+        });
+    } else {
+        res.status(403).json({ message: "Unauthorized." });
+    }
+})
+
+app.delete("/delete-account", (req, res) => {
+    const session = req.session;
+
+    if (session.student) {
+        db.execute("DELETE FROM students WHERE studID = ?", [session.student.id], (err) => {
+            if (err) return res.status(500).json({ message: "Database error." });
+            req.session.destroy(() => {
+                res.clearCookie("connect.sid");
+                res.json({ message: "Account deleted successfully." });
+            });
+        });
+    } else if (session.teacher) {
+        db.execute("DELETE FROM teachers WHERE teacherID = ?", [session.teacher.id], (err) => {
+            if (err) return res.status(500).json({ message: "Database error." });
+            req.session.destroy(() => {
+                res.clearCookie("connect.sid");
+                res.json({ message: "Account deleted successfully." });
+            });
+        });
+    } else {
+        res.status(403).json({ message: "Unauthorized." });
+    }
+});
 
 //////////////////////////////
 ////// MY FILES SECTION //////
