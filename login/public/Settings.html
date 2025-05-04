@@ -41,8 +41,11 @@
         #folder-container{
             justify-content: left;
         }
-        
 
+        .division-line{
+            border: 1px solid black;
+        }
+        
         @media screen and (width <= 412px){
             .upload-button-sec{
                 position: -webkit-sticky;
@@ -82,56 +85,60 @@
         <h2 class="mx-6 is-size-2 has-text-white has-text-weight-bold">Settings</h2>
     </div>
 
+    <div class="section container" id="account-settings">
+        <div class="section container" id="account-settings-header">
+            <h2 class="has-text-black is-size-3">Account Settings</h2>
+            <div class="division-line"></div>
+        </div>
+
+        <div class="account-settings-two">
+            <div id="account-information" class="">
+                <div id="name-changepass-changemail" class="container mx-6">
+                    <h2 class="has-text-black is-size-4">Account Name</h2>
+                    <button class="has-text-link" id="change-email">Change Email</button>
+                    <div>
+                    <button class="has-text-link" id="change-password">Change Password</button>
+                    </div>
+                </div>
+            </div>
+    
+            <div id="delete-account" class="container mx-6">
+                <button class="has-text-danger" id="delete-account">Delete Account</button>
+            </div>
+        </div>
+
+    </div>
+
 </section>
 
-<div class="modal" id="folder-modal">
+<div class="modal" id="change-email-modal">
     <div class="modal-background"></div>
     <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
-        <button class="close is-pulled-right has-text-black is-size-4" id="close-folder-modal">&times;</button>
-        <h1 class="has-text-black has-text-centered is-size-2-desktop">Create Folder</h1>
-        <form id="create-folder-form">
-            <label for="folder-name" class="has-text-black">Folder Name:</label>
+        <button class="close is-pulled-right has-text-black is-size-4" id="close-email-modal">&times;</button>
+        <h1 class="has-text-black has-text-centered is-size-2-desktop">Change Email</h1>
+        <form id="change-email-form">
+            <label for="folder-name" class="has-text-black">Change your email:</label>
             <input class="input has-background-white my-4 has-text-black" type="text" id="folder-name"/>
-            <button class="has-text-white button is-black mt-4" type="submit">Create</button>
+            <button class="has-text-white button is-black mt-4" type="submit">Change</button>
         </form>
     </div>
 </div>
 
-<div class="modal" id="delete-folder-modal">
+<div class="modal" id="change-password-modal">
     <div class="modal-background"></div>
     <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
-        <button class="close is-pulled-right has-text-black is-size-4" id="close-delete-modal">&times;</button>
-        <h1 class="has-text-black has-text-centered is-size-2-desktop">Delete Folder</h1>
-        <form id="delete-folder">
-            <label for="folder-name" class="has-text-black">Type folder name to delete:</label>
-            <input class="input has-background-white my-4 has-text-black" type="text" id="delete-folder-name"/>
-            <button class="has-text-white button is-black mt-4" type="submit">Delete Folder</button>
+        <button class="close is-pulled-right has-text-black is-size-4" id="close-password-modal">&times;</button>
+        <h1 class="has-text-black has-text-centered is-size-2-desktop">Change Password</h1>
+        <form id="change-password-form">
+            <label for="folder-name" class="has-text-black">Change your password:</label>
+            <input class="input has-background-white my-4 has-text-black" type="password" id="folder-name"/>
+            <button class="has-text-white button is-black mt-4" type="submit">Change</button>
         </form>
     </div>
 </div>
 
-<div class="modal" id="rename-folder-modal">
-    <div class="modal-background"></div>
-    <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
-        <button class="close is-pulled-right has-text-black is-size-4" id="close-rename-modal">&times;</button>
-        <h1 class="has-text-black has-text-centered is-size-2-desktop">Select folder to rename</h1>
-
-        <form id="rename-folder">
-            <div>
-                <label for="folder-name" class="has-text-black">Rename the folder:</label>
-            </div>
-            <div class="select is-small">
-                <select id="rename-folder-select">
-                    <option>Select Folder</option> <!--The folder that i've created is not displayed.-->
-                </select>
-            </div>
-            <input class="input has-background-white my-4 has-text-black" type="text" id="rename-folder-name"/>
-            <button class="has-text-white button is-black mt-4" type="submit">Rename</button>
-        </form>
-
-    </div>
-</div>
 
 </body>
+<script src="js/settingsModal.js"></script>  
 <script src="js/signOut.js"></script>
 </html>

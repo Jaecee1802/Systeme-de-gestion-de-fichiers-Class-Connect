@@ -413,6 +413,8 @@ app.post("/signout", (req, res) => {
 });
 //Sign out
 
+//Change information
+
 //////////////////////////////
 ////// MY FILES SECTION //////
 //////////////////////////////
