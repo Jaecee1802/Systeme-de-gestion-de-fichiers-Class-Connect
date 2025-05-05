@@ -1050,32 +1050,12 @@ app.post("/api/createsubjectfolder", (req, res) => {
     const { subjectFolderName } = req.body;
     const folderPath = path.join(__dirname, `../public/uploads/${subjectFolderName}`);
 
-    let role = null;
-    let userId = null;
-
-    if (req.session.teacher) {
-        role = 'teacher';
-        userId = req.session.teacher.id;
-    } else if (req.session.student) {
-        role = 'student';
-        userId = req.session.student.id;
-    } else if (req.session.admin) {
-        role = 'admin';
-        userId = req.session.admin.id;
-    }
-
-    console.log('Detected Role:', role, '| User ID:', userId); 
-
-    if (!userId || !role) {
-        return res.status(401).json({ message: 'You must be logged in to create a folder' });
-    }
-
     fs.mkdir(folderPath, { recursive: true }, (err) => {
         if(err){
             return res.json({ success: false, message: 'Folder creation failed' });
         }
 
-        db.query("INSERT INTO subjectfolders (subjectname, ownerID, ownerRole) VALUES (?, ?, ?)", [subjectFolderName, userId, role], (err, result) => {
+        db.query("INSERT INTO subjectfolders (subjectname) VALUES (?)", [subjectFolderName], (err, result) => {
             if(err){
                 console.error(err);
                 return res.json({ success: false, message: 'Database error.' });
@@ -1087,15 +1067,7 @@ app.post("/api/createsubjectfolder", (req, res) => {
 
 //Load Subject Folders
 app.get("/api/subjectfolders", async (req, res) => {
-    const userId = req.session.teacher ? req.session.teacher.id : req.session.student ? req.session.student.id : null;
-    const role = req.session.teacher ? 'teacher' : req.session.student ? 'student' : null;
-
-    if (!userId || !role) {
-        return res.status(401).json({ message: 'You must be logged in to view folders' });
-    }
-
-
-    db.query("SELECT * FROM subjectfolders WHERE ownerID = ? AND ownerRole = ?", [userId, role], (err, result) => {
+    db.query("SELECT * FROM subjectfolders", (err, result) => {
         if(err){
             return res.status(500).json({  error: err.message });
         }
@@ -1394,15 +1366,7 @@ app.post("/api/renamesubjfile", (req, res) => {
 
 //Load Subject Folders in Dashboard
 app.get('/api/recent-subject-folders', async (req, res) => {
-
-    const userId = req.session.teacher ? req.session.teacher.id : req.session.student ? req.session.student.id : null;
-    const role = req.session.teacher ? 'teacher' : req.session.student ? 'student' : null;
-
-    if (!userId || !role) {
-        return res.status(401).json({ message: 'You must be logged in to view folders in the dashboard.' });
-    }
-
-    db.query("SELECT * FROM subjectfolders WHERE ownerID = ? AND ownerRole = ? ORDER BY folderCreation DESC LIMIT 4", [userId, role], (err, result) => {
+    db.query("SELECT * FROM subjectfolders ORDER BY folderCreation DESC LIMIT 4", (err, result) => {
         if(err){
             return res.status(500).json({  error: err.message });
         }
@@ -1410,109 +1374,10 @@ app.get('/api/recent-subject-folders', async (req, res) => {
     })
 })
 
-//Share Subject Folder to a Specific Section
-app.get("/sharefolderlist", async (req, res) => {
-    db.query('SELECT * FROM subjectfolders', (err, results) => {
-        if(err){
-            console.error(err);
-            return res.status(500).json({ success: false, message: 'Database error.' });
-        }
-        res.json({ success: true, folders: results });
-    })
-});
-
-app.get("/sectionslist", async (req, res) => {
-    const sql = 'SELECT DISTINCT section FROM students WHERE section IS NOT NULL AND section != ""';
-    
-    db.query(sql, (err, results) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ success: false, message: 'Database error.' });
-        }
-
-        res.json({ success: true, sections: results });
-    });
-});
-
-app.post("/sharefolder", async (req, res) => {
-    const { folder, section } = req.body;
-
-    if (!folder || !section) {
-        return res.status(400).json({ success: false, message: "Folder and section required." });
-    }
-
-    const sql = "INSERT INTO shared_folders (subjectname, section) VALUES (?, ?)";
-
-    db.query(sql, [folder, section], (err, result) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ success: false, message: "Database error." });
-        }
-
-        res.json({ success: true, message: "Folder shared successfully." });
-    });
-});
-
-//Load Shared Folders into front-end
-app.get("/shared-folders", (req, res) => {
-    const section = req.query.section;
-
-    let sql = "SELECT * FROM shared_folders";
-    const params = [];
-
-    if (section) {
-        sql += " WHERE section = ?";
-        params.push(section);
-    }
-
-    db.query(sql, params, (err, results) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ success: false, message: "Database error." });
-        }
-
-        res.json({ success: true, folders: results });
-    });
-});
-
-app.get('/student-info', (req, res) => {
-    const student = req.session.student;
-    if (!student || !student.id) {
-        return res.status(401).json({ success: false });
-    }
-
-    const sql = "SELECT section FROM students WHERE id = ?";
-    db.query(sql, [student.id], (err, results) => {
-        if (err || results.length === 0) {
-            return res.status(500).json({ success: false });
-        }
-
-        res.json({ success: true, section: results[0].section });
-    });
-});
-
 //Download Subject Folder
 app.get('/listSubFolders', (req, res) => {
-    let role = null;
-    let userId = null;
-
-    if (req.session.teacher) {
-        role = 'teacher';
-        userId = req.session.teacher.id;
-    } else if (req.session.student) {
-        role = 'student';
-        userId = req.session.student.id;
-    } else if (req.session.admin) {
-        role = 'admin';
-        userId = req.session.admin.id;
-    }
-
-    if (!userId || !role) {
-        return res.status(401).json({ success: false, message: 'Not logged in' });
-    }
-
-    const sql = "SELECT * FROM subjectfolders WHERE ownerID = ? AND ownerRole = ?";
-    db.query(sql, [userId, role], (err, results) => {
+    const sql = "SELECT * FROM subjectfolders";
+    db.query(sql, (err, results) => {
         if (err) {
             console.error(`Database error: ${err}`);
             return res.status(500).json({ success: false });
@@ -1522,7 +1387,7 @@ app.get('/listSubFolders', (req, res) => {
     });
 });
 
-app.get('/downloadSubjectFolder', (req, res) => {
+app.get('/downloadSubjectFolder', async (req, res) => {
     const folderName = req.query.folderName;
     if (!folderName) return res.status(400).send('Folder name is required.');
 
@@ -1549,7 +1414,7 @@ app.get('/downloadSubjectFolder', (req, res) => {
 
     archive.pipe(output);
 
-    const query = 'SELECT file_path, custom_name, original_name FROM subjectfiles WHERE folder_name = ?';
+    const query = 'SELECT file_path, custom_name, original_name FROM files WHERE folder_name = ?';
 
     db.query(query, [folderName], (err, results) => {
         if (err) {
@@ -1582,26 +1447,9 @@ app.get('/api/search-subj-folders', (req, res) => {
 
 const searchQuery = `%${query}%`;
 
-let userId = null;
-let role = null;
 
-if (req.session.teacher) {
-    userId = req.session.teacher.id;
-    role = 'teacher';
-} else if (req.session.student) {
-    userId = req.session.student.id;
-    role = 'student';
-} else if (req.session.admin) {
-    userId = req.session.admin.id;
-    role = 'admin';
-}
-
-if (!userId || !role) {
-    return res.status(401).json({ success: false, message: "Unauthorized" });
-}
-
-const sql = "SELECT * FROM subjectfolders WHERE subjectname LIKE ? AND ownerID = ? AND ownerRole = ?";
-db.query(sql, [searchQuery, userId, role], (err, results) => {
+const sql = "SELECT * FROM subjectfolders WHERE subjectname LIKE ?";
+db.query(sql, [searchQuery], (err, results) => {
     if (err) {
         console.error(err);
         return res.status(500).json({ success: false, message: "Database error" });
