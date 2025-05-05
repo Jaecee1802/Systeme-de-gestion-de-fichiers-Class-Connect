@@ -1193,6 +1193,9 @@ const subUpload = multer({ storage: subjectStor });
 
 app.post("/subjupload", subUpload.single("file"), (req, res) => {
 
+    const { customName } = req.body;
+    const subjectFolderName = req.query.folder;  
+
     console.log("Received File:", req.file);
     console.log("Custom Name:", customName);
     console.log("Folder Name:", subjectFolderName);
@@ -1368,6 +1371,52 @@ db.query(sql, [searchQuery], (err, results) => {
 });
 
 //Grading System
+app.post("/addGrades", (req, res) => {
+    const { activityName, grade, overallGrade } = req.body;
+
+    if (!activityName || !grade || !overallGrade) {
+        return res.json({ success: false, message: 'Invalid input.' });
+    }
+
+    const sql = "INSERT INTO studentgrades (activityname, grade, overallgrade) VALUES (?, ?, ?)";
+    db.query(sql, [activityName, grade, overallGrade], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.json({ success: false, message: 'Database error while adding grades.' });
+        }
+
+        return res.json({ success: true, message: 'Grades added successfully.' });
+    });
+})
+
+
+//Grading System(Edit Grades)
+app.get("/getActivity", (req, res) => {
+    const sql = "SELECT activityname FROM studentgrades";
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error(`Database error: ${err}`);
+            return res.json({ success: false });
+        }
+        res.json({ success: true, activities: results });
+    });
+})
+
+app.post("/editGrades", (req, res) => {
+    const { activityName, editGrade, editOverallGrade } = req.body;
+
+    const sql = "UPDATE studentgrades SET grade = ?, overallgrade = ? WHERE activityname = ?";
+    db.query(sql, [editGrade, editOverallGrade, activityName], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.json({ success: false, message: 'Database error while editing grades.' });
+        }
+
+        return res.json({ success: true, message: 'Grades edited successfully.' });
+    });
+})
+
+//Grading System(Delete Grades)
 
 //Download Subject Folder
 app.get('/listSubjectFolders', (req, res) => {

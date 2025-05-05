@@ -73,22 +73,34 @@
     <div class="activity-list container section">
         <div class="activity-one is-flex my-4" id="sub-box">
             <h1 class="has-text-black-bis">Activity #1</h1>
-            <button class="button is-small" id="view-button">View</button>
+            <div id="grades-earned">
+                <p class="has-text-black-bis" id="students-grade">Earned Grade: 999</p>
+                <p class="has-text-black-bis" id="overall-grade">Total Grade: 999</p>
+            </div>
         </div>
 
         <div class="activity-two is-flex my-4" id="sub-box">
             <h1 class="has-text-black-bis">Activity #2</h1>
-            <button class="button is-small" id="view-button">View</button>
+            <div id="grades-earned">
+                <p class="has-text-black-bis" id="students-grade">Earned Grade: 999</p>
+                <p class="has-text-black-bis" id="overall-grade">Total Grade: 999</p>
+            </div>
         </div>
 
         <div class="activity-three is-flex my-4" id="sub-box">
             <h1 class="has-text-black-bis">Activity #3</h1>
-            <button class="button is-small" id="view-button">View</button>
+            <div id="grades-earned">
+                <p class="has-text-black-bis" id="students-grade">Earned Grade: 999</p>
+                <p class="has-text-black-bis" id="overall-grade">Total Grade: 999</p>
+            </div>
         </div>
 
         <div class="activity-four is-flex my-4" id="sub-box">
             <h1 class="has-text-black-bis">Activity #4</h1>
-            <button class="button is-small" id="view-button">View</button>
+            <div id="grades-earned">
+                <p class="has-text-black-bis" id="students-grade">Earned Grade: 999</p>
+                <p class="has-text-black-bis" id="overall-grade">Total Grade: 999</p>
+            </div>
         </div>
     </div>
 </section>
@@ -157,16 +169,17 @@
             </div>
 
             <label for="folder-name" class="has-text-black">Student's Grade:</label>
-            <input class="input has-background-white my-4 has-text-black" type="text" id="grade-fill"/>
+            <input class="input has-background-white my-4 has-text-black" type="text" id="edit-grade-fill"/>
 
             <label for="folder-name" class="has-text-black">Overall Grade:</label>
-            <input class="input has-background-white my-4 has-text-black" type="text" id="overall-grade-fill"/>
+            <input class="input has-background-white my-4 has-text-black" type="text" id="edit-overall-grade-fill"/>
             <button class="has-text-white button is-black mt-4" type="submit">Edit</button>
         </form>
 
     </div>
 </div>
-
+<script src="js/addGrades.js"></script>
+<script src="js/editGrades.js"></script>
 <script src="js/GradesModal.js"></script>
 <script src="js/signOut.js"></script>
 <script src="js/displayAccountname.js"></script>
