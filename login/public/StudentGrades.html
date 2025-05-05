@@ -71,7 +71,7 @@
     </div>
 
     <div class="activity-list container section">
-        <div class="activity-one is-flex my-4" id="sub-box">
+        <div class="activity-one is-flex my-4" id="act-box">
             <h1 class="has-text-black-bis">Activity #1</h1>
             <div id="grades-earned">
                 <p class="has-text-black-bis" id="students-grade">Earned Grade: 999</p>
@@ -79,7 +79,7 @@
             </div>
         </div>
 
-        <div class="activity-two is-flex my-4" id="sub-box">
+        <div class="activity-two is-flex my-4" id="act-box">
             <h1 class="has-text-black-bis">Activity #2</h1>
             <div id="grades-earned">
                 <p class="has-text-black-bis" id="students-grade">Earned Grade: 999</p>
@@ -87,7 +87,7 @@
             </div>
         </div>
 
-        <div class="activity-three is-flex my-4" id="sub-box">
+        <div class="activity-three is-flex my-4" id="act-box">
             <h1 class="has-text-black-bis">Activity #3</h1>
             <div id="grades-earned">
                 <p class="has-text-black-bis" id="students-grade">Earned Grade: 999</p>
@@ -95,7 +95,7 @@
             </div>
         </div>
 
-        <div class="activity-four is-flex my-4" id="sub-box">
+        <div class="activity-four is-flex my-4" id="act-box">
             <h1 class="has-text-black-bis">Activity #4</h1>
             <div id="grades-earned">
                 <p class="has-text-black-bis" id="students-grade">Earned Grade: 999</p>
@@ -184,5 +184,15 @@
 <script src="js/signOut.js"></script>
 <script src="js/deleteGrade.js"></script>
 <script src="js/displayAccountname.js"></script>
+<script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const params = new URLSearchParams(window.location.search);
+        const student = params.get("student");
+
+        if (student) {
+            document.querySelector(".header h2").textContent = `Student: ${student}`;
+        }
+    });
+</script>
 </body>
 </html>

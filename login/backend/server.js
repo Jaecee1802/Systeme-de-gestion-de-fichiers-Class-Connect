@@ -1418,6 +1418,30 @@ app.post("/editGrades", (req, res) => {
 
 //Grading System(Delete Grades)
 
+//Grading System(Display Sections)
+app.get("/sections", (req, res) => {
+    const sql = "SELECT DISTINCT section FROM students ORDER BY section ASC";
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error(`Database error: ${err}`);
+            return res.status(500).json({ success: false, message: "Database error" });
+        }
+        res.json(results);
+    });
+});
+
+//Grading System(Display Names)
+app.get("/displaystudentname", (req, res) => {
+    const sql = "SELECT DISTINCT studentName FROM students WHERE section = ?";
+    db.query(sql, [req.query.section], (err, results) => {
+        if (err) {
+            console.error(`Database error: ${err}`);
+            return res.status(500).json({ success: false, message: "Database error" });
+        }
+        res.json(results);
+    });
+})
+
 //Download Subject Folder
 app.get('/listSubjectFolders', (req, res) => {
     const sql = "SELECT subjectname FROM subjectfolders";

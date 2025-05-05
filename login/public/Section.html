@@ -50,29 +50,41 @@
         <h2 class="mx-6 is-size-2 has-text-white has-text-weight-bold">Section Name</h2>
     </div>
 
-    <div class="student-list container section">
-        <div class="student-one is-flex my-4" id="sub-box">
+    <div class="student-list container section" id="student-container">
+        <div class="student-one is-flex my-4" id="student-box">
             <h1 class="has-text-black-bis">Student #1</h1>
             <button class="button is-small" id="view-button">View</button>
         </div>
 
-        <div class="student-two is-flex my-4" id="sub-box">
+        <div class="student-two is-flex my-4" id="student-box">
             <h1 class="has-text-black-bis">Student #2</h1>
             <button class="button is-small" id="view-button">View</button>
         </div>
 
-        <div class="student-three is-flex my-4" id="sub-box">
+        <div class="student-three is-flex my-4" id="student-box">
             <h1 class="has-text-black-bis">Student #3</h1>
             <button class="button is-small" id="view-button">View</button>
         </div>
 
-        <div class="student-four is-flex my-4" id="sub-box">
+        <div class="student-four is-flex my-4" id="student-box">
             <h1 class="has-text-black-bis">Student #4</h1>
             <button class="button is-small" id="view-button">View</button>
         </div>
     </div>
 </section>
+<script src="js/displayStudentName.js"></script>
 <script src="js/signOut.js"></script>
 <script src="js/displayAccountname.js"></script>
+<script>
+     document.addEventListener("DOMContentLoaded", () => {
+        const params = new URLSearchParams(window.location.search);
+        const section = params.get("section");
+
+        if (section) {
+            document.querySelector(".header h2").textContent = `Section ${section}`;
+            console.log("Section loaded:", section);
+        }
+     });
+</script>
 </body>
 </html>

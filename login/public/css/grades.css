@@ -1,4 +1,4 @@
-#sub-box{
+#student-box, #act-box{
     justify-content: center;
     align-items: center;
     gap: 45vw;
@@ -13,12 +13,12 @@
 }
 
 @media screen and (width <= 540px){
-    #sub-box{
+    #student-box, #act-box{
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
     }
-    #sub-box{
+    #student-box, #act-box{
         padding: 23px;
     }
 }
