@@ -1611,6 +1611,8 @@ db.query(sql, [searchQuery, userId, role], (err, results) => {
 });
 });
 
+//Grading System
+
 ////////////////////////////////////////
 ////// Enrolled Subjects Section //////
 ///////////////////////////////////////
