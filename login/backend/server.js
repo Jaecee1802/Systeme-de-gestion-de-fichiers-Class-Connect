@@ -1169,9 +1169,6 @@ app.get('/api/folder/:subjectFolderName/files', (req, res) => {
     })
 })
 
-//Download All Folders
-
-
 //Upload Subject File
 const uploadSubDir = path.join(__dirname, `../public/uploads`);
 if(!fs.existsSync(uploadSubDir)) {
@@ -1195,30 +1192,6 @@ const subjectStor = multer.diskStorage({
 const subUpload = multer({ storage: subjectStor });
 
 app.post("/subjupload", subUpload.single("file"), (req, res) => {
-    console.log("File upload started...");
-
-    const { customName } = req.body;
-    const subjectFolderName = req.query.folder;
-    let role = null;
-    let userId = null;
-
-    if (req.session.teacher) {
-        role = 'teacher';
-        userId = req.session.teacher.id;
-    } else if (req.session.student) {
-        role = 'student';
-        userId = req.session.student.id;
-    } else if (req.session.admin) {
-        role = 'admin';
-        userId = req.session.admin.id;
-    }
-
-    console.log('Detected Role:', role, '| User ID:', userId); 
-
-    if (!userId || !role) {
-        return res.status(401).json({ message: 'You must be logged in to create a folder' });
-    }
-
 
     console.log("Received File:", req.file);
     console.log("Custom Name:", customName);
@@ -1248,11 +1221,11 @@ app.post("/subjupload", subUpload.single("file"), (req, res) => {
 
         const filePath = `uploads/${subjectFolderName}/${req.file.filename}`;
         const sql =
-            "INSERT INTO subjectfiles (custom_name, original_name, file_path, folder_name, upload_date, ownerID, ownerRole) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            "INSERT INTO subjectfiles (custom_name, original_name, file_path, folder_name, upload_date) VALUES (?, ?, ?, ?, ?)";
 
         db.query(
             sql,
-            [customName, req.file.originalname, filePath, subjectFolderName, new Date(), userId, role],
+            [customName, req.file.originalname, filePath, subjectFolderName, new Date()],
             (err) => {
                 if (err) {
                     console.error("Database error:", err);
@@ -1375,71 +1348,6 @@ app.get('/api/recent-subject-folders', async (req, res) => {
 })
 
 //Download Subject Folder
-app.get('/listSubFolders', (req, res) => {
-    const sql = "SELECT * FROM subjectfolders";
-    db.query(sql, (err, results) => {
-        if (err) {
-            console.error(`Database error: ${err}`);
-            return res.status(500).json({ success: false });
-        }
-
-        res.json({ success: true, files: results });
-    });
-});
-
-app.get('/downloadSubjectFolder', async (req, res) => {
-    const folderName = req.query.folderName;
-    if (!folderName) return res.status(400).send('Folder name is required.');
-
-    const archiveName = `${folderName}.zip`;
-    const archivePath = path.join(__dirname, archiveName);
-
-    const output = fs.createWriteStream(archivePath);
-    const archive = archiver('zip', { zlib: { level: 9 } });
-
-    output.on('close', () => {
-        res.download(archivePath, archiveName, (err) => {
-            if (err) {
-                console.error('Download error:', err);
-                res.sendStatus(500);
-            }
-            fs.unlinkSync(archivePath); // cleanup
-        });
-    });
-
-    archive.on('error', (err) => {
-        console.error('Archiving error:', err);
-        res.sendStatus(500);
-    });
-
-    archive.pipe(output);
-
-    const query = 'SELECT file_path, custom_name, original_name FROM files WHERE folder_name = ?';
-
-    db.query(query, [folderName], (err, results) => {
-        if (err) {
-            console.error('Database query error:', err);
-            res.sendStatus(500);
-            return;
-        }
-
-        if (results.length === 0) {
-            res.status(404).send('No files found for this subject folder.');
-            return;
-        }
-
-        results.forEach(file => {
-            const fullPath = path.join(__dirname, '../public', file.file_path);
-            if (fs.existsSync(fullPath)) {
-                const ext = path.extname(file.original_name);
-                const customFileName = `${file.custom_name}${ext}`;
-                archive.file(fullPath, { name: `${folderName}/${customFileName}` });
-            }
-        });
-
-        archive.finalize();
-    });
-});
 
 //Search Subject Folders
 app.get('/api/search-subj-folders', (req, res) => {
@@ -1448,7 +1356,7 @@ app.get('/api/search-subj-folders', (req, res) => {
 const searchQuery = `%${query}%`;
 
 
-const sql = "SELECT * FROM subjectfolders WHERE subjectname LIKE ?";
+const sql = "SELECT * FROM subjectfolders WHERE subjectname = ?";
 db.query(sql, [searchQuery], (err, results) => {
     if (err) {
         console.error(err);
@@ -1460,6 +1368,54 @@ db.query(sql, [searchQuery], (err, results) => {
 });
 
 //Grading System
+
+//Download Subject Folder
+app.get('/listSubjectFolders', (req, res) => {
+    const sql = "SELECT subjectname FROM subjectfolders";
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error(`Database error: ${err}`);
+            return res.json({ success: false });
+        }
+        res.json({ success: true, files: results });
+    });
+});
+
+app.get('/downloadSubjectFolder', (req, res) => {
+    const folderName = req.query.folderName;
+    if (!folderName) return res.status(400).send('Folder name is required.');
+
+    const folderPath = path.join(__dirname, `../public/uploads/${folderName}`);
+    const archiveName = `${folderName}.zip`;
+    const archivePath = path.join(__dirname, archiveName);
+
+    if (!fs.existsSync(folderPath)) {
+        return res.status(404).send('Subject folder not found.');
+    }
+
+    const output = fs.createWriteStream(archivePath);
+    const archive = archiver('zip', { zlib: { level: 9 } });
+
+    output.on('close', () => {
+        res.download(archivePath, archiveName, (err) => {
+            if (err) {
+                console.error('Download error:', err);
+                res.sendStatus(500);
+            }
+            fs.unlinkSync(archivePath);
+        });
+    });
+
+    archive.on('error', (err) => {
+        console.error('Archiving error:', err);
+        res.sendStatus(500);
+    });
+
+    archive.pipe(output);
+    archive.directory(folderPath, folderName);
+    archive.finalize();
+});
+
 
 ////////////////////////////////////////
 ////// Enrolled Subjects Section //////

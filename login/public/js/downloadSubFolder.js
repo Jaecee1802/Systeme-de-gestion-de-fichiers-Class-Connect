@@ -31,14 +31,13 @@ subjectDownloadForm.addEventListener('submit', async (event) => {
         window.URL.revokeObjectURL(url);
     } catch (error) {
         console.error('Download error:', error);
-        alert('An error occurred while downloading the subject folder.');
+        alert('An error occurred while downloading the folder.');
     }
 });
 
-
 window.addEventListener('DOMContentLoaded', async () => {
     try {
-        const response = await fetch('/listSubFolders');
+        const response = await fetch('/listSubjectFolders'); // This route must return subject folders
         const data = await response.json();
 
         if (data.success) {
@@ -48,17 +47,16 @@ window.addEventListener('DOMContentLoaded', async () => {
             const folderSet = new Set();
 
             data.files.forEach(file => {
-                if (!folderSet.has(file.subjectname)) {
-                    folderSet.add(file.subjectname);
+                if (!folderSet.has(file. subjectname)) {
+                    folderSet.add(file. subjectname);
                     const option = document.createElement('option');
-                    option.value = file.subjectname;
-                    option.textContent = file.subjectname;
+                    option.value = file. subjectname;
+                    option.textContent = file. subjectname;
                     select.appendChild(option);
                 }
             });
         } else {
-            alert('Failed to load folders');
-            console.log('Failed to load folders');
+            alert('Failed to load subject folders.');
         }
     } catch (err) {
         console.error('Error fetching folder list:', err);
