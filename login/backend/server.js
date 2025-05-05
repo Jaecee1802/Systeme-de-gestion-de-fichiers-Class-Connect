@@ -1372,14 +1372,14 @@ db.query(sql, [searchQuery], (err, results) => {
 
 //Grading System
 app.post("/addGrades", (req, res) => {
-    const { activityName, grade, overallGrade } = req.body;
+    const { activityName, grade, overallGrade, schoolid } = req.body;
 
     if (!activityName || !grade || !overallGrade) {
         return res.json({ success: false, message: 'Invalid input.' });
     }
 
-    const sql = "INSERT INTO studentgrades (activityname, grade, overallgrade) VALUES (?, ?, ?)";
-    db.query(sql, [activityName, grade, overallGrade], (err, result) => {
+    const sql = "INSERT INTO studentgrades (activityname, grade, overallgrade, schoolID) VALUES (?, ?, ?, ?)";
+    db.query(sql, [activityName, grade, overallGrade, schoolid], (err, result) => {
         if (err) {
             console.error(err);
             return res.json({ success: false, message: 'Database error while adding grades.' });
@@ -1392,7 +1392,7 @@ app.post("/addGrades", (req, res) => {
 
 //Grading System(Edit Grades)
 app.get("/getActivity", (req, res) => {
-    const sql = "SELECT activityname FROM studentgrades";
+    const sql = "SELECT * FROM studentgrades";
     db.query(sql, (err, results) => {
         if (err) {
             console.error(`Database error: ${err}`);
@@ -1432,8 +1432,21 @@ app.get("/sections", (req, res) => {
 
 //Grading System(Display Names)
 app.get("/displaystudentname", (req, res) => {
-    const sql = "SELECT DISTINCT studentName FROM students WHERE section = ?";
+    const sql = "SELECT studID, studentName FROM students WHERE section = ?";
     db.query(sql, [req.query.section], (err, results) => {
+        if (err) {
+            console.error(`Database error: ${err}`);
+            return res.status(500).json({ success: false, message: "Database error" });
+        }
+        res.json(results);
+    });
+})
+
+//Grading System(Display Grades)
+app.get("/displaygrades", (req, res) => {
+    const sql = "SELECT activityname, grade, overallgrade FROM studentgrades";
+
+    db.query(sql, [req.query.schoolid], (err, results) => {
         if (err) {
             console.error(`Database error: ${err}`);
             return res.status(500).json({ success: false, message: "Database error" });
@@ -1488,7 +1501,6 @@ app.get('/downloadSubjectFolder', (req, res) => {
     archive.directory(folderPath, folderName);
     archive.finalize();
 });
-
 
 ////////////////////////////////////////
 ////// Enrolled Subjects Section //////

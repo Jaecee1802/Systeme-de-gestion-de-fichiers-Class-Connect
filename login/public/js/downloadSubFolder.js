@@ -37,7 +37,7 @@ subjectDownloadForm.addEventListener('submit', async (event) => {
 
 window.addEventListener('DOMContentLoaded', async () => {
     try {
-        const response = await fetch('/listSubjectFolders'); // This route must return subject folders
+        const response = await fetch('/listSubjectFolders');
         const data = await response.json();
 
         if (data.success) {

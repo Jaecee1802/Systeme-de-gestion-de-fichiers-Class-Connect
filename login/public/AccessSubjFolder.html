@@ -114,9 +114,6 @@
             Rename File
         </button>
 
-        <button class="button ml-2 mb-2" id="download-subject-file-button">
-            Download File(s)
-        </button>
     </div>
 
     <div class="container section is-widescreen" id="files">
@@ -281,34 +278,8 @@
     </div>
 </div>
 
-<div class="modal" id="download-file-modal">
-    <div class="modal-background"></div>
-    <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
-        <button class="close is-pulled-right has-text-black is-size-4" id="close-download-file-modal">&times;</button>
-        <h1 class="has-text-black has-text-centered is-size-2-desktop">Select a file to Download</h1>
-
-        <form id="download-select-file">
-            <div>
-                <label for="folder-name" class="has-text-black">Pick a file to download:</label>
-            </div>
-            
-            <div id="download-checkboxes">
-                <!-- This is the checkbox -->
-                <label class="checkbox has-text-black">
-                    <input type="checkbox"/>
-                    File #1
-                </label>
-            </div>
-
-            <div>
-                <button class="has-text-white button is-black mt-4" type="submit">Download File</button>
-            </div>
-        </form>
-
-    </div>
-</div>
-
 </body>
+<script src="js/downloadIndividualFile.js"></script>
 <script src="js/renameSubFile.js"></script>
 <script src="js/loadSubjectFolders.js"></script>
 <script src="js/uploadSubFile.js"></script>

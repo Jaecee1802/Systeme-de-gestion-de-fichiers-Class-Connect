@@ -23,7 +23,7 @@ async function displayName() {
 
             const viewButton = studentDiv.querySelector('.view-button');
             viewButton.addEventListener('click', () => {
-                window.location.href = `StudentGrades.html?section=${encodeURIComponent(section)}&student=${encodeURIComponent(studentName)}`;
+                window.location.href = `StudentGrades.html?section=${encodeURIComponent(section)}&student=${encodeURIComponent(studentName)}&studentID=${student.studID}`;
             });
 
             studentContainer.appendChild(studentDiv);
