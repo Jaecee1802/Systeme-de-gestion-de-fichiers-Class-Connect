@@ -7,13 +7,10 @@ recordActivityForm.addEventListener('submit', async function(event) {
    const grade = document.getElementById("grade-fill").value;
    const overallGrade = document.getElementById("overall-grade-fill").value;
 
-   const params = new URLSearchParams(window.location.search);
-   const schoolid = params.get("studentID");
-
    const response = await fetch('/addGrades', {
        method: 'POST',
        headers: { "Content-Type": "application/json" },
-       body: JSON.stringify({ activityName, grade, overallGrade, schoolid })
+       body: JSON.stringify({ activityName, grade, overallGrade})
    });
 
    const data = await response.json();

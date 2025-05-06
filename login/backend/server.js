@@ -31,12 +31,12 @@ app.use(session({
 
 app.use(express.json());
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: "http://localhost:3100",
     credentials: true
 }));
 app.use(express.static(path.join(__dirname, "../public")));
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3100;
 
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
@@ -1372,14 +1372,14 @@ db.query(sql, [searchQuery], (err, results) => {
 
 //Grading System
 app.post("/addGrades", (req, res) => {
-    const { activityName, grade, overallGrade, schoolid } = req.body;
+    const { activityName, grade, overallGrade} = req.body;
 
     if (!activityName || !grade || !overallGrade) {
         return res.json({ success: false, message: 'Invalid input.' });
     }
 
-    const sql = "INSERT INTO studentgrades (activityname, grade, overallgrade, schoolID) VALUES (?, ?, ?, ?)";
-    db.query(sql, [activityName, grade, overallGrade, schoolid], (err, result) => {
+    const sql = "INSERT INTO studentgrades (activityname, grade, overallgrade) VALUES (?, ?, ?)";
+    db.query(sql, [activityName, grade, overallGrade], (err, result) => {
         if (err) {
             console.error(err);
             return res.json({ success: false, message: 'Database error while adding grades.' });
@@ -1446,14 +1446,14 @@ app.get("/displaystudentname", (req, res) => {
 app.get("/displaygrades", (req, res) => {
     const sql = "SELECT activityname, grade, overallgrade FROM studentgrades";
 
-    db.query(sql, [req.query.schoolid], (err, results) => {
+    db.query(sql, (err, results) => {
         if (err) {
             console.error(`Database error: ${err}`);
             return res.status(500).json({ success: false, message: "Database error" });
         }
         res.json(results);
     });
-})
+});
 
 //Download Subject Folder
 app.get('/listSubjectFolders', (req, res) => {
