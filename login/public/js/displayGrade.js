@@ -16,13 +16,16 @@ async function displayGrade() {
     activity.forEach(grade => {
         const activityDiv = document.createElement('div');
         activityDiv.classList.add('activity-one', 'is-flex', 'my-4');
+        activityDiv.id = 'act-box'; // important for your CSS
+
         activityDiv.innerHTML = `
-            <h1 class="activity-name has-text-black-bis">${grade.activityname}</h1>
+            <h1 class="activity-name has-text-black-bis">Activity: ${grade.activityname}</h1>
             <div id="grades-earned">
                 <p class="students-grade has-text-black-bis">Earned Grade: ${grade.grade}</p>
                 <p class="overall-grade has-text-black-bis">Total Grade: ${grade.overallgrade}</p>
             </div>
         `;
+
         activityContainer.appendChild(activityDiv);
     });
 }
