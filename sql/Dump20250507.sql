@@ -58,7 +58,7 @@ CREATE TABLE `files` (
   `ownerRole` enum('teacher','student','admin') NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_file` (`ownerID`),
-  CONSTRAINT `fk_file` FOREIGN KEY (`ownerID`) REFERENCES `teachers` (`teacherID`)
+  CONSTRAINT `fk_file` FOREIGN KEY (`ownerID`) REFERENCES `teachers` (`teacherID`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -68,7 +68,6 @@ CREATE TABLE `files` (
 
 LOCK TABLES `files` WRITE;
 /*!40000 ALTER TABLE `files` DISABLE KEYS */;
-INSERT INTO `files` VALUES (1,'application','2.-Application-Form-Programming_fillable_v2025.pdf','uploads/normadoe/2.-Application-Form-Programming_fillable_v2025.pdf','normadoe','2025-05-01 03:29:30',2,'student'),(2,'weeknd','7f336a020c194d8aa2aaf4152c134bdb.jpg','uploads/jin/7f336a020c194d8aa2aaf4152c134bdb.jpg','jin','2025-05-02 07:04:48',1,'teacher');
 /*!40000 ALTER TABLE `files` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -86,9 +85,9 @@ CREATE TABLE `folders` (
   `ownerID` int DEFAULT NULL,
   `ownerRole` enum('teacher','student','admin') NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_user` (`ownerID`),
-  CONSTRAINT `fk_user` FOREIGN KEY (`ownerID`) REFERENCES `teachers` (`teacherID`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `fk_users` (`ownerID`),
+  CONSTRAINT `fk_users` FOREIGN KEY (`ownerID`) REFERENCES `teachers` (`teacherID`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,7 +96,6 @@ CREATE TABLE `folders` (
 
 LOCK TABLES `folders` WRITE;
 /*!40000 ALTER TABLE `folders` DISABLE KEYS */;
-INSERT INTO `folders` VALUES (7,'normadoe','2025-04-30 07:35:18',2,'student'),(8,'mangdoe','2025-04-30 07:36:54',2,'teacher'),(10,'jin','2025-05-02 07:04:33',1,'teacher');
 /*!40000 ALTER TABLE `folders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,8 +111,11 @@ CREATE TABLE `studentgrades` (
   `activityname` varchar(255) DEFAULT NULL,
   `grade` tinyint DEFAULT NULL,
   `overallgrade` tinyint DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `studentID` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_studentid` (`studentID`),
+  CONSTRAINT `fk_studentid` FOREIGN KEY (`studentID`) REFERENCES `students` (`studID`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -123,7 +124,7 @@ CREATE TABLE `studentgrades` (
 
 LOCK TABLES `studentgrades` WRITE;
 /*!40000 ALTER TABLE `studentgrades` DISABLE KEYS */;
-INSERT INTO `studentgrades` VALUES (1,'Activity',50,50);
+INSERT INTO `studentgrades` VALUES (1,'Activity',20,20,NULL),(2,'Activity',20,20,2);
 /*!40000 ALTER TABLE `studentgrades` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -180,7 +181,6 @@ CREATE TABLE `subjectfiles` (
 
 LOCK TABLES `subjectfiles` WRITE;
 /*!40000 ALTER TABLE `subjectfiles` DISABLE KEYS */;
-INSERT INTO `subjectfiles` VALUES (5,'react','react-cheat-sheet.pdf','uploads/Kazama\'s Sub/1746429052215-629181156.pdf','Kazama\'s Sub','2025-05-05 07:10:52'),(6,'ai-powered','AI-Powered Course Recommendation System.docx','uploads/Kazama\'s Sub/1746429066757-686755224.docx','Kazama\'s Sub','2025-05-05 07:11:07'),(7,'jjr','JJR Mini Donuts.pptx','uploads/Second Sub/1746486914415-537405400.pptx','Second Sub','2025-05-05 23:15:14');
 /*!40000 ALTER TABLE `subjectfiles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -196,7 +196,7 @@ CREATE TABLE `subjectfolders` (
   `subjectname` varchar(255) NOT NULL,
   `folderCreation` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`subjectFoldID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -205,7 +205,6 @@ CREATE TABLE `subjectfolders` (
 
 LOCK TABLES `subjectfolders` WRITE;
 /*!40000 ALTER TABLE `subjectfolders` DISABLE KEYS */;
-INSERT INTO `subjectfolders` VALUES (3,'Kazama\'s Sub','2025-05-05 06:35:19'),(4,'Second Sub','2025-05-05 23:14:44');
 /*!40000 ALTER TABLE `subjectfolders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -232,7 +231,6 @@ CREATE TABLE `teachers` (
 
 LOCK TABLES `teachers` WRITE;
 /*!40000 ALTER TABLE `teachers` DISABLE KEYS */;
-INSERT INTO `teachers` VALUES (1,'Jin Kazama','jinkazama@email.com','$2b$10$h3IsCHU8zHSe6/.NG4ANbOR4/eSXsvyFmxqgLjj3BKLjVIfluOi4m','CS Department'),(2,'Mang Doe','mangdoe@gmail.com','$2b$10$fGhMlZGedQVIZoy1YU3UrO0fCHtF9ipgyPZTr.0mz.W9R79pyi0zS','CpE Department');
 /*!40000 ALTER TABLE `teachers` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -245,4 +243,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-06  9:31:27
+-- Dump completed on 2025-05-07  5:45:22
