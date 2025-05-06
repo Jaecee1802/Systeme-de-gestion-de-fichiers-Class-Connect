@@ -16,8 +16,7 @@ async function displayGrade() {
     activity.forEach(grade => {
         const activityDiv = document.createElement('div');
         activityDiv.classList.add('activity-one', 'is-flex', 'my-4');
-        activityDiv.id = 'act-box'; // important for your CSS
-
+        activityDiv.id = 'act-box';
         activityDiv.innerHTML = `
             <h1 class="activity-name has-text-black-bis">Activity: ${grade.activityname}</h1>
             <div id="grades-earned">
