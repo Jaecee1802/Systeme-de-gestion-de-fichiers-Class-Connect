@@ -1372,14 +1372,14 @@ db.query(sql, [searchQuery], (err, results) => {
 
 //Grading System
 app.post("/addGrades", (req, res) => {
-    const { activityName, grade, overallGrade} = req.body;
+    const { activityName, grade, overallGrade, studentID } = req.body;
 
-    if (!activityName || !grade || !overallGrade) {
-        return res.json({ success: false, message: 'Invalid input.' });
+    if (!activityName || !grade || !overallGrade || !studentID) {
+        return res.json({ success: false, message: 'Missing required fields.' });
     }
 
-    const sql = "INSERT INTO studentgrades (activityname, grade, overallgrade) VALUES (?, ?, ?)";
-    db.query(sql, [activityName, grade, overallGrade], (err, result) => {
+    const sql = "INSERT INTO studentgrades (activityname, grade, overallgrade, studentID) VALUES (?, ?, ?, ?)";
+    db.query(sql, [activityName, grade, overallGrade, studentID], (err, result) => {
         if (err) {
             console.error(err);
             return res.json({ success: false, message: 'Database error while adding grades.' });
@@ -1444,9 +1444,15 @@ app.get("/displaystudentname", (req, res) => {
 
 //Grading System(Display Grades)
 app.get("/displaygrades", (req, res) => {
-    const sql = "SELECT activityname, grade, overallgrade FROM studentgrades";
+    const studentID = req.query.studentID;
 
-    db.query(sql, (err, results) => {
+    if (!studentID) {
+        return res.status(400).json({ success: false, message: "Missing studentID" });
+    }
+
+    const sql = "SELECT activityname, grade, overallgrade FROM studentgrades WHERE studentID = ?";
+    
+    db.query(sql, [studentID], (err, results) => {
         if (err) {
             console.error(`Database error: ${err}`);
             return res.status(500).json({ success: false, message: "Database error" });

@@ -1,19 +1,30 @@
 async function displayGrade() {
-    try {
-        const response = await fetch(`/displaygrades`);
-        const grades = await response.json();
+    const params = new URLSearchParams(window.location.search);
+    const studentID = params.get("studentID");
 
-        const activityBoxes = document.querySelectorAll('#act-box');
-
-        grades.forEach((gradeData, index) => {
-            if (index < activityBoxes.length) {
-                const box = activityBoxes[index];
-                box.querySelector('#activity-name').textContent = gradeData.activityname;
-                box.querySelector('#students-grade').textContent = `Earned Grade: ${gradeData.grade}`;
-                box.querySelector('#overall-grade').textContent = `Total Grade: ${gradeData.overallgrade}`;
-            }
-        });
-    } catch (error) {
-        console.error('Failed to load student grades:', error);
+    if (!studentID) {
+        console.error("Missing studentID in URL");
+        return;
     }
+
+    const response = await fetch(`/displaygrades?studentID=${studentID}`);
+    const activity = await response.json();
+
+    const activityContainer = document.getElementById('activity-container');
+    activityContainer.innerHTML = '';
+
+    activity.forEach(grade => {
+        const activityDiv = document.createElement('div');
+        activityDiv.classList.add('activity-one', 'is-flex', 'my-4');
+        activityDiv.innerHTML = `
+            <h1 class="activity-name has-text-black-bis">${grade.activityname}</h1>
+            <div id="grades-earned">
+                <p class="students-grade has-text-black-bis">Earned Grade: ${grade.grade}</p>
+                <p class="overall-grade has-text-black-bis">Total Grade: ${grade.overallgrade}</p>
+            </div>
+        `;
+        activityContainer.appendChild(activityDiv);
+    });
 }
+
+document.addEventListener('DOMContentLoaded', displayGrade);
