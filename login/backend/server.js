@@ -1451,17 +1451,18 @@ app.post("/addGrades", (req, res) => {
 
 
 //Grading System(Edit Grades)
-app.get("/activitieslist", (req, res) => {
-    const sql = "SELECT * FROM studentgrades";
-    db.query(sql, (err, results) => {
+app.get("/getActivity", (req, res) => {
+    const studentID = req.query.studentID;
+    const sql = "SELECT * FROM studentgrades WHERE studentID = ?";
+    
+    db.query(sql, [studentID], (err, results) => {
         if (err) {
             console.error(`Database error: ${err}`);
             return res.json({ success: false });
         }
         res.json({ success: true, activities: results });
     });
-})
-
+});
 app.post("/editGrades", (req, res) => {
     const { activityName, editGrade, editOverallGrade } = req.body;
 
@@ -1477,6 +1478,36 @@ app.post("/editGrades", (req, res) => {
 })
 
 //Grading System(Delete Grades)
+app.get("/getActivitiesForDelete", (req, res) => {
+    const studentid = req.query.studentID;
+    const sql = "SELECT * FROM studentgrades WHERE studentID = ?";
+    
+    db.query(sql, [studentid], (err, results) => {
+        if (err) {
+            console.error(`Database error: ${err}`);
+            return res.json({ success: false });
+        }
+        res.json({ success: true, activities: results });
+    });
+});
+
+app.post("/deleteGrades", (req, res) => {
+    const { activityName, studentid } = req.body;
+
+    const sql = "DELETE FROM studentgrades WHERE activityname = ? AND studentID = ?";
+    db.query(sql, [activityName, studentid], (err, result) => {
+        if (err) {
+            console.error(`Database error: ${err}`);
+            return res.json({ success: false, message: 'Database error while deleting grades.' });
+        }
+
+        if (result.affectedRows > 0) {
+            res.json({ success: true, message: 'Grade deleted successfully.' });
+        } else {
+            res.json({ success: false, message: 'No grade found to delete.' });
+        }
+    });
+});
 
 //Grading System(Display Sections)
 app.get("/sections", (req, res) => {

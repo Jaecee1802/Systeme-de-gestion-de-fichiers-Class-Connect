@@ -1,6 +1,11 @@
-editActivityForm = document.getElementById("edit-grade-student-form");
 
-editActivityForm.addEventListener('submit', async function(event){
+const urlParams = new URLSearchParams(window.location.search);
+const studentID = urlParams.get('studentID');
+
+
+const editActivityForm = document.getElementById("edit-grade-student-form");
+
+editActivityForm.addEventListener('submit', async function(event) {
     event.preventDefault();
 
     const activityName = document.getElementById("edit-activity-select").value;
@@ -14,36 +19,36 @@ editActivityForm.addEventListener('submit', async function(event){
 
     const response = await fetch('/editGrades', {
         method: 'POST',
-        headers: { "Content-Type": "application/json"},
-        body: JSON.stringify({activityName, editGrade, editOverallGrade})
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ activityName, editGrade, editOverallGrade })
     });
 
     const data = await response.json();
     alert(data.message);
-})
+});
 
-async function loadActivitiesinDropdown(){
-    try{
-        const response = await fetch('/activitieslist');
+async function loadActivitiesinDropdown(studentID) {
+    try {
+        const response = await fetch(`/getActivity?studentID=${studentID}`);
         const data = await response.json();
 
-        if(data.success){
+        if (data.success) {
             const select = document.getElementById('edit-activity-select');
             select.innerHTML = `<option>Select Activity</option>`;
-        
+
             data.activities.forEach(activity => {
                 const option = document.createElement('option');
                 option.value = activity.activityname;
                 option.textContent = activity.activityname;
                 select.appendChild(option);
-            })
+            });
+        } else {
+            alert('Failed to load activities');
+            console.log('Failed to load activities');
         }
-        else{
-            alert('Failed to load folders');
-            console.log('Failed to load folders');
-        }
-    }
-    catch (err){
-        console.error(`error loading activities: ${err}`);
+    } catch (err) {
+        console.error(`Error loading activities: ${err}`);
     }
 }
+
+loadActivitiesinDropdown(studentID);
