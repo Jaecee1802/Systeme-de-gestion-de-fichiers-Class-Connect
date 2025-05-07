@@ -1600,6 +1600,29 @@ app.post('/setDeadline', (req, res) => {
     })
 })
 
+//Search Subject Files
+app.get('/api/search-subject-files', (req, res) => {
+    const { query, folder } = req.query;
+
+    if (!folder) {
+        return res.status(400).json({ success: false, message: "Folder name is required." });
+    }
+
+    const searchQuery = `%${query}%`;
+
+    // Search only within the specified subject folder
+    const sql = `SELECT * FROM subjectfiles WHERE custom_name LIKE ? AND folder_name = ?`;
+    
+    db.query(sql, [searchQuery, folder], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ success: false, message: "Database error" });
+        }
+
+        res.json(results);
+    });
+});
+
 ////////////////////////////////////////
 ////// Enrolled Subjects Section //////
 ///////////////////////////////////////
