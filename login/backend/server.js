@@ -1419,7 +1419,7 @@ app.get('/api/search-subj-folders', (req, res) => {
 const searchQuery = `%${query}%`;
 
 
-const sql = "SELECT * FROM subjectfolders WHERE subjectname = ?";
+const sql = "SELECT * FROM subjectfolders WHERE subjectname LIKE ?";
 db.query(sql, [searchQuery], (err, results) => {
     if (err) {
         console.error(err);
