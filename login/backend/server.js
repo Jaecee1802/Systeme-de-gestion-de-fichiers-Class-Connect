@@ -182,7 +182,7 @@ app.get("/subjectRoute", noCache, (req, res) => {
         res.sendFile(path.join(__dirname, "../public/Subjects.html"));
     }
     else if(req.session.student){
-        res.sendFile(path.join(__dirname, "../public/Subjects.html"));
+        res.sendFile(path.join(__dirname, "../public/SubjectStudents.html"));
     }
     else{
         res.redirect("/");
@@ -1033,6 +1033,53 @@ app.post("/api/renamefile", (req, res) => {
 });
 //Rename File
 
+//Search Files
+app.get('/api/search-files', (req, res) => {
+    const { query, folder } = req.query;
+
+    if (!folder) {
+        return res.status(400).json({ success: false, message: "Folder name is required." });
+    }
+
+    const searchQuery = `%${query}%`;
+
+    let userId = null;
+    let role = null;
+
+    if (req.session.teacher) {
+        userId = req.session.teacher.id;
+        role = 'teacher';
+    } else if (req.session.student) {
+        userId = req.session.student.id;
+        role = 'student';
+    } else if (req.session.admin) {
+        userId = req.session.admin.id;
+        role = 'admin';
+    }
+
+    if (!userId || !role) {
+        return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
+
+    // Search only within the specified folder
+    const sql = `
+        SELECT * FROM files 
+        WHERE custom_name LIKE ? 
+        AND folder_name = ? 
+        AND ownerID = ? 
+        AND ownerRole = ?
+    `;
+    
+    db.query(sql, [searchQuery, folder, userId, role], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ success: false, message: "Database error" });
+        }
+
+        res.json(results);
+    });
+});
+
 //////////////////////////////
 ////// MY FILES SECTION //////
 //////////////////////////////
@@ -1065,7 +1112,7 @@ app.post("/api/createsubjectfolder", (req, res) => {
     })
 })
 
-//Load Subject Folders
+//Load Subject Folders(teachers and admin)
 app.get("/api/subjectfolders", async (req, res) => {
     db.query("SELECT * FROM subjectfolders", (err, result) => {
         if(err){
@@ -1074,6 +1121,19 @@ app.get("/api/subjectfolders", async (req, res) => {
         res.json(result);
     });
 })
+
+//Load Subject Folders(student)
+app.get("/api/subjectstudentfolders", async (req, res) => {
+    const sql = `SELECT sf.subjectFoldID, sf.subjectname, sd.deadline FROM subjectfolders sf LEFT JOIN subjectdeadlines sd ON sf.subjectFoldID = sd.folderID
+    `;
+
+    db.query(sql, (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.json(result);
+    });
+});
 
 //Delete Subject Folder
 app.post('/api/deletesubjectfolder', (req, res) => {
@@ -1507,6 +1567,38 @@ app.get('/downloadSubjectFolder', (req, res) => {
     archive.directory(folderPath, folderName);
     archive.finalize();
 });
+
+//Deadline System
+app.get('/getsubDeadline', (req, res) => {
+    const sql = "SELECT subjectFoldID, subjectname FROM subjectfolders";
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error(`Database error: ${err}`);
+            return res.json({ success: false });
+        }
+        res.json({ success: true, deadlines: results });
+    });
+});
+
+app.post('/setDeadline', (req, res) => {
+    const { selectedFolderID, deadlineDate } = req.body;
+
+    if (!selectedFolderID || !deadlineDate || selectedFolderID === 'Select Folder') {
+        console.error("Invalid Setting Deadline: ", selectedFolderID, deadlineDate);
+        return res.json({ success: false, message: 'Invalid Setting Deadline' });
+    }
+
+    const sql = "INSERT INTO subjectdeadlines (folderID, deadline) VALUES (?, ?)";
+
+    db.query(sql, [selectedFolderID, deadlineDate], (err, result) => {
+        if(err){
+            console.error('Database error:', err);
+            return res.json({ success: false, message: 'Failed to save deadline.' });
+        }
+
+        res.json({ success: true, message: 'Deadline set successfully.' });
+    })
+})
 
 ////////////////////////////////////////
 ////// Enrolled Subjects Section //////

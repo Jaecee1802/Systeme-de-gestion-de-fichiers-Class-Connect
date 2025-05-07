@@ -18,7 +18,7 @@
             border-bottom: 2px solid black;
         }
 
-        #upload-button, #folder-button, #delete-button, #rename-button, #share-button, #download-file-button{
+        #upload-button, #folder-button, #delete-button, #rename-button, #share-button, #download-file-button, #deadline-file-button{
             height: 40px;
             width: 200px;
             background-color: #1C4E80;
@@ -93,6 +93,10 @@
         <button class="button ml-2 mb-2" id="download-file-button">
             Download a Folder
         </button>
+
+        <button class="button ml-2 mb-2" id="deadline-file-button">
+            Set Deadline
+        </button>
     </div>
 
     <div class="subject-folders has-text-centered is-flex-touch mt-6">
@@ -156,41 +160,6 @@
     </div>
 </div>
 
-<div class="modal" id="share-subject-folder-modal">
-    <div class="modal-background"></div>
-    <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
-        <button class="close is-pulled-right has-text-black is-size-4" id="close-deadline-modal">&times;</button>
-        <h1 class="has-text-black has-text-centered is-size-4-desktop">Select folder to share</h1>
-
-        <form id="share-subject-folder">
-            <div>
-                <label for="folder-name" class="has-text-black">Select the folder:</label>
-            </div>
-            <div class="select is-small">
-                <select id="share-sub-list">
-                    <option>Select Subject Folder</option> 
-                </select>
-            </div>
-
-            <div>
-                <label for="folder-name" class="has-text-black">Select Section:</label>
-            </div>
-
-            <div class="select is-small">
-                <select id="section-select">
-                    <option>Select Section</option>
-                </select>
-            </div>
-
-            <div>
-                <button class="has-text-white button is-black mt-4" type="submit">Share Folder</button>
-            </div>
-        </form>
-
-
-    </div>
-</div>
-
 <div class="modal" id="download-file-modal">
     <div class="modal-background"></div>
     <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
@@ -217,6 +186,28 @@
     </div>
 </div>
 
+<div class="modal" id="setdeadline-folder-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content has-background-grey-lighter py-5 px-5" id="modal-box">
+        <button class="close is-pulled-right has-text-black is-size-4" id="close-deadline-modal">&times;</button>
+        <h1 class="has-text-black has-text-centered is-size-2-desktop">Set Deadline</h1>
+
+        <form id="setdeadline-subject-folder-form">
+            <div class="select is-small">
+                <select id="deadline-subject-folder-select">
+                    <option>Select Folder</option>
+                </select>
+            </div>
+            <div>
+                <input class="input is-small has-background-white has-text-black mt-2" type="datetime-local" id="deadlinedate-input" name="deadline" required>
+                <button class="has-text-white button is-black mt-4" type="submit">Set Deadline</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<script src="js/setDeadline.js"></script>
 <script src="js/modalSubject.js"></script>
 <script src="js/searchSubFolder.js"></script>
 <script src="js/downloadSubFolder.js"></script>

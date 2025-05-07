@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" class="has-background-white-bis">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/dashboardDesign.css"><!--SIDEBAR NAVIGATION-->
+    <link rel="stylesheet" href="css/enrolledsubDesign.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <title>ClassConnect: Enrolled Subjects</title>
+    <style>
+        .header{
+            padding-top: 100px;
+            padding-bottom: 20px;
+            background-color: #1C4E80;
+        }
+        #recent-title{
+            border-bottom: 2px solid black;
+        }
+
+        #upload-button, #folder-button, #delete-button, #rename-button, #share-button, #download-file-button, #deadline-file-button{
+            height: 40px;
+            width: 200px;
+            background-color: #1C4E80;
+        }
+
+        #modal-box{
+            border-radius: 20px;
+        }
+
+        #subject-folders-container{
+            gap: 2%;
+            justify-content: center;
+        }
+
+        #file-name{
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <input type="checkbox" id="check">
+    <label for="check">
+      <i class="fas fa-bars" id="btn"></i>
+      <i class="fas fa-times" id="cancel"></i>
+    </label>
+
+    <div class="overlay"></div>
+
+    <div class="sidebar">
+    <header>
+        <h2 class="is-size-6 has-text-black-bis my-6" id="account-name">Account Name</h2>
+    </header>
+        <ul>
+            <li><a href="/subjectRoute" class="has-text-centered has-text-weight-bold">Enrolled Subjects</a></li>
+            <li><a href="/dashboard" class="has-text-centered">Dashboard</a></li>
+            <li><a href="/myfilesRoute" class="has-text-centered">My Files</a></li>
+            <li><a href="/gradesRoute" class="has-text-centered">Grades</a></li>
+            <li><a href="/settingsRoute" class="has-text-centered">Settings</a></li>
+            <div class="has-text-centered">
+                <li><button class="button is-danger is-centered mt-6" id="sign-out">Sign-out</button></li>
+            </div>
+        </ul>
+    </div>
+
+<section>
+    <div class="header">
+        <h2 class="mx-6 is-size-2 has-text-white has-text-weight-bold">Enrolled Subjects</h2>
+    </div>
+
+    <div class="field is-grouped m-4 mx-6">
+        <p class="control is-expanded">
+            <input class="input has-background-grey-light" type="text" placeholder="Search..." id="search">
+        </p>
+        <button class="button is-ghost has-text-black-ter" id="search-btn">
+            Search
+        </button>
+    </div>
+
+    <div class="subject-folders has-text-centered is-flex-touch mt-6">
+
+        <div id="subject-folders-container" class="is-flex is-flex-wrap-wrap">
+                <!--Subject Folders will be shown here-->
+        </div>
+    </div>
+
+</section>
+
+
+<script src="js/searchSubFolder.js"></script>
+<script src="js/loadStudentSubject.js"></script>
+<script src="js/signOut.js"></script>
+<script src="js/displayAccountname.js"></script>
+</body>
+</html>

@@ -50,15 +50,15 @@ closeRenameModal.addEventListener('click', () => {
     renameModal.classList.remove('is-active');
 })
 
-//Share Folder Modal
-const openDeadlineModal = document.getElementById('share-button');
+//Deadline Subject Folder Modal
+const openDeadlineModal = document.getElementById('deadline-file-button');   
 const closeDeadlineModal = document.getElementById('close-deadline-modal');
-const deadlineModal = document.getElementById('share-subject-folder-modal');
+const deadLineModal = document.getElementById('setdeadline-folder-modal');
 
 openDeadlineModal.addEventListener('click', () => {
-    deadlineModal.classList.add('is-active');
+    deadLineModal.classList.add('is-active');
 })
 
-closeDeadlineModal.addEventListener('click', () => {    
-    deadlineModal.classList.remove('is-active');
-});
+closeDeadlineModal.addEventListener('click', () => {
+    deadLineModal.classList.remove('is-active');
+})
