@@ -1451,7 +1451,7 @@ app.post("/addGrades", (req, res) => {
 
 
 //Grading System(Edit Grades)
-app.get("/getActivity", (req, res) => {
+app.get("/activitieslist", (req, res) => {
     const sql = "SELECT * FROM studentgrades";
     db.query(sql, (err, results) => {
         if (err) {

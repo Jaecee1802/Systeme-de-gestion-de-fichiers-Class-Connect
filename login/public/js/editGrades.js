@@ -30,11 +30,11 @@ async function loadActivitiesinDropdown(){
         if(data.success){
             const select = document.getElementById('edit-activity-select');
             select.innerHTML = `<option>Select Activity</option>`;
-
-            data.activityName.forEach(activityName => {
+        
+            data.activities.forEach(activity => {
                 const option = document.createElement('option');
-                option.value = activityName.activityname;
-                option.textContent = activityName.activityname;
+                option.value = activity.activityname;
+                option.textContent = activity.activityname;
                 select.appendChild(option);
             })
         }
