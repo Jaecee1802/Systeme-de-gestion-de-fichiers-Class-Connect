@@ -57,9 +57,8 @@ CREATE TABLE `files` (
   `ownerID` int DEFAULT NULL,
   `ownerRole` enum('teacher','student','admin') NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_file` (`ownerID`),
-  CONSTRAINT `fk_file` FOREIGN KEY (`ownerID`) REFERENCES `teachers` (`teacherID`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `fk_file` (`ownerID`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,7 +67,7 @@ CREATE TABLE `files` (
 
 LOCK TABLES `files` WRITE;
 /*!40000 ALTER TABLE `files` DISABLE KEYS */;
-INSERT INTO `files` VALUES (3,'city','cities3.jpg','uploads/Teacher\'s Folder/cities3.jpg','Teacher\'s Folder','2025-05-07 05:49:23',3,'teacher');
+INSERT INTO `files` VALUES (7,'mtb48','MTB48.jpg','uploads/sample/MTB48.jpg','sample','2025-05-08 13:13:19',3,'student');
 /*!40000 ALTER TABLE `files` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -86,9 +85,9 @@ CREATE TABLE `folders` (
   `ownerID` int DEFAULT NULL,
   `ownerRole` enum('teacher','student','admin') NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_users` (`ownerID`),
-  CONSTRAINT `fk_users` FOREIGN KEY (`ownerID`) REFERENCES `teachers` (`teacherID`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `fk_students` (`ownerID`),
+  CONSTRAINT `fk_students` FOREIGN KEY (`ownerID`) REFERENCES `students` (`studID`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,7 +96,7 @@ CREATE TABLE `folders` (
 
 LOCK TABLES `folders` WRITE;
 /*!40000 ALTER TABLE `folders` DISABLE KEYS */;
-INSERT INTO `folders` VALUES (13,'Teacher\'s Folder','2025-05-07 05:47:36',3,'teacher');
+INSERT INTO `folders` VALUES (20,'folder','2025-05-08 13:10:24',4,'teacher'),(21,'mama','2025-05-08 13:12:40',4,'teacher'),(22,'sample','2025-05-08 13:13:10',3,'student');
 /*!40000 ALTER TABLE `folders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -117,7 +116,7 @@ CREATE TABLE `studentgrades` (
   PRIMARY KEY (`id`),
   KEY `fk_studentid` (`studentID`),
   CONSTRAINT `fk_studentid` FOREIGN KEY (`studentID`) REFERENCES `students` (`studID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -174,7 +173,7 @@ CREATE TABLE `subjectdeadlines` (
   PRIMARY KEY (`id`),
   KEY `fk_folderid` (`folderID`),
   CONSTRAINT `fk_folderid` FOREIGN KEY (`folderID`) REFERENCES `subjectfolders` (`subjectFoldID`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -210,7 +209,6 @@ CREATE TABLE `subjectfiles` (
 
 LOCK TABLES `subjectfiles` WRITE;
 /*!40000 ALTER TABLE `subjectfiles` DISABLE KEYS */;
-INSERT INTO `subjectfiles` VALUES (8,'askkurso','FinalAskKurso (edited(2)).docx','uploads/Subject/1746607401703-22956819.docx','Subject','2025-05-07 08:43:22');
 /*!40000 ALTER TABLE `subjectfiles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -226,7 +224,7 @@ CREATE TABLE `subjectfolders` (
   `subjectname` varchar(255) NOT NULL,
   `folderCreation` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`subjectFoldID`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -235,7 +233,7 @@ CREATE TABLE `subjectfolders` (
 
 LOCK TABLES `subjectfolders` WRITE;
 /*!40000 ALTER TABLE `subjectfolders` DISABLE KEYS */;
-INSERT INTO `subjectfolders` VALUES (9,'Subject','2025-05-07 05:08:24');
+INSERT INTO `subjectfolders` VALUES (11,'Subject','2025-05-07 22:38:17');
 /*!40000 ALTER TABLE `subjectfolders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -253,7 +251,7 @@ CREATE TABLE `teachers` (
   `teacherPassword` varchar(255) NOT NULL,
   `department` varchar(100) NOT NULL,
   PRIMARY KEY (`teacherID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -262,7 +260,7 @@ CREATE TABLE `teachers` (
 
 LOCK TABLES `teachers` WRITE;
 /*!40000 ALTER TABLE `teachers` DISABLE KEYS */;
-INSERT INTO `teachers` VALUES (3,'Mark Doe','markdoe@gmail.com','$2b$10$CV0.dw7UmxpoTjCFBDxLc.9MavfDJyWZsmgJkKbf6W2SHsxpJfo9K','CS Department');
+INSERT INTO `teachers` VALUES (4,'Mark Doe','markdoe@epcst.edu.ph','$2b$10$5pmEBhqgOLAS.1G.ftkHbOUP5MYJPRrllFqFUWUlFqd3.UAepAb1G','CS Department');
 /*!40000 ALTER TABLE `teachers` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -275,4 +273,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-07 19:05:10
+-- Dump completed on 2025-05-08 21:22:03
