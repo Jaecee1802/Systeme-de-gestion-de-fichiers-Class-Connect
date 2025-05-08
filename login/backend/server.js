@@ -237,6 +237,69 @@ app.get("/settingsRoute", noCache, (req, res) => {
     }
 })
 
+//Access Folder Route
+app.get("/accessFolder", noCache, (req, res) => {
+    if(req.session.admin){
+        res.sendFile(path.join(__dirname, "../public/AccessFolder.html"));
+    }
+    else if(req.session.teacher){
+        res.sendFile(path.join(__dirname, "../public/AccessFolder.html"));
+    }
+    else if(req.session.student){
+        res.sendFile(path.join(__dirname, "../public/AccessFolder.html"));
+    }
+    else{
+        res.redirect("/");
+    }
+})
+
+//Access Subject Folder Route
+app.get("/accessSubjectFolder", noCache, (req, res) => {
+    if(req.session.admin){
+        res.sendFile(path.join(__dirname, "../public/AccessSubjFolder.html"));
+    }
+    else if(req.session.teacher){
+        res.sendFile(path.join(__dirname, "../public/AccessSubjFolder.html"));
+    }
+    else if(req.session.student){
+        res.sendFile(path.join(__dirname, "../public/AccessSubjFolder.html"));
+    }
+    else{
+        res.redirect("/");
+    }
+})
+
+//Access Section(Students in that specific section)
+app.get("/sectionRT", noCache, (req, res) => {
+    if(req.session.admin){
+        res.sendFile(path.join(__dirname, "../public/Section.html"));
+    }
+    else if(req.session.teacher){
+        res.sendFile(path.join(__dirname, "../public/Section.html"));
+    }
+    else if(req.session.student){
+        res.sendFile(path.join(__dirname, "../public/Section.html"));
+    }
+    else{
+        res.redirect("/");
+    }
+})
+
+app.get("/studentgrades", noCache, (req, res) => {
+    if(req.session.admin){
+        res.sendFile(path.join(__dirname, "../public/StudentGrades.html"));
+    }
+    else if(req.session.teacher){
+        res.sendFile(path.join(__dirname, "../public/StudentGrades.html"));
+    }
+    else if(req.session.student){
+        res.sendFile(path.join(__dirname, "../public/StudentGrades.html"));
+    }
+    else{
+        res.redirect("/");
+    }
+})
+
 //Sign In Teachers
 app.get("/teachersign", noCache,  (req, res) => {
     res.sendFile(path.join(__dirname, "../public/sign-in(teacher).html"));
@@ -1653,6 +1716,7 @@ app.get('/api/search-subject-files', (req, res) => {
         res.json(results);
     });
 });
+
 
 ////////////////////////////////////////
 ////// Enrolled Subjects Section //////

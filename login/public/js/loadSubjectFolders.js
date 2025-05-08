@@ -8,7 +8,7 @@ async function loadSubFolders(){
     subjectfolder.forEach(subjectfolder => {
         const subjectDiv = document.createElement('div');
         subjectDiv.classList.add('subject-folders');
-        subjectDiv.innerHTML = `<a href="AccessSubjFolder.html?folder=${encodeURIComponent(subjectfolder.subjectname)}">
+        subjectDiv.innerHTML = `<a href="/accessSubjectFolder?folder=${encodeURIComponent(subjectfolder.subjectname)}">
                 <img src="images/folder.png" alt="Folder" class="image is-128x128">
                 <p class="has-text-black">${subjectfolder.subjectname}</p>
             </a>`;

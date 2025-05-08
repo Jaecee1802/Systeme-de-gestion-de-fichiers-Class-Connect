@@ -20,7 +20,7 @@ async function displaySection() {
 
             viewButton.addEventListener('click', () => {
                 const sectionName = encodeURIComponent(section.section);
-                window.location.href = `Section.html?section=${sectionName}`;
+                window.location.href = `/sectionRT?section=${sectionName}`;
             });
 
             sectionBox.appendChild(sectionTitle);

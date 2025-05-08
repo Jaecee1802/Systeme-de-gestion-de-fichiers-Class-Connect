@@ -22,7 +22,7 @@ async function loadSubFolders() {
         const formattedDeadline = deadline ? new Date(deadline).toLocaleString() : 'No Deadline Set';
 
         subjectDiv.innerHTML = `
-            <a href="AccessSubjFolder.html?folder=${encodeURIComponent(subjectname)}">
+            <a href="/accessSubjectFolder?folder=${encodeURIComponent(subjectname)}">
                 <img src="images/folder.png" alt="Folder" class="image is-128x128">
                 <p class="has-text-black">${subjectname}</p>
                 <p class="has-text-grey">Deadline: ${formattedDeadline}</p>

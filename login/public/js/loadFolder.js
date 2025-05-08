@@ -8,7 +8,7 @@ async function loadFolders(){
     folders.forEach(folder => {
         const folderDiv = document.createElement('div');
         folderDiv.classList.add('subj-folders');
-        folderDiv.innerHTML = `<a href="AccessFolder.html?folder=${encodeURIComponent(folder.name)}">
+        folderDiv.innerHTML = `<a href="/accessFolder?folder=${encodeURIComponent(folder.name)}">
             <div class="is-flex" id="files-info">
                 <div class="" id="folder-info">
                     <img src="images/folder.png" alt="Folder" class="image is-128x128">
