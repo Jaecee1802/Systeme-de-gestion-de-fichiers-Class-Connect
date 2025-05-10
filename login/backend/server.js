@@ -293,7 +293,7 @@ app.get("/studentgrades", noCache, (req, res) => {
         res.sendFile(path.join(__dirname, "../public/StudentGrades.html"));
     }
     else if(req.session.student){
-        res.sendFile(path.join(__dirname, "../public/StudentGrades.html"));
+        res.sendFile(path.join(__dirname, "../public/DisplayGradeOnly.html"));
     }
     else{
         res.redirect("/");
