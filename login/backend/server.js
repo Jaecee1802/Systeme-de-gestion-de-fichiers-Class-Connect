@@ -162,7 +162,7 @@ app.get("/dashboard", noCache,(req, res) => {
         res.sendFile(path.join(__dirname, "../public/Dashboard.html"));
     }
     else if(req.session.student){
-        res.sendFile(path.join(__dirname, "../public/Dashboard.html"));
+        res.sendFile(path.join(__dirname, "../public/StudentDashboard.html"));
     }
     else if(req.session.admin){
         res.sendFile(path.join(__dirname, "../public/Dashboard.html"));
@@ -1472,6 +1472,25 @@ app.get('/api/recent-subject-folders', async (req, res) => {
         res.json(result);
     })
 })
+
+
+//Load Subject Folders in Dashboard
+app.get('/api/recent-subject-student-folders', async (req, res) => {
+    const sql = `
+        SELECT sf.subjectFoldID, sf.subjectname, sd.deadline 
+        FROM subjectfolders sf 
+        LEFT JOIN subjectdeadlines sd ON sf.subjectFoldID = sd.folderID 
+        ORDER BY sf.folderCreation DESC 
+        LIMIT 4
+    `;
+
+    db.query(sql, (err, result) => {
+        if(err){
+            return res.status(500).json({ error: err.message });
+        }
+        res.json(result);
+    });
+});
 
 //Download Subject Folder
 

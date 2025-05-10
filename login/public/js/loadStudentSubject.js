@@ -5,19 +5,20 @@ async function loadSubFolders() {
 
     subjectfolderContainer.innerHTML = '';
 
-    const currentTime = new Date();
+    const currentTime = new Date(); // Current Time
 
     subjectfolders.forEach(subjectfolder => {
         const { subjectname, deadline } = subjectfolder;
 
+        // If there's a deadline and it is in the past, skip rendering (Student View)
         if (deadline && new Date(deadline) < currentTime) {
             return;
         }
 
         const subjectDiv = document.createElement('div');
         subjectDiv.classList.add('subject-folders');
-        subjectDiv.id = `folder-${subjectname.replace(/\s+/g, '-')}`; // Unique ID for easier removal
 
+        
         const formattedDeadline = deadline ? new Date(deadline).toLocaleString() : 'No Deadline Set';
 
         subjectDiv.innerHTML = `
@@ -28,19 +29,7 @@ async function loadSubFolders() {
             </a>`;
 
         subjectfolderContainer.appendChild(subjectDiv);
-
-        // Check the deadline every second
-        if (deadline) {
-            const interval = setInterval(() => {
-                const currentTime = new Date();
-                if (new Date(deadline) < currentTime) {
-                    const element = document.getElementById(`folder-${subjectname.replace(/\s+/g, '-')}`);
-                    if (element) {
-                        element.remove();
-                    }
-                    clearInterval(interval); // Stop checking after removal
-                }
-            }, 1000); // 1 second interval
-        }
     });
 }
+
+document.addEventListener('DOMContentLoaded', loadSubFolders);
