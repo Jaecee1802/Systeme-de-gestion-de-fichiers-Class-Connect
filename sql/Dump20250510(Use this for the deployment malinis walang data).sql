@@ -24,10 +24,10 @@ DROP TABLE IF EXISTS `admin`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `admin` (
   `adminID` int NOT NULL AUTO_INCREMENT,
-  `adminUsername` varchar(100) NOT NULL,
-  `adminPass` varchar(255) NOT NULL,
+  `adminUsername` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `adminPass` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`adminID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,7 +36,6 @@ CREATE TABLE `admin` (
 
 LOCK TABLES `admin` WRITE;
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
-INSERT INTO `admin` VALUES (3,'admin','$2b$10$rv0wMpgwyxi7JY1mRL4WIecU0V5kZafiStFJ6Y9KKy2XP0YZoY0Gm');
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -49,16 +48,16 @@ DROP TABLE IF EXISTS `files`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `files` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `custom_name` varchar(255) NOT NULL,
-  `original_name` varchar(255) NOT NULL,
-  `file_path` varchar(255) NOT NULL,
-  `folder_name` varchar(255) NOT NULL,
+  `custom_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `original_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `file_path` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `folder_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `upload_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `ownerID` int DEFAULT NULL,
-  `ownerRole` enum('teacher','student','admin') NOT NULL,
+  `ownerRole` enum('teacher','student','admin') COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_file` (`ownerID`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,7 +66,6 @@ CREATE TABLE `files` (
 
 LOCK TABLES `files` WRITE;
 /*!40000 ALTER TABLE `files` DISABLE KEYS */;
-INSERT INTO `files` VALUES (7,'mtb48','MTB48.jpg','uploads/sample/MTB48.jpg','sample','2025-05-08 13:13:19',3,'student');
 /*!40000 ALTER TABLE `files` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -80,14 +78,13 @@ DROP TABLE IF EXISTS `folders`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `folders` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `dateofCreation` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `ownerID` int DEFAULT NULL,
-  `ownerRole` enum('teacher','student','admin') NOT NULL,
+  `ownerRole` enum('teacher','student','admin') COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_students` (`ownerID`),
-  CONSTRAINT `fk_students` FOREIGN KEY (`ownerID`) REFERENCES `students` (`studID`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `fk_students` (`ownerID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,7 +93,6 @@ CREATE TABLE `folders` (
 
 LOCK TABLES `folders` WRITE;
 /*!40000 ALTER TABLE `folders` DISABLE KEYS */;
-INSERT INTO `folders` VALUES (20,'folder','2025-05-08 13:10:24',4,'teacher'),(21,'mama','2025-05-08 13:12:40',4,'teacher'),(22,'sample','2025-05-08 13:13:10',3,'student');
 /*!40000 ALTER TABLE `folders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -109,14 +105,14 @@ DROP TABLE IF EXISTS `studentgrades`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `studentgrades` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `activityname` varchar(255) DEFAULT NULL,
+  `activityname` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `grade` tinyint DEFAULT NULL,
   `overallgrade` tinyint DEFAULT NULL,
   `studentID` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_studentid` (`studentID`),
   CONSTRAINT `fk_studentid` FOREIGN KEY (`studentID`) REFERENCES `students` (`studID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -125,7 +121,6 @@ CREATE TABLE `studentgrades` (
 
 LOCK TABLES `studentgrades` WRITE;
 /*!40000 ALTER TABLE `studentgrades` DISABLE KEYS */;
-INSERT INTO `studentgrades` VALUES (1,'Activity',30,30,NULL);
 /*!40000 ALTER TABLE `studentgrades` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -138,14 +133,14 @@ DROP TABLE IF EXISTS `students`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `students` (
   `studID` int NOT NULL AUTO_INCREMENT,
-  `studentName` varchar(100) NOT NULL,
-  `studentEmail` varchar(100) NOT NULL,
-  `studentID` char(6) NOT NULL,
-  `studentPassword` varchar(255) NOT NULL,
-  `course` varchar(100) NOT NULL,
-  `section` varchar(5) NOT NULL,
+  `studentName` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `studentEmail` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `studentID` char(6) COLLATE utf8mb4_general_ci NOT NULL,
+  `studentPassword` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `course` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `section` varchar(5) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`studID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -154,7 +149,6 @@ CREATE TABLE `students` (
 
 LOCK TABLES `students` WRITE;
 /*!40000 ALTER TABLE `students` DISABLE KEYS */;
-INSERT INTO `students` VALUES (2,'Norma Doe','normadoe@gmail.com','25001','$2b$10$XNZs48GNGh7nyvQ3OTpjJevVlaXSwnzeDeQJViwViOD3nn9rH6P5.','Computer Science','CS101'),(3,'John Carlo Banzuela','banzuela.johncarlo@epcst.edu.ph','210039','$2b$10$HiTW9W5/2J7ZwcamJx0xFeLM6d2aU28n4eMkAltjaYy6lUbxFTjPW','Computer Science','CS401'),(4,'John Marky Doe','johnmarkydoe@gmail.com','22020','$2b$10$5PQv4LudVN8E0.L1qHD7yuEMQfzK.3DTvm.6jDgZrYzRFSPfThiXq','Information Technology','IT201');
 /*!40000 ALTER TABLE `students` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -173,7 +167,7 @@ CREATE TABLE `subjectdeadlines` (
   PRIMARY KEY (`id`),
   KEY `fk_folderid` (`folderID`),
   CONSTRAINT `fk_folderid` FOREIGN KEY (`folderID`) REFERENCES `subjectfolders` (`subjectFoldID`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -182,6 +176,7 @@ CREATE TABLE `subjectdeadlines` (
 
 LOCK TABLES `subjectdeadlines` WRITE;
 /*!40000 ALTER TABLE `subjectdeadlines` DISABLE KEYS */;
+INSERT INTO `subjectdeadlines` VALUES (2,'2025-05-10 11:33:00','2025-05-10 03:31:33',12),(3,'2025-05-10 11:49:00','2025-05-10 03:47:46',12),(4,'2025-05-10 11:52:00','2025-05-10 03:50:40',12);
 /*!40000 ALTER TABLE `subjectdeadlines` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -194,13 +189,13 @@ DROP TABLE IF EXISTS `subjectfiles`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `subjectfiles` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `custom_name` varchar(255) NOT NULL,
-  `original_name` varchar(255) NOT NULL,
-  `file_path` varchar(255) NOT NULL,
-  `folder_name` varchar(255) NOT NULL,
+  `custom_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `original_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `file_path` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `folder_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `upload_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -221,10 +216,10 @@ DROP TABLE IF EXISTS `subjectfolders`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `subjectfolders` (
   `subjectFoldID` int NOT NULL AUTO_INCREMENT,
-  `subjectname` varchar(255) NOT NULL,
+  `subjectname` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `folderCreation` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`subjectFoldID`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -233,7 +228,7 @@ CREATE TABLE `subjectfolders` (
 
 LOCK TABLES `subjectfolders` WRITE;
 /*!40000 ALTER TABLE `subjectfolders` DISABLE KEYS */;
-INSERT INTO `subjectfolders` VALUES (11,'Subject','2025-05-07 22:38:17');
+INSERT INTO `subjectfolders` VALUES (12,'Subject','2025-05-10 03:30:13');
 /*!40000 ALTER TABLE `subjectfolders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -246,12 +241,12 @@ DROP TABLE IF EXISTS `teachers`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `teachers` (
   `teacherID` int NOT NULL AUTO_INCREMENT,
-  `teacherName` varchar(100) NOT NULL,
-  `teacherEmail` varchar(100) NOT NULL,
-  `teacherPassword` varchar(255) NOT NULL,
-  `department` varchar(100) NOT NULL,
+  `teacherName` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `teacherEmail` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `teacherPassword` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `department` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`teacherID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -260,7 +255,6 @@ CREATE TABLE `teachers` (
 
 LOCK TABLES `teachers` WRITE;
 /*!40000 ALTER TABLE `teachers` DISABLE KEYS */;
-INSERT INTO `teachers` VALUES (4,'Mark Doe','markdoe@epcst.edu.ph','$2b$10$5pmEBhqgOLAS.1G.ftkHbOUP5MYJPRrllFqFUWUlFqd3.UAepAb1G','CS Department');
 /*!40000 ALTER TABLE `teachers` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -273,4 +267,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-08 21:22:03
+-- Dump completed on 2025-05-10 12:09:23
